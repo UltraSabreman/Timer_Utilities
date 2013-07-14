@@ -12,13 +12,12 @@ using System.Runtime.InteropServices;
 namespace Timer_Utils {
 	public partial class superPopup : Form {
 		public delegate void stopDelegate();
-		private stopDelegate stop;
+		public event stopDelegate stop;
 
 		private bool toggle = false;
 		private Timer ticker = new Timer();
 
-		public superPopup(stopDelegate f) {
-			stop = f;
+		public superPopup() {
 			InitializeComponent();
 
 			ticker.Tick += new EventHandler(tick);
@@ -28,9 +27,17 @@ namespace Timer_Utils {
 			done.Update();
 		}
 
+		public void time(TimeSpan span) {
+			overLabel.Text = String.Format("Overdue by: {0:00} : {1:00} : {2:00}", Math.Abs(span.TotalHours), Math.Abs(span.Minutes), Math.Abs(span.Seconds));
+		}
+
 		private void dismiss_Click(object sender, EventArgs e) {
-			stop();
-			Dispose();
+			//stop();
+			//Dispose();
+			if (stop != null)
+				stop();
+
+			Hide();
 		}
 
 		private void tick(object source, EventArgs e) {

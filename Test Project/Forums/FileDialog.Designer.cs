@@ -85,7 +85,10 @@
 			this.MaximizeBox = false;
 			this.MinimizeBox = false;
 			this.Name = "FileDialog";
+			this.ShowIcon = false;
+			this.ShowInTaskbar = false;
 			this.Text = "Enter Filename";
+			this.TopMost = true;
 			this.ResumeLayout(false);
 			this.PerformLayout();
 

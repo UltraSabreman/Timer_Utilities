@@ -47,7 +47,7 @@
 			this.chkPlys = new System.Windows.Forms.CheckBox();
 			this.shapeContainer1 = new Microsoft.VisualBasic.PowerPacks.ShapeContainer();
 			this.lineShape1 = new Microsoft.VisualBasic.PowerPacks.LineShape();
-			this.CDreset = new System.Windows.Forms.Button();
+			this.CDresetB = new System.Windows.Forms.Button();
 			this.CDprogress = new System.Windows.Forms.ProgressBar();
 			this.CDstart = new System.Windows.Forms.Button();
 			this.KeyPad = new System.Windows.Forms.Panel();
@@ -63,19 +63,24 @@
 			this.KeyPad8 = new System.Windows.Forms.Button();
 			this.KeyPad7 = new System.Windows.Forms.Button();
 			this.CDdisplay = new System.Windows.Forms.TextBox();
-			this.GlobalUpdate = new System.Windows.Forms.Timer(this.components);
+			this.todo = new System.Windows.Forms.TabPage();
+			this.dateTimePicker2 = new System.Windows.Forms.DateTimePicker();
+			this.dateTimePicker1 = new System.Windows.Forms.DateTimePicker();
 			this.TimerStats = new System.Windows.Forms.NotifyIcon(this.components);
+			this.toolTips = new System.Windows.Forms.ToolTip(this.components);
 			this.Clocks.SuspendLayout();
 			this.Stopwatch.SuspendLayout();
 			this.Countdown.SuspendLayout();
 			this.alarmOptions.SuspendLayout();
 			this.KeyPad.SuspendLayout();
+			this.todo.SuspendLayout();
 			this.SuspendLayout();
 			// 
 			// Clocks
 			// 
 			this.Clocks.Controls.Add(this.Stopwatch);
 			this.Clocks.Controls.Add(this.Countdown);
+			this.Clocks.Controls.Add(this.todo);
 			this.Clocks.Location = new System.Drawing.Point(12, 12);
 			this.Clocks.Name = "Clocks";
 			this.Clocks.SelectedIndex = 0;
@@ -127,6 +132,7 @@
 			// 
 			// SWdisplay
 			// 
+			this.SWdisplay.BackColor = System.Drawing.SystemColors.Control;
 			this.SWdisplay.Font = new System.Drawing.Font("Microsoft Sans Serif", 20.25F);
 			this.SWdisplay.Location = new System.Drawing.Point(3, 6);
 			this.SWdisplay.Name = "SWdisplay";
@@ -162,7 +168,7 @@
 			// Countdown
 			// 
 			this.Countdown.Controls.Add(this.alarmOptions);
-			this.Countdown.Controls.Add(this.CDreset);
+			this.Countdown.Controls.Add(this.CDresetB);
 			this.Countdown.Controls.Add(this.CDprogress);
 			this.Countdown.Controls.Add(this.CDstart);
 			this.Countdown.Controls.Add(this.KeyPad);
@@ -269,15 +275,15 @@
 			this.lineShape1.Y1 = 77;
 			this.lineShape1.Y2 = 77;
 			// 
-			// CDreset
+			// CDresetB
 			// 
-			this.CDreset.Location = new System.Drawing.Point(182, 245);
-			this.CDreset.Name = "CDreset";
-			this.CDreset.Size = new System.Drawing.Size(165, 34);
-			this.CDreset.TabIndex = 7;
-			this.CDreset.Text = "Reset";
-			this.CDreset.UseVisualStyleBackColor = true;
-			this.CDreset.Click += new System.EventHandler(this.CDreset_Click);
+			this.CDresetB.Location = new System.Drawing.Point(182, 245);
+			this.CDresetB.Name = "CDresetB";
+			this.CDresetB.Size = new System.Drawing.Size(165, 34);
+			this.CDresetB.TabIndex = 7;
+			this.CDresetB.Text = "Reset";
+			this.CDresetB.UseVisualStyleBackColor = true;
+			this.CDresetB.Click += new System.EventHandler(this.CDresetB_Click);
 			// 
 			// CDprogress
 			// 
@@ -296,7 +302,6 @@
 			this.CDstart.TabIndex = 5;
 			this.CDstart.Text = "Start";
 			this.CDstart.UseVisualStyleBackColor = true;
-			this.CDstart.TextChanged += new System.EventHandler(this.CDstar_TextChanged);
 			this.CDstart.Click += new System.EventHandler(this.CDstart_Click);
 			// 
 			// KeyPad
@@ -430,9 +435,9 @@
 			// 
 			// CDdisplay
 			// 
-			this.CDdisplay.BackColor = System.Drawing.SystemColors.Control;
+			this.CDdisplay.BackColor = System.Drawing.SystemColors.ControlLight;
 			this.CDdisplay.Font = new System.Drawing.Font("Microsoft Sans Serif", 20.25F);
-			this.CDdisplay.ForeColor = System.Drawing.Color.Red;
+			this.CDdisplay.ForeColor = System.Drawing.Color.Black;
 			this.CDdisplay.Location = new System.Drawing.Point(3, 6);
 			this.CDdisplay.Name = "CDdisplay";
 			this.CDdisplay.ReadOnly = true;
@@ -440,18 +445,45 @@
 			this.CDdisplay.TabIndex = 3;
 			this.CDdisplay.Text = "00 : 00 : 00";
 			this.CDdisplay.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-			this.CDdisplay.ForeColorChanged += new System.EventHandler(this.CDdisplay_ForeColorChanged);
-			this.CDdisplay.TextChanged += new System.EventHandler(this.CDdisplay_TextChanged);
+			this.CDdisplay.BackColorChanged += new System.EventHandler(this.CDdisplay_BackColorChanged);
+			this.CDdisplay.BindingContextChanged += new System.EventHandler(this.CDdisplay_BackColorChanged);
 			// 
-			// GlobalUpdate
+			// todo
 			// 
-			this.GlobalUpdate.Interval = 10;
-			this.GlobalUpdate.Tick += new System.EventHandler(this.GlobalUpdate_Tick);
+			this.todo.Controls.Add(this.dateTimePicker2);
+			this.todo.Controls.Add(this.dateTimePicker1);
+			this.todo.Location = new System.Drawing.Point(4, 22);
+			this.todo.Name = "todo";
+			this.todo.Padding = new System.Windows.Forms.Padding(3);
+			this.todo.Size = new System.Drawing.Size(350, 285);
+			this.todo.TabIndex = 2;
+			this.todo.Text = "To-Do";
+			this.todo.UseVisualStyleBackColor = true;
+			// 
+			// dateTimePicker2
+			// 
+			this.dateTimePicker2.Format = System.Windows.Forms.DateTimePickerFormat.Time;
+			this.dateTimePicker2.Location = new System.Drawing.Point(20, 126);
+			this.dateTimePicker2.Name = "dateTimePicker2";
+			this.dateTimePicker2.ShowUpDown = true;
+			this.dateTimePicker2.Size = new System.Drawing.Size(88, 20);
+			this.dateTimePicker2.TabIndex = 1;
+			this.dateTimePicker2.ValueChanged += new System.EventHandler(this.dateTimePicker2_ValueChanged);
+			// 
+			// dateTimePicker1
+			// 
+			this.dateTimePicker1.Format = System.Windows.Forms.DateTimePickerFormat.Short;
+			this.dateTimePicker1.Location = new System.Drawing.Point(20, 100);
+			this.dateTimePicker1.Name = "dateTimePicker1";
+			this.dateTimePicker1.Size = new System.Drawing.Size(88, 20);
+			this.dateTimePicker1.TabIndex = 0;
+			this.dateTimePicker1.ValueChanged += new System.EventHandler(this.dateTimePicker1_ValueChanged);
 			// 
 			// TimerStats
 			// 
 			this.TimerStats.Icon = ((System.Drawing.Icon)(resources.GetObject("TimerStats.Icon")));
 			this.TimerStats.Text = "TimerStats";
+			this.TimerStats.Visible = true;
 			this.TimerStats.MouseClick += new System.Windows.Forms.MouseEventHandler(this.TimerStats_MouseClick);
 			this.TimerStats.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.TimerStats_MouseDoubleClick);
 			// 
@@ -480,6 +512,7 @@
 			this.alarmOptions.ResumeLayout(false);
 			this.alarmOptions.PerformLayout();
 			this.KeyPad.ResumeLayout(false);
+			this.todo.ResumeLayout(false);
 			this.ResumeLayout(false);
 
         }
@@ -491,8 +524,7 @@
         private System.Windows.Forms.TabPage Countdown;
         private System.Windows.Forms.Button SWreset;
         private System.Windows.Forms.Button SWstart;
-        private System.Windows.Forms.TextBox SWdisplay;
-        private System.Windows.Forms.Timer GlobalUpdate;
+		private System.Windows.Forms.TextBox SWdisplay;
         private System.Windows.Forms.ListView LapTimes;
         private System.Windows.Forms.ColumnHeader lap;
         private System.Windows.Forms.ColumnHeader times;
@@ -511,7 +543,7 @@
         private System.Windows.Forms.Button KeyPad8;
         private System.Windows.Forms.Button KeyPad7;
 		private System.Windows.Forms.ProgressBar CDprogress;
-        private System.Windows.Forms.Button CDreset;
+        private System.Windows.Forms.Button CDresetB;
 		private System.Windows.Forms.NotifyIcon TimerStats;
 		private System.Windows.Forms.GroupBox alarmOptions;
 		private System.Windows.Forms.CheckBox chkPopUp;
@@ -521,6 +553,10 @@
 		private System.Windows.Forms.CheckBox chkForeg;
 		private Microsoft.VisualBasic.PowerPacks.ShapeContainer shapeContainer1;
 		private Microsoft.VisualBasic.PowerPacks.LineShape lineShape1;
+		private System.Windows.Forms.TabPage todo;
+		private System.Windows.Forms.DateTimePicker dateTimePicker1;
+		private System.Windows.Forms.DateTimePicker dateTimePicker2;
+		private System.Windows.Forms.ToolTip toolTips;
 
     }
 }

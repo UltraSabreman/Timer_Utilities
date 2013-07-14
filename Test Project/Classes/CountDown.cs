@@ -6,44 +6,34 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Diagnostics;
 using System.Windows.Forms;
-using System.Media;
 
 namespace Timer_Utils {
 	class CountDown {
-		//Private Members
-		private const int maxMembers = 5;
+		////////////////////////////////////
+		// Public Members
+		public delegate void onTick(TimeSpan s);
+		public delegate void onTrigger();
+		public delegate void onTriggerOnce();
+		public event onTick Tick;
+		public event onTrigger Trigger;
+		public event onTriggerOnce TriggerOnce;
 
-		private SoundPlayer Player = new SoundPlayer();
-		private Stopwatch ticker = new Stopwatch();
-		private Timer updater = new Timer();
+		////////////////////////////////////
+		// Private Members
+		private Stopwatch clock = new Stopwatch();
+		private Timer heartBeat = new Timer();
 		private string timeString;
 		private TimeSpan startTime;
-		private List<int> rawTime = new List<int>();
 		private int progress = 0;
-		private int ind = 0;
-
-		private bool enterMode = true;
 		private bool running = false;
-		private bool soundAlarm = false;
-		private bool playSound = true;
+		private bool triggered = false;
+		private bool continueAfterTrigger = true;
 
-		//Accesors
-		public bool PlaySound {
-			set { playSound = value; }
-			get { return playSound; }
-		}
-
-		public string Sound {
-			set {
-				try {
-					this.Player.SoundLocation = value;
-					this.Player.LoadAsync();
-				} catch (Exception ex) {
-					MessageBox.Show(ex.Message, "Error loading sound");
-				}
-			}
-
-			get { return Player.SoundLocation; }
+		////////////////////////////////////
+		// Properties
+		public TimeSpan StartTime {
+			set { startTime = value; }
+			get { return startTime; }
 		}
 
 		public int Progress {
@@ -58,129 +48,79 @@ namespace Timer_Utils {
 			get { return running; }
 		}
 
-		public bool Alarming {
-			get { return soundAlarm; }
+		public bool Triggered {
+			get { return triggered; }
 		}
 
-		//Public Methods
-		public CountDown(int interval = 100, string soundPath = "C:\\Windows\\Media\\Windows Unlock.wav") {
-			// Player.LoadCompleted += new AsyncCompletedEventHandler(soundLoaded);
-			Sound = soundPath;
-
-			updater.Tick += new EventHandler(tick);
-			updater.Interval = interval;
-			updater.Start();
-
-			updater.Start();
-			int[] emtpytimes = { 0, 0, 0, 0, 0, 0 };
-			rawTime.AddRange(emtpytimes);
+		public bool ContinueAfterTrigger {
+			set { continueAfterTrigger = value; }
+			get { return continueAfterTrigger; }
 		}
 
-		public bool toggle() {
-			startTime = getTimeFromList();
-			if (startTime.Duration().TotalSeconds == 0) return false;
+		////////////////////////////////////
+		// Public Methods
+		public CountDown(int interval = 100) {
+			heartBeat.Tick += new EventHandler(updateTick);
+			heartBeat.Interval = interval;
+			heartBeat.Start();
+		}
 
-			running = !running;
+		public bool Start() {
+			if (!running && startTime.Duration().TotalSeconds != 0) {
+				clock.Start();
+				running = true;
+				return true;
+			}
+			return false;
+		}
 
+		public bool Stop() {
 			if (running) {
-				ticker.Start();
-				enterMode = false;
-			} else 
-				ticker.Stop();
-			
-
-			return true;
-		}
-
-		public void reset() {
-			ticker.Reset();
-			startTime = new TimeSpan();
-			enterMode = true;
-			soundAlarm = false;
-			ind = 0;
-
-			rawTime.Clear();
-			int[] emtpytimes = { 0, 0, 0, 0, 0, 0 };
-			rawTime.AddRange(emtpytimes);
-		}
-
-		public void alarm() {
-			if (Player.IsLoadCompleted) {
-				try {
-					Player.PlayLooping();
-				} catch (Exception ex) {
-					MessageBox.Show(ex.Message, "Error playing sound");
-				}
+				clock.Stop();
+				running = false;
+				return true;
 			}
+			return false;
 		}
 
-		public void pushNumber(int num) {
-			if ((ind == 0 && num == 0) || ind >= maxMembers) return;
-
-			for (int i = rawTime.Count - 1; i >= 0; i--) {
-				if (i == 0)
-					rawTime[i] = num;
-				else
-					rawTime[i] = rawTime[i - 1];
+		public bool Reset() {
+			if (!running) {
+				clock.Reset();
+				startTime = new TimeSpan();
+				triggered = false;
+				running = false;
+				return true;
 			}
-
-			ind += (ind + 1 <= maxMembers ? 1 : 0);
+			return false;
 		}
 
-		public void popNumber() {
-			ind -= (ind - 1 >= 0 ? 1 : 0);
 
-			for (int i = 0; i < rawTime.Count; i++) {
-				if (i == rawTime.Count - 1)
-					rawTime[i] = 0;
-				else
-					rawTime[i] = rawTime[i + 1];
-			}
-		}
+		////////////////////////////////////
+		// Private Methods
+		private void updateTick(object source, EventArgs e) {
+			TimeSpan timeDiff = startTime.Subtract(clock.Elapsed);
 
-		//Private Methods
-		private void tick(object source, EventArgs e) {
-			TimeSpan span = startTime.Subtract(ticker.Elapsed);
+			if (Tick != null)
+				Tick(timeDiff);
 
-			progress = (int)((ticker.Elapsed.TotalSeconds / startTime.TotalSeconds) * 100);
-
-			if (span.TotalSeconds < 0) {
-				ticker.Stop();
-				if (!soundAlarm && running) {
-					if (playSound)
-						alarm();
-					soundAlarm = true;
-				}
-
+			if (timeDiff.TotalSeconds <= 0) {
+				if (running) {
+					progress = 100;
+					if (!triggered && TriggerOnce != null) {
+						TriggerOnce();
+						triggered = true;
+					}
+					if (Trigger != null)
+						Trigger();
+				} else
+					progress = 0;
 			} else {
-				timeString = "";
-				if (enterMode)
-					for (int i = rawTime.Count - 1; i >= 0; i--) {
-						timeString += (((i + 1) % 2 == 0 && (i + 1) != rawTime.Count ? " : " : "") + rawTime[i].ToString());
-					} else
-					timeString = String.Format("{0:00} : {1:00} : {2:00}", span.TotalHours, span.Minutes, span.Seconds);
+				progress = (int)((clock.Elapsed.TotalSeconds / startTime.TotalSeconds) * 100);
 			}
-
-
-			if (!running)
-				Player.Stop();
-		}
-
-		private TimeSpan getTimeFromList() {
-			int totalSeconds = 0;
-			for (int i = maxMembers, t = 0; i >= 0; i--) {
-				int mul = 1;
-				if (i % 2 != 0)
-					mul = 10;
-
-				totalSeconds += (rawTime[i] * mul * (t == 0 ? 3600 : (t == 1 ? 60 : 1)));
-
-				if (i % 2 == 0)
-					t++;
-			}
-
-			TimeSpan test = TimeSpan.FromSeconds(totalSeconds);
-			return test;
+			string l = "";
+			if  (timeDiff.TotalSeconds < 0 && continueAfterTrigger)
+				l = "-";
+			timeString = String.Format(l + "{0:00} : {1:00} : {2:00}", Math.Abs(timeDiff.TotalHours), Math.Abs(timeDiff.Minutes), Math.Abs(timeDiff.Seconds));
 		}
 	}
 }

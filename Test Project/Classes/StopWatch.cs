@@ -8,17 +8,28 @@ using System.Windows.Forms;
 
 namespace Timer_Utils {
 	public class StopWatch {
-		//Private Members
-		private Stopwatch ticker = new Stopwatch();
-		private Timer updater = new Timer();
+		////////////////////////////////////
+		// Public Members
+		public delegate void onTick(TimeSpan t);
+		public event onTick Tick;
+
+		////////////////////////////////////
+		// Private Members
+		private Stopwatch clock = new Stopwatch();
+		private Timer heartBeat = new Timer();
 		private string timeString = "";
 		private int laps = 0;
 		private bool running = false;
 		private List<string> lapList = new List<string>();
 
-		//Accesors
-		public int TopLap {
+		////////////////////////////////////
+		// Properties
+		public int Laps {
 			get { return laps; }
+		}
+
+		public string TopLap {
+			get { return lapList.Last(); }
 		}
 
 		public bool Running {
@@ -30,48 +41,65 @@ namespace Timer_Utils {
 		}
 
 		public TimeSpan Time {
-			get { return ticker.Elapsed; }
+			get { return clock.Elapsed; }
 		}
 
-		//Methods
+		////////////////////////////////////
+		// Public Methods
 		public StopWatch(int interval = 100) {
-			updater.Tick += new EventHandler(tick);
-			updater.Interval = interval;
-			updater.Start();
+			heartBeat.Tick += new EventHandler(updateTick);
+			heartBeat.Interval = interval;
+			heartBeat.Start();
 		}
 
-		// <summary>
-		// Does the tick action for the class, called by the system watch.
-		// </summary>
-		// <param name="object source">The event source</param>
-		// <param name=" EventArgs e">The event args</param>
-		// <returns>VOID</returns>
-		private void tick(object source, EventArgs e) {
-			TimeSpan temp = ticker.Elapsed;
+		public bool Lap() {
+			if (running) {
+				laps++;
+				lapList.Add(timeString);
+
+				clock.Reset();
+				clock.Start();
+				return true;
+			}
+			return false;
+		}
+
+		public bool Stop() {
+			if (running) {
+				clock.Stop();
+				running = false;
+				return true;
+			}
+			return false;
+		}
+
+		public bool Start() {
+			if (!running) {
+				clock.Start();
+				running = true;
+				return true;
+			}
+			return false;
+		}
+
+		public bool reset() {
+			if (!running) {
+				clock.Reset();
+				laps = 0;
+				lapList.Clear();
+				return true;
+			}
+			return false;
+		}
+
+		////////////////////////////////////
+		// Private Methods
+		private void updateTick(object source, EventArgs e) {
+			TimeSpan temp = clock.Elapsed;
 			timeString = String.Format("{0:00} : {1:00} : {2:00}.{3:000}", temp.TotalHours, temp.Minutes, temp.Seconds, temp.Milliseconds);
-		}
 
-		public void lap() {
-			laps++;
-			lapList.Add(timeString);
-
-			ticker.Reset();
-			ticker.Start();
-		}
-
-		public void toggle() {
-			running = !running;
-
-			if (running)
-				ticker.Start();
-			else
-				ticker.Stop();
-		}
-
-		public void reset() {
-			ticker.Reset();
-			laps = 0;
-			lapList.Clear();
+			if (Tick != null)
+				Tick(temp);
 		}
 
 	}

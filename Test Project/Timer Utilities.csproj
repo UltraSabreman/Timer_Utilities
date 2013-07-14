@@ -9,7 +9,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Timer_Utils</RootNamespace>
     <AssemblyName>Timer Utilities</AssemblyName>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <PublishUrl>publish\</PublishUrl>
     <Install>true</Install>
@@ -26,6 +26,7 @@
     <IsWebBootstrapper>false</IsWebBootstrapper>
     <UseApplicationTrust>false</UseApplicationTrust>
     <BootstrapperEnabled>true</BootstrapperEnabled>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -73,7 +74,14 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Classes\CD_StartTime_Maker.cs" />
     <Compile Include="Classes\CountDown.cs" />
+    <Compile Include="Forums\MainWindow-CountdownTab.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forums\MainWindow-StopwatchTab.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Forums\MainWindow.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -114,6 +122,7 @@
     <EmbeddedResource Include="Forums\superPopup.resx">
       <DependentUpon>superPopup.cs</DependentUpon>
     </EmbeddedResource>
+    <None Include="app.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>

@@ -10,12 +10,21 @@ using System.Windows.Forms;
 
 namespace Timer_Utils {
 	public partial class FileDialog : Form {
+		////////////////////////////////////
+		// Private Members
 		public delegate void fileDelgate(string s);
 
+		////////////////////////////////////
+		// Public Members
 		private fileDelgate test;
 		private string file;
 		private bool badFile;
 
+		////////////////////////////////////
+		// Properties
+
+		////////////////////////////////////
+		// Public Methods
 		public FileDialog(fileDelgate f, string filepath = "") {
 			InitializeComponent();
 
@@ -25,6 +34,8 @@ namespace Timer_Utils {
 			filePathBox.Text = filepath;
 		}
 
+		////////////////////////////////////
+		// Private Methods
 		private void browse_Click(object sender, EventArgs e) {
 			try {
 				sysFileDialog.ShowDialog();

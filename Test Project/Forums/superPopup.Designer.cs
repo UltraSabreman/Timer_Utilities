@@ -25,16 +25,17 @@
 		private void InitializeComponent() {
 			this.dismiss = new System.Windows.Forms.Button();
 			this.done = new System.Windows.Forms.Label();
+			this.overLabel = new System.Windows.Forms.Label();
 			this.SuspendLayout();
 			// 
 			// dismiss
 			// 
 			this.dismiss.FlatStyle = System.Windows.Forms.FlatStyle.System;
-			this.dismiss.Location = new System.Drawing.Point(10, 56);
+			this.dismiss.Location = new System.Drawing.Point(205, 47);
 			this.dismiss.Name = "dismiss";
-			this.dismiss.Size = new System.Drawing.Size(254, 23);
+			this.dismiss.Size = new System.Drawing.Size(59, 22);
 			this.dismiss.TabIndex = 1;
-			this.dismiss.Text = "Click to Dismiss";
+			this.dismiss.Text = "Dissmiss";
 			this.dismiss.UseVisualStyleBackColor = true;
 			this.dismiss.Click += new System.EventHandler(this.dismiss_Click);
 			// 
@@ -53,12 +54,27 @@
 			this.done.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
 			this.done.MouseDown += new System.Windows.Forms.MouseEventHandler(this.superPopup_MouseDown);
 			// 
+			// overLabel
+			// 
+			this.overLabel.AutoSize = true;
+			this.overLabel.BackColor = System.Drawing.Color.White;
+			this.overLabel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+			this.overLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.overLabel.Location = new System.Drawing.Point(10, 48);
+			this.overLabel.Name = "overLabel";
+			this.overLabel.Size = new System.Drawing.Size(189, 20);
+			this.overLabel.TabIndex = 3;
+			this.overLabel.Text = "Overdue by: 00 : 00 : 00";
+			this.overLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+			this.overLabel.MouseDown += new System.Windows.Forms.MouseEventHandler(this.superPopup_MouseDown);
+			// 
 			// superPopup
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.ClientSize = new System.Drawing.Size(276, 90);
+			this.ClientSize = new System.Drawing.Size(276, 80);
 			this.ControlBox = false;
+			this.Controls.Add(this.overLabel);
 			this.Controls.Add(this.done);
 			this.Controls.Add(this.dismiss);
 			this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
@@ -80,5 +96,6 @@
 
 		private System.Windows.Forms.Button dismiss;
 		private System.Windows.Forms.Label done;
+		private System.Windows.Forms.Label overLabel;
 	}
 }
