@@ -64,8 +64,6 @@ namespace Timer_Utils {
 			countd.TriggerOnce += new CountDown.onTriggerOnce(CDonAlarm);
 
 			popup.stop += new superPopup.stopDelegate(CDtoggle);
-
-			toolTips.SetToolTip(chkPopUp, "WARNING: This WILL bring you out of anything you're doing!");
 		}
 
 		private void CDtick(TimeSpan span) {

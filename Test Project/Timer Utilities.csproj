@@ -11,6 +11,8 @@
     <AssemblyName>Timer Utilities</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <TargetFrameworkProfile />
     <PublishUrl>publish\</PublishUrl>
     <Install>true</Install>
     <InstallFrom>Disk</InstallFrom>
@@ -23,10 +25,8 @@
     <MapFileExtensions>true</MapFileExtensions>
     <ApplicationRevision>0</ApplicationRevision>
     <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
-    <IsWebBootstrapper>false</IsWebBootstrapper>
     <UseApplicationTrust>false</UseApplicationTrust>
     <BootstrapperEnabled>true</BootstrapperEnabled>
-    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -48,20 +48,11 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup>
-    <ApplicationIcon>Misc\test3.ico</ApplicationIcon>
+    <ApplicationIcon>Misc\icon.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Microsoft.VisualBasic" />
     <Reference Include="Microsoft.VisualBasic.PowerPacks.Vs, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
-    <Reference Include="sfmlnet-audio-2">
-      <HintPath>..\..\..\..\..\..\..\Libraries\SFML.Net-2.0\lib\sfmlnet-audio-2.dll</HintPath>
-    </Reference>
-    <Reference Include="sfmlnet-graphics-2">
-      <HintPath>..\..\..\..\..\..\..\Libraries\SFML.Net-2.0\lib\sfmlnet-graphics-2.dll</HintPath>
-    </Reference>
-    <Reference Include="sfmlnet-window-2">
-      <HintPath>..\..\..\..\..\..\..\Libraries\SFML.Net-2.0\lib\sfmlnet-window-2.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -95,6 +86,15 @@
       <DependentUpon>superPopup.cs</DependentUpon>
     </Compile>
     <Compile Include="Classes\Timer_Utilities.cs" />
+    <Compile Include="Forums\MainWindow-ToDoTab.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forums\TodolistAddDiag.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forums\TodolistAddDiag.Designer.cs">
+      <DependentUpon>TodolistAddDiag.cs</DependentUpon>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Classes\StopWatch.cs" />
     <Compile Include="Forums\FileDialog.cs">
@@ -103,8 +103,17 @@
     <Compile Include="Forums\FileDialog.Designer.cs">
       <DependentUpon>FileDialog.cs</DependentUpon>
     </Compile>
+    <Compile Include="Forums\AddEventDialouge.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forums\AddEventDialouge.Designer.cs">
+      <DependentUpon>AddEventDialouge.cs</DependentUpon>
+    </Compile>
     <EmbeddedResource Include="Forums\MainWindow.resx">
       <DependentUpon>MainWindow.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forums\TodolistAddDiag.resx">
+      <DependentUpon>TodolistAddDiag.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
@@ -122,7 +131,10 @@
     <EmbeddedResource Include="Forums\superPopup.resx">
       <DependentUpon>superPopup.cs</DependentUpon>
     </EmbeddedResource>
-    <None Include="app.config" />
+    <EmbeddedResource Include="Forums\AddEventDialouge.resx">
+      <DependentUpon>AddEventDialouge.cs</DependentUpon>
+    </EmbeddedResource>
+    <None Include="Misc\app.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -132,12 +144,6 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Misc\App.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Misc\test3.ico" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.5">
@@ -155,6 +161,9 @@
       <ProductName>.NET Framework 3.5 SP1</ProductName>
       <Install>false</Install>
     </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Misc\icon.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

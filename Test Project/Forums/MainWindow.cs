@@ -26,11 +26,14 @@ namespace Timer_Utils {
 		////////////////////////////////////
 		// Public Methods
 		private bool warned = false;
+		private string optionsPath = "";
 		
-		public MainWindow() {
+		public MainWindow(string path = "settings.txt") {
+			optionsPath = path;
 			InitializeComponent();
 			SWinitTab();
 			CDinitTab();
+			TDtabInit();
 		}
 
 		private void Form1_SizeChanged(object sender, EventArgs e) {
@@ -48,6 +51,7 @@ namespace Timer_Utils {
 
 		private void Form1_FormClosing(object sender, FormClosingEventArgs e) {
 			TimerStats.Visible = false;
+			dumpTodo();
 		}
 
 		private void TimerStats_MouseClick(object sender, MouseEventArgs e) {
@@ -75,14 +79,13 @@ namespace Timer_Utils {
 			ShowInTaskbar = true;
 		}
 
-			
-		private void dateTimePicker1_ValueChanged(object sender, EventArgs e) {
-
+		private void exitToolStripMenuItem_Click(object sender, EventArgs e) {
+			//Do cLeanup here.
+			Dispose();
 		}
 
-		private void dateTimePicker2_ValueChanged(object sender, EventArgs e) {
-			TimeSpan lol = (dateTimePicker2.Value.TimeOfDay);
-			MessageBox.Show(lol.Hours.ToString() + "," + lol.Minutes.ToString() + "," + lol.Seconds.ToString());
+		private void optionsToolStripMenuItem_Click(object sender, EventArgs e) {
+
 		}
 
 	}

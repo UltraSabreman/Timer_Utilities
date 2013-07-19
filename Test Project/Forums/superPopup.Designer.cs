@@ -26,6 +26,8 @@
 			this.dismiss = new System.Windows.Forms.Button();
 			this.done = new System.Windows.Forms.Label();
 			this.overLabel = new System.Windows.Forms.Label();
+			this.shapeContainer1 = new Microsoft.VisualBasic.PowerPacks.ShapeContainer();
+			this.rectangleShape1 = new Microsoft.VisualBasic.PowerPacks.RectangleShape();
 			this.SuspendLayout();
 			// 
 			// dismiss
@@ -68,6 +70,23 @@
 			this.overLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
 			this.overLabel.MouseDown += new System.Windows.Forms.MouseEventHandler(this.superPopup_MouseDown);
 			// 
+			// shapeContainer1
+			// 
+			this.shapeContainer1.Location = new System.Drawing.Point(0, 0);
+			this.shapeContainer1.Margin = new System.Windows.Forms.Padding(0);
+			this.shapeContainer1.Name = "shapeContainer1";
+			this.shapeContainer1.Shapes.AddRange(new Microsoft.VisualBasic.PowerPacks.Shape[] {
+            this.rectangleShape1});
+			this.shapeContainer1.Size = new System.Drawing.Size(276, 80);
+			this.shapeContainer1.TabIndex = 4;
+			this.shapeContainer1.TabStop = false;
+			// 
+			// rectangleShape1
+			// 
+			this.rectangleShape1.Location = new System.Drawing.Point(0, 0);
+			this.rectangleShape1.Name = "rectangleShape1";
+			this.rectangleShape1.Size = new System.Drawing.Size(275, 79);
+			// 
 			// superPopup
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -77,6 +96,7 @@
 			this.Controls.Add(this.overLabel);
 			this.Controls.Add(this.done);
 			this.Controls.Add(this.dismiss);
+			this.Controls.Add(this.shapeContainer1);
 			this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
 			this.MaximizeBox = false;
 			this.MinimizeBox = false;
@@ -97,5 +117,7 @@
 		private System.Windows.Forms.Button dismiss;
 		private System.Windows.Forms.Label done;
 		private System.Windows.Forms.Label overLabel;
+		private Microsoft.VisualBasic.PowerPacks.ShapeContainer shapeContainer1;
+		private Microsoft.VisualBasic.PowerPacks.RectangleShape rectangleShape1;
 	}
 }
