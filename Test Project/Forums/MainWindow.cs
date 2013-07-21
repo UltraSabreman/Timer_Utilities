@@ -88,6 +88,10 @@ namespace Timer_Utils {
 
 		}
 
+		private void Clocks_SelectedIndexChanged(object sender, EventArgs e) {
+
+		}
+
 	}
 
 }

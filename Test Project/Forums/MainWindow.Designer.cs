@@ -68,8 +68,8 @@
 			this.X = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
 			this.ItemName = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
 			this.TodoMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
-			this.EditItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.addItemToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.EditItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.removeItemToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.toolStripMenuItem2 = new System.Windows.Forms.ToolStripMenuItem();
 			this.noneToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -110,6 +110,7 @@
 			this.Clocks.SelectedIndex = 0;
 			this.Clocks.Size = new System.Drawing.Size(358, 311);
 			this.Clocks.TabIndex = 0;
+			this.Clocks.SelectedIndexChanged += new System.EventHandler(this.Clocks_SelectedIndexChanged);
 			// 
 			// Stopwatch
 			// 
@@ -525,19 +526,19 @@
 			this.TodoMenu.Name = "TodoMenu";
 			this.TodoMenu.Size = new System.Drawing.Size(178, 120);
 			// 
-			// EditItem
-			// 
-			this.EditItem.Name = "EditItem";
-			this.EditItem.Size = new System.Drawing.Size(177, 22);
-			this.EditItem.Text = "Edit Item";
-			this.EditItem.Click += new System.EventHandler(this.EditItem_Click);
-			// 
 			// addItemToolStripMenuItem
 			// 
 			this.addItemToolStripMenuItem.Name = "addItemToolStripMenuItem";
 			this.addItemToolStripMenuItem.Size = new System.Drawing.Size(177, 22);
 			this.addItemToolStripMenuItem.Text = "Add Item";
 			this.addItemToolStripMenuItem.Click += new System.EventHandler(this.addItemToolStripMenuItem_Click);
+			// 
+			// EditItem
+			// 
+			this.EditItem.Name = "EditItem";
+			this.EditItem.Size = new System.Drawing.Size(177, 22);
+			this.EditItem.Text = "Edit Item";
+			this.EditItem.Click += new System.EventHandler(this.EditItem_Click);
 			// 
 			// removeItemToolStripMenuItem
 			// 

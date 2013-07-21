@@ -11,14 +11,8 @@ using System.Diagnostics;
 using System.IO;
 
 namespace Timer_Utils {
-	public class TodoItem {
-		public string Name = "";
-		public bool Checked = false;
-		public int Priority = 0;
-	}
-
 	public partial class MainWindow  {
-		private List<TodoItem> test = new List<TodoItem>();
+		private List<TodoItem> listItems = new List<TodoItem>();
 
 		////////////////////////
 		// There is almost certantly an oo way of dpoing this
@@ -28,31 +22,14 @@ namespace Timer_Utils {
 				StreamReader fs = new StreamReader("data.txt");
 				
 				string curLine = "";
-				string[] delim = { "," };
+				
 				while (!fs.EndOfStream) {
 					curLine = fs.ReadLine();
 					if (curLine == "---") break;
 
-					string[] lol = curLine.Split(delim, 3, StringSplitOptions.None);
-					ListViewItem temp = new ListViewItem();
-					temp.SubItems.Add(lol[2]);
-					if (lol[0] == "1")
-						temp.Checked = true;
-
-					if (lol[1] != "0") {
-						switch (lol[1]) {
-							case "1":
-								temp.ForeColor = System.Drawing.Color.Green;
-							break;
-							case "2":
-								temp.ForeColor = System.Drawing.Color.Orange;
-							break;
-							case "3":
-								temp.ForeColor = System.Drawing.Color.Red;
-							break;
-						}
-					}
-					TodoList.Items.Add(temp);
+					TodoItem temp = new TodoItem(curLine);
+					listItems.Add(temp);
+					TodoList.Items.Add(temp.ToListItem());
 				}
 				fs.Close();
 			}
@@ -61,23 +38,8 @@ namespace Timer_Utils {
 		private void dumpTodo() {
 			StreamWriter fs = new StreamWriter("data.txt", false);
 
-			foreach (ListViewItem I in TodoList.Items) {
-				string temp = "";
-				if (I.Checked) temp += "1";	else temp += "0";
-				temp += ",";
-				if (I.ForeColor == System.Drawing.Color.Red)
-					temp += "3";
-				else if (I.ForeColor == System.Drawing.Color.Orange)
-					temp += "2";
-				else if (I.ForeColor == System.Drawing.Color.Green)
-					temp += "1";
-				else 
-					temp += "0";
-
-				temp += "," + I.SubItems[1].Text; //? i think it's cause the silly checkbox.
-				
-
-				fs.WriteLine(temp);
+			foreach (TodoItem I in listItems) {
+				fs.WriteLine(I.ToString());
 			}
 
 			fs.WriteLine("---");
