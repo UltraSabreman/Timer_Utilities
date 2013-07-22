@@ -67,6 +67,10 @@
   <ItemGroup>
     <Compile Include="Classes\CD_StartTime_Maker.cs" />
     <Compile Include="Classes\CountDown.cs" />
+    <Compile Include="Classes\MainWindow-Calendar.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Classes\TodoItem.cs" />
     <Compile Include="Forums\MainWindow-CountdownTab.cs">
       <SubType>Form</SubType>
     </Compile>

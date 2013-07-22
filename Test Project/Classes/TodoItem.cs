@@ -32,7 +32,7 @@ namespace Timer_Utils {
 		}
 
 		public TodoItem(string s = "") {
-			if (s != null)
+			if (s != "")
 				FromString(s);
 		}
 

@@ -31,9 +31,11 @@ namespace Timer_Utils {
 		public MainWindow(string path = "settings.txt") {
 			optionsPath = path;
 			InitializeComponent();
+			Clocks.SelectedIndex = 3;
 			SWinitTab();
 			CDinitTab();
-			TDtabInit();
+			TDinitTab();
+			CinitTab();
 		}
 
 		private void Form1_SizeChanged(object sender, EventArgs e) {
@@ -87,11 +89,6 @@ namespace Timer_Utils {
 		private void optionsToolStripMenuItem_Click(object sender, EventArgs e) {
 
 		}
-
-		private void Clocks_SelectedIndexChanged(object sender, EventArgs e) {
-
-		}
-
 	}
 
 }

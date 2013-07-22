@@ -25,16 +25,19 @@
 		private void InitializeComponent() {
 			this.components = new System.ComponentModel.Container();
 			this.groupBox1 = new System.Windows.Forms.GroupBox();
+			this.Cancel = new System.Windows.Forms.Button();
+			this.Ok = new System.Windows.Forms.Button();
 			this.Title = new System.Windows.Forms.TextBox();
 			this.RepatOptions = new System.Windows.Forms.GroupBox();
+			this.Days = new System.Windows.Forms.GroupBox();
 			this.RepeatIntervalBox = new System.Windows.Forms.NumericUpDown();
-			this.CheckSun = new System.Windows.Forms.CheckBox();
-			this.CheckSat = new System.Windows.Forms.CheckBox();
-			this.CheckThu = new System.Windows.Forms.CheckBox();
 			this.CheckWed = new System.Windows.Forms.CheckBox();
-			this.CheckFri = new System.Windows.Forms.CheckBox();
+			this.CheckThu = new System.Windows.Forms.CheckBox();
+			this.CheckSun = new System.Windows.Forms.CheckBox();
 			this.CheckTue = new System.Windows.Forms.CheckBox();
 			this.CheckMon = new System.Windows.Forms.CheckBox();
+			this.CheckSat = new System.Windows.Forms.CheckBox();
+			this.CheckFri = new System.Windows.Forms.CheckBox();
 			this.RepeatTypeBox = new System.Windows.Forms.ComboBox();
 			this.EndOn = new System.Windows.Forms.GroupBox();
 			this.EndNever = new System.Windows.Forms.RadioButton();
@@ -45,15 +48,12 @@
 			this.Discription = new System.Windows.Forms.RichTextBox();
 			this.StartDate = new System.Windows.Forms.MonthCalendar();
 			this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
-			this.Days = new System.Windows.Forms.GroupBox();
-			this.Ok = new System.Windows.Forms.Button();
-			this.Cancel = new System.Windows.Forms.Button();
 			this.groupBox1.SuspendLayout();
 			this.RepatOptions.SuspendLayout();
+			this.Days.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.RepeatIntervalBox)).BeginInit();
 			this.EndOn.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.EndTimesBox)).BeginInit();
-			this.Days.SuspendLayout();
 			this.SuspendLayout();
 			// 
 			// groupBox1
@@ -71,6 +71,26 @@
 			this.groupBox1.TabIndex = 1;
 			this.groupBox1.TabStop = false;
 			// 
+			// Cancel
+			// 
+			this.Cancel.Location = new System.Drawing.Point(312, 384);
+			this.Cancel.Name = "Cancel";
+			this.Cancel.Size = new System.Drawing.Size(75, 23);
+			this.Cancel.TabIndex = 4;
+			this.Cancel.Text = "Cancel";
+			this.Cancel.UseVisualStyleBackColor = true;
+			this.Cancel.Click += new System.EventHandler(this.Cancel_Click);
+			// 
+			// Ok
+			// 
+			this.Ok.Location = new System.Drawing.Point(393, 384);
+			this.Ok.Name = "Ok";
+			this.Ok.Size = new System.Drawing.Size(75, 23);
+			this.Ok.TabIndex = 5;
+			this.Ok.Text = "Ok";
+			this.Ok.UseVisualStyleBackColor = true;
+			this.Ok.Click += new System.EventHandler(this.Ok_Click);
+			// 
 			// Title
 			// 
 			this.Title.Location = new System.Drawing.Point(6, 186);
@@ -78,7 +98,6 @@
 			this.Title.Size = new System.Drawing.Size(227, 20);
 			this.Title.TabIndex = 1;
 			this.Title.Text = "Title";
-			this.Title.TextChanged += new System.EventHandler(this.textBox1_TextChanged);
 			// 
 			// RepatOptions
 			// 
@@ -91,6 +110,23 @@
 			this.RepatOptions.TabIndex = 3;
 			this.RepatOptions.TabStop = false;
 			this.RepatOptions.Text = "Repat Options";
+			// 
+			// Days
+			// 
+			this.Days.BackColor = System.Drawing.Color.Transparent;
+			this.Days.Controls.Add(this.RepeatIntervalBox);
+			this.Days.Controls.Add(this.CheckWed);
+			this.Days.Controls.Add(this.CheckThu);
+			this.Days.Controls.Add(this.CheckSun);
+			this.Days.Controls.Add(this.CheckTue);
+			this.Days.Controls.Add(this.CheckMon);
+			this.Days.Controls.Add(this.CheckSat);
+			this.Days.Controls.Add(this.CheckFri);
+			this.Days.Location = new System.Drawing.Point(6, 43);
+			this.Days.Name = "Days";
+			this.Days.Size = new System.Drawing.Size(208, 58);
+			this.Days.TabIndex = 1;
+			this.Days.TabStop = false;
 			// 
 			// RepeatIntervalBox
 			// 
@@ -110,25 +146,15 @@
             0,
             0});
 			// 
-			// CheckSun
+			// CheckWed
 			// 
-			this.CheckSun.AutoSize = true;
-			this.CheckSun.Location = new System.Drawing.Point(100, 34);
-			this.CheckSun.Name = "CheckSun";
-			this.CheckSun.Size = new System.Drawing.Size(45, 17);
-			this.CheckSun.TabIndex = 6;
-			this.CheckSun.Text = "Sun";
-			this.CheckSun.UseVisualStyleBackColor = true;
-			// 
-			// CheckSat
-			// 
-			this.CheckSat.AutoSize = true;
-			this.CheckSat.Location = new System.Drawing.Point(53, 34);
-			this.CheckSat.Name = "CheckSat";
-			this.CheckSat.Size = new System.Drawing.Size(42, 17);
-			this.CheckSat.TabIndex = 5;
-			this.CheckSat.Text = "Sat";
-			this.CheckSat.UseVisualStyleBackColor = true;
+			this.CheckWed.AutoSize = true;
+			this.CheckWed.Location = new System.Drawing.Point(100, 11);
+			this.CheckWed.Name = "CheckWed";
+			this.CheckWed.Size = new System.Drawing.Size(49, 17);
+			this.CheckWed.TabIndex = 2;
+			this.CheckWed.Text = "Wed";
+			this.CheckWed.UseVisualStyleBackColor = true;
 			// 
 			// CheckThu
 			// 
@@ -140,25 +166,15 @@
 			this.CheckThu.Text = "Thu";
 			this.CheckThu.UseVisualStyleBackColor = true;
 			// 
-			// CheckWed
+			// CheckSun
 			// 
-			this.CheckWed.AutoSize = true;
-			this.CheckWed.Location = new System.Drawing.Point(100, 11);
-			this.CheckWed.Name = "CheckWed";
-			this.CheckWed.Size = new System.Drawing.Size(49, 17);
-			this.CheckWed.TabIndex = 2;
-			this.CheckWed.Text = "Wed";
-			this.CheckWed.UseVisualStyleBackColor = true;
-			// 
-			// CheckFri
-			// 
-			this.CheckFri.AutoSize = true;
-			this.CheckFri.Location = new System.Drawing.Point(6, 34);
-			this.CheckFri.Name = "CheckFri";
-			this.CheckFri.Size = new System.Drawing.Size(37, 17);
-			this.CheckFri.TabIndex = 4;
-			this.CheckFri.Text = "Fri";
-			this.CheckFri.UseVisualStyleBackColor = true;
+			this.CheckSun.AutoSize = true;
+			this.CheckSun.Location = new System.Drawing.Point(100, 34);
+			this.CheckSun.Name = "CheckSun";
+			this.CheckSun.Size = new System.Drawing.Size(45, 17);
+			this.CheckSun.TabIndex = 6;
+			this.CheckSun.Text = "Sun";
+			this.CheckSun.UseVisualStyleBackColor = true;
 			// 
 			// CheckTue
 			// 
@@ -179,6 +195,26 @@
 			this.CheckMon.TabIndex = 0;
 			this.CheckMon.Text = "Mon";
 			this.CheckMon.UseVisualStyleBackColor = true;
+			// 
+			// CheckSat
+			// 
+			this.CheckSat.AutoSize = true;
+			this.CheckSat.Location = new System.Drawing.Point(53, 34);
+			this.CheckSat.Name = "CheckSat";
+			this.CheckSat.Size = new System.Drawing.Size(42, 17);
+			this.CheckSat.TabIndex = 5;
+			this.CheckSat.Text = "Sat";
+			this.CheckSat.UseVisualStyleBackColor = true;
+			// 
+			// CheckFri
+			// 
+			this.CheckFri.AutoSize = true;
+			this.CheckFri.Location = new System.Drawing.Point(6, 34);
+			this.CheckFri.Name = "CheckFri";
+			this.CheckFri.Size = new System.Drawing.Size(37, 17);
+			this.CheckFri.TabIndex = 4;
+			this.CheckFri.Text = "Fri";
+			this.CheckFri.UseVisualStyleBackColor = true;
 			// 
 			// RepeatTypeBox
 			// 
@@ -289,44 +325,9 @@
 			this.StartDate.MaxSelectionCount = 1;
 			this.StartDate.Name = "StartDate";
 			this.StartDate.TabIndex = 0;
-			this.StartDate.DateChanged += new System.Windows.Forms.DateRangeEventHandler(this.monthCalendar1_DateChanged);
+			this.StartDate.DateChanged += new System.Windows.Forms.DateRangeEventHandler(this.StartDate_DateChanged);
 			// 
-			// Days
-			// 
-			this.Days.BackColor = System.Drawing.Color.Transparent;
-			this.Days.Controls.Add(this.RepeatIntervalBox);
-			this.Days.Controls.Add(this.CheckWed);
-			this.Days.Controls.Add(this.CheckThu);
-			this.Days.Controls.Add(this.CheckSun);
-			this.Days.Controls.Add(this.CheckTue);
-			this.Days.Controls.Add(this.CheckMon);
-			this.Days.Controls.Add(this.CheckSat);
-			this.Days.Controls.Add(this.CheckFri);
-			this.Days.Location = new System.Drawing.Point(6, 43);
-			this.Days.Name = "Days";
-			this.Days.Size = new System.Drawing.Size(208, 58);
-			this.Days.TabIndex = 1;
-			this.Days.TabStop = false;
-			// 
-			// Ok
-			// 
-			this.Ok.Location = new System.Drawing.Point(393, 384);
-			this.Ok.Name = "Ok";
-			this.Ok.Size = new System.Drawing.Size(75, 23);
-			this.Ok.TabIndex = 5;
-			this.Ok.Text = "Ok";
-			this.Ok.UseVisualStyleBackColor = true;
-			// 
-			// Cancel
-			// 
-			this.Cancel.Location = new System.Drawing.Point(312, 384);
-			this.Cancel.Name = "Cancel";
-			this.Cancel.Size = new System.Drawing.Size(75, 23);
-			this.Cancel.TabIndex = 4;
-			this.Cancel.Text = "Cancel";
-			this.Cancel.UseVisualStyleBackColor = true;
-			// 
-			// ToDoDialouge
+			// AddEventDialouge
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -335,7 +336,7 @@
 			this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
 			this.MaximizeBox = false;
 			this.MinimizeBox = false;
-			this.Name = "ToDoDialouge";
+			this.Name = "AddEventDialouge";
 			this.ShowIcon = false;
 			this.ShowInTaskbar = false;
 			this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Hide;
@@ -343,12 +344,12 @@
 			this.groupBox1.ResumeLayout(false);
 			this.groupBox1.PerformLayout();
 			this.RepatOptions.ResumeLayout(false);
+			this.Days.ResumeLayout(false);
+			this.Days.PerformLayout();
 			((System.ComponentModel.ISupportInitialize)(this.RepeatIntervalBox)).EndInit();
 			this.EndOn.ResumeLayout(false);
 			this.EndOn.PerformLayout();
 			((System.ComponentModel.ISupportInitialize)(this.EndTimesBox)).EndInit();
-			this.Days.ResumeLayout(false);
-			this.Days.PerformLayout();
 			this.ResumeLayout(false);
 
 		}

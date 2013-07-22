@@ -71,12 +71,18 @@ namespace Timer_Utils {
 				EndDateBox.Enabled = false;
 		}
 
-		private void monthCalendar1_DateChanged(object sender, DateRangeEventArgs e) {
+		private void StartDate_DateChanged(object sender, DateRangeEventArgs e) {
 
 		}
 
-		private void textBox1_TextChanged(object sender, EventArgs e) {
-
+		private void Cancel_Click(object sender, EventArgs e) {
+			Dispose();
 		}
+
+		private void Ok_Click(object sender, EventArgs e) {
+			//do more stuff
+			Dispose();
+		}
+
 	}
 }

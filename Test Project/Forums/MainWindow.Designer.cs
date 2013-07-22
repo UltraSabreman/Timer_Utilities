@@ -29,6 +29,9 @@
         private void InitializeComponent()
         {
 			this.components = new System.ComponentModel.Container();
+			System.Windows.Forms.ListViewItem listViewItem1 = new System.Windows.Forms.ListViewItem(new string[] {
+            "hhhhh",
+            "hhhnnnnn333"}, -1);
 			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainWindow));
 			this.Clocks = new System.Windows.Forms.TabControl();
 			this.Stopwatch = new System.Windows.Forms.TabPage();
@@ -71,7 +74,7 @@
 			this.addItemToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.EditItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.removeItemToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-			this.toolStripMenuItem2 = new System.Windows.Forms.ToolStripMenuItem();
+			this.priority = new System.Windows.Forms.ToolStripMenuItem();
 			this.noneToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.lowToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.mediumToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -79,7 +82,15 @@
 			this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
 			this.removeAllCompleatedItemsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.Calendar = new System.Windows.Forms.TabPage();
-			this.label1 = new System.Windows.Forms.Label();
+			this.EventActions = new System.Windows.Forms.GroupBox();
+			this.button4 = new System.Windows.Forms.Button();
+			this.button3 = new System.Windows.Forms.Button();
+			this.button2 = new System.Windows.Forms.Button();
+			this.button1 = new System.Windows.Forms.Button();
+			this.BeifEventView = new System.Windows.Forms.ListView();
+			this.Title = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+			this.Discription = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+			this.Calender1 = new System.Windows.Forms.MonthCalendar();
 			this.TimerStats = new System.Windows.Forms.NotifyIcon(this.components);
 			this.toolTips = new System.Windows.Forms.ToolTip(this.components);
 			this.MenuStrip = new System.Windows.Forms.MenuStrip();
@@ -88,6 +99,7 @@
 			this.optionsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
 			this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.textBox1 = new System.Windows.Forms.TextBox();
 			this.Clocks.SuspendLayout();
 			this.Stopwatch.SuspendLayout();
 			this.Countdown.SuspendLayout();
@@ -96,6 +108,7 @@
 			this.todo.SuspendLayout();
 			this.TodoMenu.SuspendLayout();
 			this.Calendar.SuspendLayout();
+			this.EventActions.SuspendLayout();
 			this.MenuStrip.SuspendLayout();
 			this.SuspendLayout();
 			// 
@@ -110,7 +123,6 @@
 			this.Clocks.SelectedIndex = 0;
 			this.Clocks.Size = new System.Drawing.Size(358, 311);
 			this.Clocks.TabIndex = 0;
-			this.Clocks.SelectedIndexChanged += new System.EventHandler(this.Clocks_SelectedIndexChanged);
 			// 
 			// Stopwatch
 			// 
@@ -520,11 +532,12 @@
             this.addItemToolStripMenuItem,
             this.EditItem,
             this.removeItemToolStripMenuItem,
-            this.toolStripMenuItem2,
+            this.priority,
             this.toolStripSeparator2,
             this.removeAllCompleatedItemsToolStripMenuItem});
 			this.TodoMenu.Name = "TodoMenu";
 			this.TodoMenu.Size = new System.Drawing.Size(178, 120);
+			this.TodoMenu.Opening += new System.ComponentModel.CancelEventHandler(this.TodoMenu_Opening);
 			// 
 			// addItemToolStripMenuItem
 			// 
@@ -547,16 +560,16 @@
 			this.removeItemToolStripMenuItem.Text = "Remove Item";
 			this.removeItemToolStripMenuItem.Click += new System.EventHandler(this.removeItemToolStripMenuItem_Click);
 			// 
-			// toolStripMenuItem2
+			// priority
 			// 
-			this.toolStripMenuItem2.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+			this.priority.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.noneToolStripMenuItem,
             this.lowToolStripMenuItem,
             this.mediumToolStripMenuItem,
             this.highToolStripMenuItem});
-			this.toolStripMenuItem2.Name = "toolStripMenuItem2";
-			this.toolStripMenuItem2.Size = new System.Drawing.Size(177, 22);
-			this.toolStripMenuItem2.Text = "Set Priority";
+			this.priority.Name = "priority";
+			this.priority.Size = new System.Drawing.Size(177, 22);
+			this.priority.Text = "Set Priority";
 			// 
 			// noneToolStripMenuItem
 			// 
@@ -600,7 +613,9 @@
 			// 
 			// Calendar
 			// 
-			this.Calendar.Controls.Add(this.label1);
+			this.Calendar.Controls.Add(this.EventActions);
+			this.Calendar.Controls.Add(this.BeifEventView);
+			this.Calendar.Controls.Add(this.Calender1);
 			this.Calendar.Location = new System.Drawing.Point(4, 22);
 			this.Calendar.Name = "Calendar";
 			this.Calendar.Padding = new System.Windows.Forms.Padding(3);
@@ -609,16 +624,87 @@
 			this.Calendar.Text = "Calendar";
 			this.Calendar.UseVisualStyleBackColor = true;
 			// 
-			// label1
+			// EventActions
 			// 
-			this.label1.AutoSize = true;
-			this.label1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-			this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 24F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.label1.Location = new System.Drawing.Point(71, 124);
-			this.label1.Name = "label1";
-			this.label1.Size = new System.Drawing.Size(211, 39);
-			this.label1.TabIndex = 0;
-			this.label1.Text = "Ignore Me plz";
+			this.EventActions.Controls.Add(this.textBox1);
+			this.EventActions.Controls.Add(this.button4);
+			this.EventActions.Controls.Add(this.button3);
+			this.EventActions.Controls.Add(this.button2);
+			this.EventActions.Controls.Add(this.button1);
+			this.EventActions.Location = new System.Drawing.Point(235, 6);
+			this.EventActions.Name = "EventActions";
+			this.EventActions.Size = new System.Drawing.Size(112, 158);
+			this.EventActions.TabIndex = 2;
+			this.EventActions.TabStop = false;
+			this.EventActions.Text = "Event";
+			// 
+			// button4
+			// 
+			this.button4.Location = new System.Drawing.Point(58, 100);
+			this.button4.Name = "button4";
+			this.button4.Size = new System.Drawing.Size(48, 23);
+			this.button4.TabIndex = 5;
+			this.button4.Text = "Delete";
+			this.button4.UseVisualStyleBackColor = true;
+			// 
+			// button3
+			// 
+			this.button3.Location = new System.Drawing.Point(6, 129);
+			this.button3.Name = "button3";
+			this.button3.Size = new System.Drawing.Size(48, 23);
+			this.button3.TabIndex = 4;
+			this.button3.Text = "Details";
+			this.button3.UseVisualStyleBackColor = true;
+			// 
+			// button2
+			// 
+			this.button2.Location = new System.Drawing.Point(58, 129);
+			this.button2.Name = "button2";
+			this.button2.Size = new System.Drawing.Size(48, 23);
+			this.button2.TabIndex = 3;
+			this.button2.Text = "Edit";
+			this.button2.UseVisualStyleBackColor = true;
+			// 
+			// button1
+			// 
+			this.button1.Location = new System.Drawing.Point(6, 100);
+			this.button1.Name = "button1";
+			this.button1.Size = new System.Drawing.Size(48, 23);
+			this.button1.TabIndex = 2;
+			this.button1.Text = "Add";
+			this.button1.UseVisualStyleBackColor = true;
+			// 
+			// BeifEventView
+			// 
+			this.BeifEventView.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+            this.Title,
+            this.Discription});
+			this.BeifEventView.GridLines = true;
+			this.BeifEventView.Items.AddRange(new System.Windows.Forms.ListViewItem[] {
+            listViewItem1});
+			this.BeifEventView.Location = new System.Drawing.Point(2, 170);
+			this.BeifEventView.Name = "BeifEventView";
+			this.BeifEventView.RightToLeft = System.Windows.Forms.RightToLeft.No;
+			this.BeifEventView.Size = new System.Drawing.Size(342, 112);
+			this.BeifEventView.TabIndex = 1;
+			this.BeifEventView.UseCompatibleStateImageBehavior = false;
+			this.BeifEventView.View = System.Windows.Forms.View.Details;
+			// 
+			// Title
+			// 
+			this.Title.Text = "Title";
+			this.Title.Width = 76;
+			// 
+			// Discription
+			// 
+			this.Discription.Text = "Discription";
+			this.Discription.Width = 259;
+			// 
+			// Calender1
+			// 
+			this.Calender1.Location = new System.Drawing.Point(2, 3);
+			this.Calender1.Name = "Calender1";
+			this.Calender1.TabIndex = 0;
 			// 
 			// TimerStats
 			// 
@@ -677,6 +763,15 @@
 			this.exitToolStripMenuItem.Text = "Exit";
 			this.exitToolStripMenuItem.Click += new System.EventHandler(this.exitToolStripMenuItem_Click);
 			// 
+			// textBox1
+			// 
+			this.textBox1.Location = new System.Drawing.Point(7, 19);
+			this.textBox1.Multiline = true;
+			this.textBox1.Name = "textBox1";
+			this.textBox1.ReadOnly = true;
+			this.textBox1.Size = new System.Drawing.Size(100, 75);
+			this.textBox1.TabIndex = 6;
+			// 
 			// MainWindow
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -705,7 +800,8 @@
 			this.todo.ResumeLayout(false);
 			this.TodoMenu.ResumeLayout(false);
 			this.Calendar.ResumeLayout(false);
-			this.Calendar.PerformLayout();
+			this.EventActions.ResumeLayout(false);
+			this.EventActions.PerformLayout();
 			this.MenuStrip.ResumeLayout(false);
 			this.MenuStrip.PerformLayout();
 			this.ResumeLayout(false);
@@ -766,13 +862,22 @@
 		private System.Windows.Forms.ToolStripMenuItem removeItemToolStripMenuItem;
 		private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
 		private System.Windows.Forms.ToolStripMenuItem removeAllCompleatedItemsToolStripMenuItem;
-		private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem2;
+		private System.Windows.Forms.ToolStripMenuItem priority;
 		private System.Windows.Forms.ToolStripMenuItem noneToolStripMenuItem;
 		private System.Windows.Forms.ToolStripMenuItem lowToolStripMenuItem;
 		private System.Windows.Forms.ToolStripMenuItem mediumToolStripMenuItem;
 		private System.Windows.Forms.ToolStripMenuItem highToolStripMenuItem;
-		private System.Windows.Forms.Label label1;
 		private System.Windows.Forms.ToolStripMenuItem EditItem;
+		private System.Windows.Forms.MonthCalendar Calender1;
+		private System.Windows.Forms.GroupBox EventActions;
+		private System.Windows.Forms.Button button3;
+		private System.Windows.Forms.Button button2;
+		private System.Windows.Forms.Button button1;
+		private System.Windows.Forms.ListView BeifEventView;
+		private System.Windows.Forms.ColumnHeader Title;
+		private System.Windows.Forms.ColumnHeader Discription;
+		private System.Windows.Forms.Button button4;
+		private System.Windows.Forms.TextBox textBox1;
 
     }
 }

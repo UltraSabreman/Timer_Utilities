@@ -15,8 +15,7 @@ namespace Timer_Utils {
 		private List<TodoItem> listItems = new List<TodoItem>();
 
 		////////////////////////
-		// There is almost certantly an oo way of dpoing this
-		// but for now i Rreally couldn't care less.
+		// read in and out the todo data
 		private void readInTodo() {
 			if (File.Exists("data.txt")) {
 				StreamReader fs = new StreamReader("data.txt");
@@ -29,9 +28,9 @@ namespace Timer_Utils {
 
 					TodoItem temp = new TodoItem(curLine);
 					listItems.Add(temp);
-					TodoList.Items.Add(temp.ToListItem());
 				}
 				fs.Close();
+				updateTodoList();
 			}
 		}
 
@@ -47,68 +46,104 @@ namespace Timer_Utils {
 		}
 		////////////////////////
 
-		private void TDtabInit() {
+		//inti the tab
+		private void TDinitTab() {
 			readInTodo();
+
+			TodoList.ItemChecked += new ItemCheckedEventHandler(TodoList_ItemChecked);
 		}
 
-		private void addItem(string text) {
-			ListViewItem temp = new ListViewItem();
-			temp.SubItems.Add(text);
-			TodoList.Items.Add(temp);
-		}
-
-		private void editItem(string text) {
-			TodoList.SelectedItems[0].SubItems[1].Text = text;
-		}
-
-		private void addItemToolStripMenuItem_Click(object sender, EventArgs e) {
-			TodolistAddDiag temp = new TodolistAddDiag();
-			temp.OnClose += new TodolistAddDiag.onClose(addItem);
-			temp.Show();
-		}
-
-		private void removeItemToolStripMenuItem_Click(object sender, EventArgs e) {
-			ListView.SelectedListViewItemCollection Items = TodoList.SelectedItems;
-
-			foreach (ListViewItem i in Items)
-				i.Remove();//.SubItems[0].ForeColor = System.Drawing.Color.Red;
+		private void updateTodoList() {
+			TodoList.Items.Clear();
+			TodoList.SelectedItems.Clear();
 			
-		}
-		private void removeAllCompleatedItemsToolStripMenuItem_Click(object sender, EventArgs e) {
-			ListView.ListViewItemCollection Items = TodoList.Items;
 
-			foreach (ListViewItem i in Items) {
-				if (i.Checked)
-					i.Remove();
+			foreach (TodoItem i in listItems)
+				TodoList.Items.Add(i.ToListItem());
+		}
+		private void TodoList_ItemChecked(object sender, ItemCheckedEventArgs e) {
+			if (e.Item != null && listItems.Count != 0) {
+				ListViewItem t = e.Item;
+				int i = TodoList.Items.IndexOf(t);
+
+				listItems[i].Done = t.Checked;
 			}
 		}
 
-		private void noneToolStripMenuItem_Click(object sender, EventArgs e) {
-			ListView.SelectedListViewItemCollection Items = TodoList.SelectedItems;
+		private void addItem(string text) {
+			TodoItem temp = new TodoItem();
+			temp.Title = text;
 
-			foreach (ListViewItem i in Items)
-				i.SubItems[0].ForeColor = System.Drawing.Color.Black;
+			listItems.Add(temp);
+			updateTodoList();
+		}
+
+		private void editItem(string text) {
+			listItems[TodoList.SelectedIndices[0]].Title = text;
+
+			updateTodoList();
+		}
+
+		private void addItemToolStripMenuItem_Click(object sender, EventArgs e) {
+			addItemBox();
+		}
+
+		private void removeItemToolStripMenuItem_Click(object sender, EventArgs e) {
+			if (TodoList.SelectedIndices.Count == 0) return;
+
+			listItems.RemoveAt(TodoList.SelectedIndices[0]);
+			TodoList.SelectedIndices.Remove(0); //wtf consistency
+			TodoList.SelectedItems[0].Remove();
+
+			updateTodoList();
+		}
+		private void removeAllCompleatedItemsToolStripMenuItem_Click(object sender, EventArgs e) {
+			listItems.RemoveAll(item => item.Done);
+			updateTodoList();
+		}
+
+		private void noneToolStripMenuItem_Click(object sender, EventArgs e) {
+			if (TodoList.SelectedIndices.Count == 0) return;
+			listItems[TodoList.SelectedIndices[0]].Urgency = 0;
+
+			updateTodoList();
 		}
 
 		private void lowToolStripMenuItem_Click(object sender, EventArgs e) {
-			ListView.SelectedListViewItemCollection Items = TodoList.SelectedItems;
+			if (TodoList.SelectedIndices.Count == 0) return;
+			listItems[TodoList.SelectedIndices[0]].Urgency = 1;
 
-			foreach (ListViewItem i in Items)
-				i.SubItems[0].ForeColor = System.Drawing.Color.Green;
+			updateTodoList();
 		}
 
 		private void mediumToolStripMenuItem_Click(object sender, EventArgs e) {
-			ListView.SelectedListViewItemCollection Items = TodoList.SelectedItems;
+			if (TodoList.SelectedIndices.Count == 0) return;
+			listItems[TodoList.SelectedIndices[0]].Urgency = 2;
 
-			foreach (ListViewItem i in Items)
-				i.SubItems[0].ForeColor = System.Drawing.Color.Orange;
+			updateTodoList();
 		}
 
 		private void highToolStripMenuItem_Click(object sender, EventArgs e) {
-			ListView.SelectedListViewItemCollection Items = TodoList.SelectedItems;
+			if (TodoList.SelectedIndices.Count == 0) return;
+			listItems[TodoList.SelectedIndices[0]].Urgency = 3;
 
-			foreach (ListViewItem i in Items)
-				i.SubItems[0].ForeColor = System.Drawing.Color.Red;
+			updateTodoList();
+		}
+
+		private void TodoMenu_Opening(object sender, EventArgs e) {
+			bool flag = (TodoList.SelectedItems.Count != 0);
+			priority.Enabled = flag;
+			EditItem.Enabled = flag;
+			removeItemToolStripMenuItem.Enabled = flag;
+
+			bool someDone = false;
+			foreach (TodoItem i in listItems)
+				if (i.Done) {
+					someDone = true;
+					break;
+				}
+
+			removeAllCompleatedItemsToolStripMenuItem.Enabled = someDone;
 		}
 
 		private void TodoList_MouseDown(object sender, MouseEventArgs e) {
@@ -116,20 +151,30 @@ namespace Timer_Utils {
 				TodoList_MouseDoublClick(sender, e);
 		}
 
+
 		private void EditItem_Click(object sender, EventArgs e) {
 			if (TodoList.SelectedItems.Count <= 0) return;
 
-			TodolistAddDiag temp = new TodolistAddDiag(TodoList.SelectedItems[0].SubItems[1].Text);
-			temp.OnClose += new TodolistAddDiag.onClose(editItem);
-			temp.Show();
+			addItemBox(listItems[TodoList.SelectedIndices[0]].Title);
 		}
 
 		private void TodoList_MouseDoublClick(object sender, MouseEventArgs e) {
 			if (e.Button == MouseButtons.Left && TodoList.SelectedItems.Count == 0) {
-				TodolistAddDiag temp = new TodolistAddDiag();
-				temp.OnClose += new TodolistAddDiag.onClose(addItem);
-				temp.Show();
+				addItemBox();
 			}
+		}
+
+
+		private void addItemBox(string s = "") {
+			TodolistAddDiag temp = new TodolistAddDiag(s);
+			
+			if (s == "")
+				temp.OnClose += new TodolistAddDiag.onClose(addItem);
+			else
+				temp.OnClose += new TodolistAddDiag.onClose(editItem);
+			temp.Show();
+
+			temp.Location = new Point(MousePosition.X - temp.Size.Width / 2, MousePosition.Y - temp.Size.Height / 2);
 		}
 
 	}
