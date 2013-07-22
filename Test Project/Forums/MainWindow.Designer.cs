@@ -83,6 +83,7 @@
 			this.removeAllCompleatedItemsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.Calendar = new System.Windows.Forms.TabPage();
 			this.EventActions = new System.Windows.Forms.GroupBox();
+			this.textBox1 = new System.Windows.Forms.TextBox();
 			this.button4 = new System.Windows.Forms.Button();
 			this.button3 = new System.Windows.Forms.Button();
 			this.button2 = new System.Windows.Forms.Button();
@@ -99,7 +100,6 @@
 			this.optionsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
 			this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-			this.textBox1 = new System.Windows.Forms.TextBox();
 			this.Clocks.SuspendLayout();
 			this.Stopwatch.SuspendLayout();
 			this.Countdown.SuspendLayout();
@@ -638,6 +638,15 @@
 			this.EventActions.TabStop = false;
 			this.EventActions.Text = "Event";
 			// 
+			// textBox1
+			// 
+			this.textBox1.Location = new System.Drawing.Point(7, 19);
+			this.textBox1.Multiline = true;
+			this.textBox1.Name = "textBox1";
+			this.textBox1.ReadOnly = true;
+			this.textBox1.Size = new System.Drawing.Size(100, 75);
+			this.textBox1.TabIndex = 6;
+			// 
 			// button4
 			// 
 			this.button4.Location = new System.Drawing.Point(58, 100);
@@ -673,6 +682,7 @@
 			this.button1.TabIndex = 2;
 			this.button1.Text = "Add";
 			this.button1.UseVisualStyleBackColor = true;
+			this.button1.Click += new System.EventHandler(this.button1_Click);
 			// 
 			// BeifEventView
 			// 
@@ -762,15 +772,6 @@
 			this.exitToolStripMenuItem.Size = new System.Drawing.Size(194, 22);
 			this.exitToolStripMenuItem.Text = "Exit";
 			this.exitToolStripMenuItem.Click += new System.EventHandler(this.exitToolStripMenuItem_Click);
-			// 
-			// textBox1
-			// 
-			this.textBox1.Location = new System.Drawing.Point(7, 19);
-			this.textBox1.Multiline = true;
-			this.textBox1.Name = "textBox1";
-			this.textBox1.ReadOnly = true;
-			this.textBox1.Size = new System.Drawing.Size(100, 75);
-			this.textBox1.TabIndex = 6;
 			// 
 			// MainWindow
 			// 

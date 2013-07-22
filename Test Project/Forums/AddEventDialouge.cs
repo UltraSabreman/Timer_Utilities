@@ -84,5 +84,10 @@ namespace Timer_Utils {
 			Dispose();
 		}
 
+		private void AddToolStripMenuItem_Click(object sender, EventArgs e) {
+			AddReminder t = new AddReminder();
+			t.Show();
+		}
+
 	}
 }

@@ -65,9 +65,15 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Forums\AddReminder.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forums\AddReminder.Designer.cs">
+      <DependentUpon>AddReminder.cs</DependentUpon>
+    </Compile>
     <Compile Include="Classes\CD_StartTime_Maker.cs" />
     <Compile Include="Classes\CountDown.cs" />
-    <Compile Include="Classes\MainWindow-Calendar.cs">
+    <Compile Include="Forums\MainWindow-Calendar.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Classes\TodoItem.cs" />
@@ -113,6 +119,9 @@
     <Compile Include="Forums\AddEventDialouge.Designer.cs">
       <DependentUpon>AddEventDialouge.cs</DependentUpon>
     </Compile>
+    <EmbeddedResource Include="Forums\AddReminder.resx">
+      <DependentUpon>AddReminder.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Forums\MainWindow.resx">
       <DependentUpon>MainWindow.cs</DependentUpon>
     </EmbeddedResource>
