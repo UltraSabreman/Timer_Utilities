@@ -68,6 +68,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Classes\CalendarItem.cs" />
     <Compile Include="Forums\AddReminder.cs">
       <SubType>Form</SubType>
     </Compile>

@@ -8,6 +8,8 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Diagnostics;
+using System.IO;
+using Newtonsoft.Json;
 
 namespace Timer_Utils {
 	public partial class MainWindow : Form {
@@ -36,6 +38,36 @@ namespace Timer_Utils {
 			CDinitTab();
 			TDinitTab();
 			CinitTab();
+
+			deserializeObjects();
+		}
+
+		public void deserializeObjects() {
+			if (File.Exists("data.json")) {
+				StreamReader fs = File.OpenText("data.json");
+
+				int numOfTodo = int.Parse(fs.ReadLine());
+				int numOfCal = int.Parse(fs.ReadLine());
+
+				for (int i = 0; i < numOfTodo; i++) {
+					JsonSerializer serializer = new JsonSerializer();
+					TodoItem temp = (TodoItem)serializer.Deserialize(fs, typeof(TodoItem));
+					todoItems.Add(temp);
+				}
+
+				updateTodoList();
+
+				for (int i = 0; i < numOfCal; i++) {
+					JsonSerializer serializer = new JsonSerializer();
+					calendarItems.Add((CalendarItem)serializer.Deserialize(fs, typeof(CalendarItem)));
+				}
+
+				fs.Close();
+			}
+		}
+
+		public void reserializeObjects() {
+
 		}
 
 		private void Form1_SizeChanged(object sender, EventArgs e) {
@@ -53,7 +85,7 @@ namespace Timer_Utils {
 
 		private void Form1_FormClosing(object sender, FormClosingEventArgs e) {
 			TimerStats.Visible = false;
-			dumpTodo();
+			reserializeObjects();
 		}
 
 		private void TimerStats_MouseClick(object sender, MouseEventArgs e) {

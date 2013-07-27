@@ -8,48 +8,19 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Diagnostics;
-using System.IO;
+
 
 namespace Timer_Utils {
 	public partial class MainWindow  {
-		private List<TodoItem> listItems = new List<TodoItem>();
+		private List<TodoItem> todoItems = new List<TodoItem>();
 
 		////////////////////////
 		// read in and out the todo data
-		private void readInTodo() {
-			if (File.Exists("data.txt")) {
-				StreamReader fs = new StreamReader("data.txt");
-				
-				string curLine = "";
-				
-				while (!fs.EndOfStream) {
-					curLine = fs.ReadLine();
-					if (curLine == "---") break;
-
-					TodoItem temp = new TodoItem(curLine);
-					listItems.Add(temp);
-				}
-				fs.Close();
-				updateTodoList();
-			}
-		}
-
-		private void dumpTodo() {
-			StreamWriter fs = new StreamWriter("data.txt", false);
-
-			foreach (TodoItem I in listItems) {
-				fs.WriteLine(I.ToString());
-			}
-
-			fs.WriteLine("---");
-			fs.Close();
-		}
+		
 		////////////////////////
 
 		//inti the tab
 		private void TDinitTab() {
-			readInTodo();
-
 			TodoList.ItemChecked += new ItemCheckedEventHandler(TodoList_ItemChecked);
 		}
 
@@ -58,15 +29,15 @@ namespace Timer_Utils {
 			TodoList.SelectedItems.Clear();
 			
 
-			foreach (TodoItem i in listItems)
+			foreach (TodoItem i in todoItems)
 				TodoList.Items.Add(i.ToListItem());
 		}
 		private void TodoList_ItemChecked(object sender, ItemCheckedEventArgs e) {
-			if (e.Item != null && listItems.Count != 0) {
+			if (e.Item != null && todoItems.Count != 0) {
 				ListViewItem t = e.Item;
 				int i = TodoList.Items.IndexOf(t);
 
-				listItems[i].Done = t.Checked;
+				todoItems[i].Done = t.Checked;
 			}
 		}
 
@@ -74,12 +45,12 @@ namespace Timer_Utils {
 			TodoItem temp = new TodoItem();
 			temp.Title = text;
 
-			listItems.Add(temp);
+			todoItems.Add(temp);
 			updateTodoList();
 		}
 
 		private void editItem(string text) {
-			listItems[TodoList.SelectedIndices[0]].Title = text;
+			todoItems[TodoList.SelectedIndices[0]].Title = text;
 
 			updateTodoList();
 		}
@@ -91,41 +62,41 @@ namespace Timer_Utils {
 		private void removeItemToolStripMenuItem_Click(object sender, EventArgs e) {
 			if (TodoList.SelectedIndices.Count == 0) return;
 
-			listItems.RemoveAt(TodoList.SelectedIndices[0]);
+			todoItems.RemoveAt(TodoList.SelectedIndices[0]);
 			TodoList.SelectedIndices.Remove(0); //wtf consistency
 			TodoList.SelectedItems[0].Remove();
 
 			updateTodoList();
 		}
 		private void removeAllCompleatedItemsToolStripMenuItem_Click(object sender, EventArgs e) {
-			listItems.RemoveAll(item => item.Done);
+			todoItems.RemoveAll(item => item.Done);
 			updateTodoList();
 		}
 
 		private void noneToolStripMenuItem_Click(object sender, EventArgs e) {
 			if (TodoList.SelectedIndices.Count == 0) return;
-			listItems[TodoList.SelectedIndices[0]].Urgency = 0;
+			todoItems[TodoList.SelectedIndices[0]].Urgency = 0;
 
 			updateTodoList();
 		}
 
 		private void lowToolStripMenuItem_Click(object sender, EventArgs e) {
 			if (TodoList.SelectedIndices.Count == 0) return;
-			listItems[TodoList.SelectedIndices[0]].Urgency = 1;
+			todoItems[TodoList.SelectedIndices[0]].Urgency = 1;
 
 			updateTodoList();
 		}
 
 		private void mediumToolStripMenuItem_Click(object sender, EventArgs e) {
 			if (TodoList.SelectedIndices.Count == 0) return;
-			listItems[TodoList.SelectedIndices[0]].Urgency = 2;
+			todoItems[TodoList.SelectedIndices[0]].Urgency = 2;
 
 			updateTodoList();
 		}
 
 		private void highToolStripMenuItem_Click(object sender, EventArgs e) {
 			if (TodoList.SelectedIndices.Count == 0) return;
-			listItems[TodoList.SelectedIndices[0]].Urgency = 3;
+			todoItems[TodoList.SelectedIndices[0]].Urgency = 3;
 
 			updateTodoList();
 		}
@@ -137,7 +108,7 @@ namespace Timer_Utils {
 			removeItemToolStripMenuItem.Enabled = flag;
 
 			bool someDone = false;
-			foreach (TodoItem i in listItems)
+			foreach (TodoItem i in todoItems)
 				if (i.Done) {
 					someDone = true;
 					break;
@@ -156,7 +127,7 @@ namespace Timer_Utils {
 			if (TodoList.SelectedItems.Count <= 0) return;
 
 			//addItemBox(listItems[TodoList.SelectedIndices[0]].Title);
-			Debug.Write(listItems[TodoList.SelectedIndices[0]].testjson());
+			Debug.Write(todoItems[TodoList.SelectedIndices[0]].testjson());
 		}
 
 		private void TodoList_MouseDoublClick(object sender, MouseEventArgs e) {

@@ -5,6 +5,8 @@ using System.Text;
 
 namespace Timer_Utils {
 	public partial class MainWindow {
+		private List<CalendarItem> calendarItems = new List<CalendarItem>();
+
 		public void CinitTab() {
 
 		}
