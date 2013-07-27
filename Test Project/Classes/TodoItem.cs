@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
+using Newtonsoft.Json;
 
 namespace Timer_Utils {
 	class TodoItem {
@@ -55,6 +56,10 @@ namespace Timer_Utils {
 			urgency = int.Parse(data[1]);
 
 			title = data[2];
+		}
+
+		public string testjson() {
+			return JsonConvert.SerializeObject(this, Formatting.Indented);
 		}
 
 		public ListViewItem ToListItem() {

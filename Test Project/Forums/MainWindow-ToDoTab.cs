@@ -155,7 +155,8 @@ namespace Timer_Utils {
 		private void EditItem_Click(object sender, EventArgs e) {
 			if (TodoList.SelectedItems.Count <= 0) return;
 
-			addItemBox(listItems[TodoList.SelectedIndices[0]].Title);
+			//addItemBox(listItems[TodoList.SelectedIndices[0]].Title);
+			Debug.Write(listItems[TodoList.SelectedIndices[0]].testjson());
 		}
 
 		private void TodoList_MouseDoublClick(object sender, MouseEventArgs e) {
