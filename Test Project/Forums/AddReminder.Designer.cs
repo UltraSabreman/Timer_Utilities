@@ -25,12 +25,12 @@
 		private void InitializeComponent() {
 			this.Type = new System.Windows.Forms.ComboBox();
 			this.groupBox1 = new System.Windows.Forms.GroupBox();
-			this.IntervalType = new System.Windows.Forms.ComboBox();
-			this.numericUpDown1 = new System.Windows.Forms.NumericUpDown();
+			this.Delay = new System.Windows.Forms.NumericUpDown();
+			this.DelayType = new System.Windows.Forms.ComboBox();
 			this.Ok = new System.Windows.Forms.Button();
 			this.Cancel = new System.Windows.Forms.Button();
 			this.groupBox1.SuspendLayout();
-			((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).BeginInit();
+			((System.ComponentModel.ISupportInitialize)(this.Delay)).BeginInit();
 			this.SuspendLayout();
 			// 
 			// Type
@@ -49,8 +49,8 @@
 			// 
 			// groupBox1
 			// 
-			this.groupBox1.Controls.Add(this.numericUpDown1);
-			this.groupBox1.Controls.Add(this.IntervalType);
+			this.groupBox1.Controls.Add(this.Delay);
+			this.groupBox1.Controls.Add(this.DelayType);
 			this.groupBox1.Controls.Add(this.Type);
 			this.groupBox1.Location = new System.Drawing.Point(5, 0);
 			this.groupBox1.Name = "groupBox1";
@@ -58,33 +58,33 @@
 			this.groupBox1.TabIndex = 2;
 			this.groupBox1.TabStop = false;
 			// 
-			// IntervalType
+			// Delay
 			// 
-			this.IntervalType.FormattingEnabled = true;
-			this.IntervalType.Items.AddRange(new object[] {
-            "Minutes",
-            "Hours",
-            "Days",
-            "Weeks"});
-			this.IntervalType.Location = new System.Drawing.Point(137, 11);
-			this.IntervalType.Name = "IntervalType";
-			this.IntervalType.Size = new System.Drawing.Size(78, 21);
-			this.IntervalType.TabIndex = 3;
-			this.IntervalType.Text = "Minutes";
-			this.IntervalType.SelectedIndexChanged += new System.EventHandler(this.IntervalType_SelectedIndexChanged);
-			// 
-			// numericUpDown1
-			// 
-			this.numericUpDown1.Location = new System.Drawing.Point(74, 12);
-			this.numericUpDown1.Name = "numericUpDown1";
-			this.numericUpDown1.Size = new System.Drawing.Size(57, 20);
-			this.numericUpDown1.TabIndex = 4;
-			this.numericUpDown1.Value = new decimal(new int[] {
+			this.Delay.Location = new System.Drawing.Point(74, 12);
+			this.Delay.Name = "Delay";
+			this.Delay.Size = new System.Drawing.Size(57, 20);
+			this.Delay.TabIndex = 4;
+			this.Delay.Value = new decimal(new int[] {
             10,
             0,
             0,
             0});
-			this.numericUpDown1.ValueChanged += new System.EventHandler(this.numericUpDown1_ValueChanged);
+			this.Delay.ValueChanged += new System.EventHandler(this.numericUpDown1_ValueChanged);
+			// 
+			// DelayType
+			// 
+			this.DelayType.FormattingEnabled = true;
+			this.DelayType.Items.AddRange(new object[] {
+            "Minutes",
+            "Hours",
+            "Days",
+            "Weeks"});
+			this.DelayType.Location = new System.Drawing.Point(137, 11);
+			this.DelayType.Name = "DelayType";
+			this.DelayType.Size = new System.Drawing.Size(78, 21);
+			this.DelayType.TabIndex = 3;
+			this.DelayType.Text = "Minutes";
+			this.DelayType.SelectedIndexChanged += new System.EventHandler(this.IntervalType_SelectedIndexChanged);
 			// 
 			// Ok
 			// 
@@ -118,7 +118,7 @@
 			this.Name = "AddReminder";
 			this.Text = "Add A Reminder";
 			this.groupBox1.ResumeLayout(false);
-			((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).EndInit();
+			((System.ComponentModel.ISupportInitialize)(this.Delay)).EndInit();
 			this.ResumeLayout(false);
 
 		}
@@ -127,8 +127,8 @@
 
 		private System.Windows.Forms.ComboBox Type;
 		private System.Windows.Forms.GroupBox groupBox1;
-		private System.Windows.Forms.NumericUpDown numericUpDown1;
-		private System.Windows.Forms.ComboBox IntervalType;
+		private System.Windows.Forms.NumericUpDown Delay;
+		private System.Windows.Forms.ComboBox DelayType;
 		private System.Windows.Forms.Button Ok;
 		private System.Windows.Forms.Button Cancel;
 	}

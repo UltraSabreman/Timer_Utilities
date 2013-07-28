@@ -102,10 +102,6 @@ namespace Timer_Utils {
 
 		}
 
-		private void button1_Click(object sender, EventArgs e) {
-			AddEventDialouge t = new AddEventDialouge();
-			t.Show();
-		}
 	}
 
 }

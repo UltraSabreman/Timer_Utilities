@@ -24,13 +24,17 @@
 		/// </summary>
 		private void InitializeComponent() {
 			this.components = new System.ComponentModel.Container();
-			System.Windows.Forms.ListViewItem listViewItem1 = new System.Windows.Forms.ListViewItem(new string[] {
-            "Popup",
-            "10 Min"}, -1);
-			System.Windows.Forms.ListViewItem listViewItem2 = new System.Windows.Forms.ListViewItem(new string[] {
-            "Email",
-            "1 Day"}, -1);
 			this.groupBox1 = new System.Windows.Forms.GroupBox();
+			this.AllDay = new System.Windows.Forms.CheckBox();
+			this.startTime = new System.Windows.Forms.DateTimePicker();
+			this.ReminderOptions = new System.Windows.Forms.GroupBox();
+			this.reminderList = new System.Windows.Forms.ListView();
+			this.Type = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+			this.Delay = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+			this.RemindersContext = new System.Windows.Forms.ContextMenuStrip(this.components);
+			this.AddToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.EditToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.RemoveToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.Cancel = new System.Windows.Forms.Button();
 			this.Ok = new System.Windows.Forms.Button();
 			this.Title = new System.Windows.Forms.TextBox();
@@ -54,27 +58,21 @@
 			this.Discription = new System.Windows.Forms.RichTextBox();
 			this.StartDate = new System.Windows.Forms.MonthCalendar();
 			this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
-			this.listView1 = new System.Windows.Forms.ListView();
-			this.ReminderOptions = new System.Windows.Forms.GroupBox();
-			this.Type = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-			this.Delay = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-			this.RemindersContext = new System.Windows.Forms.ContextMenuStrip(this.components);
-			this.AddToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-			this.EditToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-			this.RemoveToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.groupBox1.SuspendLayout();
+			this.ReminderOptions.SuspendLayout();
+			this.RemindersContext.SuspendLayout();
 			this.RepatOptions.SuspendLayout();
 			this.Days.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.RepeatIntervalBox)).BeginInit();
 			this.EndOn.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.EndTimesBox)).BeginInit();
-			this.ReminderOptions.SuspendLayout();
-			this.RemindersContext.SuspendLayout();
 			this.SuspendLayout();
 			// 
 			// groupBox1
 			// 
 			this.groupBox1.BackColor = System.Drawing.Color.Transparent;
+			this.groupBox1.Controls.Add(this.AllDay);
+			this.groupBox1.Controls.Add(this.startTime);
 			this.groupBox1.Controls.Add(this.ReminderOptions);
 			this.groupBox1.Controls.Add(this.Cancel);
 			this.groupBox1.Controls.Add(this.Ok);
@@ -87,6 +85,97 @@
 			this.groupBox1.Size = new System.Drawing.Size(474, 413);
 			this.groupBox1.TabIndex = 1;
 			this.groupBox1.TabStop = false;
+			this.groupBox1.Text = "Start Date and Time";
+			// 
+			// AllDay
+			// 
+			this.AllDay.AutoSize = true;
+			this.AllDay.Checked = true;
+			this.AllDay.CheckState = System.Windows.Forms.CheckState.Checked;
+			this.AllDay.Location = new System.Drawing.Point(6, 181);
+			this.AllDay.Name = "AllDay";
+			this.AllDay.Size = new System.Drawing.Size(59, 17);
+			this.AllDay.TabIndex = 10;
+			this.AllDay.Text = "All Day";
+			this.AllDay.UseVisualStyleBackColor = true;
+			this.AllDay.CheckedChanged += new System.EventHandler(this.AllDay_CheckedChanged);
+			// 
+			// startTime
+			// 
+			this.startTime.Enabled = false;
+			this.startTime.Format = System.Windows.Forms.DateTimePickerFormat.Time;
+			this.startTime.Location = new System.Drawing.Point(71, 180);
+			this.startTime.Name = "startTime";
+			this.startTime.ShowUpDown = true;
+			this.startTime.Size = new System.Drawing.Size(162, 20);
+			this.startTime.TabIndex = 9;
+			this.startTime.ValueChanged += new System.EventHandler(this.startTime_ValueChanged);
+			// 
+			// ReminderOptions
+			// 
+			this.ReminderOptions.Controls.Add(this.reminderList);
+			this.ReminderOptions.Location = new System.Drawing.Point(245, 218);
+			this.ReminderOptions.Name = "ReminderOptions";
+			this.ReminderOptions.Size = new System.Drawing.Size(223, 160);
+			this.ReminderOptions.TabIndex = 7;
+			this.ReminderOptions.TabStop = false;
+			this.ReminderOptions.Text = "Reminder Options";
+			// 
+			// reminderList
+			// 
+			this.reminderList.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+            this.Type,
+            this.Delay});
+			this.reminderList.ContextMenuStrip = this.RemindersContext;
+			this.reminderList.FullRowSelect = true;
+			this.reminderList.GridLines = true;
+			this.reminderList.Location = new System.Drawing.Point(6, 19);
+			this.reminderList.Name = "reminderList";
+			this.reminderList.Size = new System.Drawing.Size(211, 135);
+			this.reminderList.TabIndex = 6;
+			this.reminderList.UseCompatibleStateImageBehavior = false;
+			this.reminderList.View = System.Windows.Forms.View.Details;
+			// 
+			// Type
+			// 
+			this.Type.Text = "Type";
+			this.Type.Width = 62;
+			// 
+			// Delay
+			// 
+			this.Delay.Text = "Delay";
+			this.Delay.Width = 138;
+			// 
+			// RemindersContext
+			// 
+			this.RemindersContext.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.AddToolStripMenuItem,
+            this.EditToolStripMenuItem,
+            this.RemoveToolStripMenuItem});
+			this.RemindersContext.Name = "RemindersContext";
+			this.RemindersContext.Size = new System.Drawing.Size(118, 70);
+			this.RemindersContext.Opening += new System.ComponentModel.CancelEventHandler(this.RemindersContext_Opening);
+			// 
+			// AddToolStripMenuItem
+			// 
+			this.AddToolStripMenuItem.Name = "AddToolStripMenuItem";
+			this.AddToolStripMenuItem.Size = new System.Drawing.Size(117, 22);
+			this.AddToolStripMenuItem.Text = "Add";
+			this.AddToolStripMenuItem.Click += new System.EventHandler(this.AddToolStripMenuItem_Click);
+			// 
+			// EditToolStripMenuItem
+			// 
+			this.EditToolStripMenuItem.Name = "EditToolStripMenuItem";
+			this.EditToolStripMenuItem.Size = new System.Drawing.Size(117, 22);
+			this.EditToolStripMenuItem.Text = "Edit";
+			this.EditToolStripMenuItem.Click += new System.EventHandler(this.EditToolStripMenuItem_Click);
+			// 
+			// RemoveToolStripMenuItem
+			// 
+			this.RemoveToolStripMenuItem.Name = "RemoveToolStripMenuItem";
+			this.RemoveToolStripMenuItem.Size = new System.Drawing.Size(117, 22);
+			this.RemoveToolStripMenuItem.Text = "Remove";
+			this.RemoveToolStripMenuItem.Click += new System.EventHandler(this.RemoveToolStripMenuItem_Click);
 			// 
 			// Cancel
 			// 
@@ -110,11 +199,12 @@
 			// 
 			// Title
 			// 
-			this.Title.Location = new System.Drawing.Point(6, 186);
+			this.Title.Location = new System.Drawing.Point(6, 218);
 			this.Title.Name = "Title";
 			this.Title.Size = new System.Drawing.Size(227, 20);
 			this.Title.TabIndex = 1;
 			this.Title.Text = "Title";
+			this.Title.TextChanged += new System.EventHandler(this.Title_TextChanged);
 			// 
 			// RepatOptions
 			// 
@@ -162,6 +252,7 @@
             0,
             0,
             0});
+			this.RepeatIntervalBox.ValueChanged += new System.EventHandler(this.RepeatIntervalBox_ValueChanged);
 			// 
 			// CheckWed
 			// 
@@ -284,6 +375,7 @@
 			this.EndDateBox.Name = "EndDateBox";
 			this.EndDateBox.Size = new System.Drawing.Size(102, 20);
 			this.EndDateBox.TabIndex = 4;
+			this.EndDateBox.ValueChanged += new System.EventHandler(this.EndDateBox_ValueChanged);
 			// 
 			// EndTimesBox
 			// 
@@ -302,6 +394,7 @@
             0,
             0,
             0});
+			this.EndTimesBox.ValueChanged += new System.EventHandler(this.EndTimesBox_ValueChanged);
 			// 
 			// EndDate
 			// 
@@ -329,11 +422,12 @@
 			// 
 			this.Discription.AutoWordSelection = true;
 			this.Discription.HideSelection = false;
-			this.Discription.Location = new System.Drawing.Point(6, 218);
+			this.Discription.Location = new System.Drawing.Point(6, 244);
 			this.Discription.Name = "Discription";
-			this.Discription.Size = new System.Drawing.Size(227, 160);
+			this.Discription.Size = new System.Drawing.Size(227, 134);
 			this.Discription.TabIndex = 2;
 			this.Discription.Text = "Discription";
+			this.Discription.TextChanged += new System.EventHandler(this.Discription_TextChanged);
 			// 
 			// StartDate
 			// 
@@ -343,71 +437,6 @@
 			this.StartDate.Name = "StartDate";
 			this.StartDate.TabIndex = 0;
 			this.StartDate.DateChanged += new System.Windows.Forms.DateRangeEventHandler(this.StartDate_DateChanged);
-			// 
-			// listView1
-			// 
-			this.listView1.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
-            this.Type,
-            this.Delay});
-			this.listView1.ContextMenuStrip = this.RemindersContext;
-			this.listView1.GridLines = true;
-			this.listView1.Items.AddRange(new System.Windows.Forms.ListViewItem[] {
-            listViewItem1,
-            listViewItem2});
-			this.listView1.Location = new System.Drawing.Point(6, 19);
-			this.listView1.Name = "listView1";
-			this.listView1.Size = new System.Drawing.Size(211, 135);
-			this.listView1.TabIndex = 6;
-			this.listView1.UseCompatibleStateImageBehavior = false;
-			this.listView1.View = System.Windows.Forms.View.Details;
-			// 
-			// ReminderOptions
-			// 
-			this.ReminderOptions.Controls.Add(this.listView1);
-			this.ReminderOptions.Location = new System.Drawing.Point(245, 218);
-			this.ReminderOptions.Name = "ReminderOptions";
-			this.ReminderOptions.Size = new System.Drawing.Size(223, 160);
-			this.ReminderOptions.TabIndex = 7;
-			this.ReminderOptions.TabStop = false;
-			this.ReminderOptions.Text = "Reminder Options";
-			// 
-			// Type
-			// 
-			this.Type.Text = "Type";
-			this.Type.Width = 62;
-			// 
-			// Delay
-			// 
-			this.Delay.Text = "Delay";
-			this.Delay.Width = 138;
-			// 
-			// RemindersContext
-			// 
-			this.RemindersContext.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.AddToolStripMenuItem,
-            this.EditToolStripMenuItem,
-            this.RemoveToolStripMenuItem});
-			this.RemindersContext.Name = "RemindersContext";
-			this.RemindersContext.Size = new System.Drawing.Size(153, 92);
-			// 
-			// AddToolStripMenuItem
-			// 
-			this.AddToolStripMenuItem.Name = "AddToolStripMenuItem";
-			this.AddToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
-			this.AddToolStripMenuItem.Text = "Add";
-			this.AddToolStripMenuItem.Click += new System.EventHandler(this.AddToolStripMenuItem_Click);
-			// 
-			// EditToolStripMenuItem
-			// 
-			this.EditToolStripMenuItem.Name = "EditToolStripMenuItem";
-			this.EditToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
-			this.EditToolStripMenuItem.Text = "Edit";
-			// 
-			// RemoveToolStripMenuItem
-			// 
-			this.RemoveToolStripMenuItem.Name = "RemoveToolStripMenuItem";
-			this.RemoveToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
-			this.RemoveToolStripMenuItem.Text = "Remove";
 			// 
 			// AddEventDialouge
 			// 
@@ -425,6 +454,8 @@
 			this.Text = "Add a To-Do Item";
 			this.groupBox1.ResumeLayout(false);
 			this.groupBox1.PerformLayout();
+			this.ReminderOptions.ResumeLayout(false);
+			this.RemindersContext.ResumeLayout(false);
 			this.RepatOptions.ResumeLayout(false);
 			this.Days.ResumeLayout(false);
 			this.Days.PerformLayout();
@@ -432,8 +463,6 @@
 			this.EndOn.ResumeLayout(false);
 			this.EndOn.PerformLayout();
 			((System.ComponentModel.ISupportInitialize)(this.EndTimesBox)).EndInit();
-			this.ReminderOptions.ResumeLayout(false);
-			this.RemindersContext.ResumeLayout(false);
 			this.ResumeLayout(false);
 
 		}
@@ -465,12 +494,14 @@
 		private System.Windows.Forms.Button Cancel;
 		private System.Windows.Forms.Button Ok;
 		private System.Windows.Forms.GroupBox ReminderOptions;
-		private System.Windows.Forms.ListView listView1;
+		private System.Windows.Forms.ListView reminderList;
 		private System.Windows.Forms.ColumnHeader Type;
 		private System.Windows.Forms.ColumnHeader Delay;
 		private System.Windows.Forms.ContextMenuStrip RemindersContext;
 		private System.Windows.Forms.ToolStripMenuItem AddToolStripMenuItem;
 		private System.Windows.Forms.ToolStripMenuItem EditToolStripMenuItem;
 		private System.Windows.Forms.ToolStripMenuItem RemoveToolStripMenuItem;
+		private System.Windows.Forms.DateTimePicker startTime;
+		private System.Windows.Forms.CheckBox AllDay;
 	}
 }

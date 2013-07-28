@@ -6,19 +6,8 @@ using System.Windows.Forms;
 
 namespace Timer_Utils {
 	class TodoItem {
-		private string title = "";
-		private bool done = false;
-		private int urgency = 0;
-
-		public string Title {
-			set { title = value; }
-			get { return title; }
-		}
-
-		public bool Done {
-			set { done = value; }
-			get { return done; }
-		}
+		public string Title = "";
+		public bool Done = false;
 
 		/// <summary>
 		/// 0 = Normal
@@ -26,6 +15,7 @@ namespace Timer_Utils {
 		/// 2 = Medium
 		/// 3 = High
 		/// </summary>
+		private int urgency = 0;
 		public int Urgency {
 			set { urgency = (value >= 0 && value <= 3 ? value : urgency); }
 			get { return urgency; }
@@ -33,8 +23,8 @@ namespace Timer_Utils {
 
 		public ListViewItem ToListItem() {
 			ListViewItem temp = new ListViewItem();
-			temp.SubItems.Add(title);
-			temp.Checked = done;
+			temp.SubItems.Add(Title);
+			temp.Checked = Done;
 
 			switch (urgency) {
 				case 1: temp.ForeColor = System.Drawing.Color.Green;	break;
