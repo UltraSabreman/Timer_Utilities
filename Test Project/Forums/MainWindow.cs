@@ -43,6 +43,7 @@ namespace Timer_Utils {
 			todoItems = tempReader.todoItems;
 			calendarItems = tempReader.calendarItems;
 			updateTodoList();
+			updateCalTab();
 		}
 
 		private void Form1_SizeChanged(object sender, EventArgs e) {
@@ -101,7 +102,6 @@ namespace Timer_Utils {
 		private void optionsToolStripMenuItem_Click(object sender, EventArgs e) {
 
 		}
-
 	}
 
 }

@@ -25,14 +25,21 @@ namespace Timer_Utils {
 
 	public class repeatData {
 		public enum repeatType {None, Daily, Weekly, Monthly};
+		public enum monthRepType {DayBased, WeekBased};
 
 		public repeatType WhenToRepeat = repeatType.None;
+		public monthRepType monthlyType = monthRepType.DayBased;
 		public List<bool> WeekDays = new List<bool>();
 		public int Spacing = 1;
 
 		public bool End = false;
 		public DateTime EndDate = new DateTime();
 		public int NumOfRepeats = 0;
+	}
+
+	public class boldDate {
+		public DateTime date = new DateTime();
+		public List<CalendarItem> linkedEvents = new List<CalendarItem>();
 	}
 
 	public class CalendarItem {
@@ -44,6 +51,15 @@ namespace Timer_Utils {
 		public bool DoRepeat = false;
 		public repeatData Repeat = new repeatData();
 		public List<reminder> Reminders = new List<reminder>();
+
+
+		public ListViewItem ToListItem() {
+			ListViewItem temp = new ListViewItem();
+			temp.Text = Title;
+			temp.SubItems.Add(Discritpion);
+
+			return temp;
+		}
 
 	}
 }

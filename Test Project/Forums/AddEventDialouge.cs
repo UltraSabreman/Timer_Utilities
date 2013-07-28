@@ -35,7 +35,7 @@ namespace Timer_Utils {
 			StartDate.SelectionEnd = System.DateTime.Today;
 
 			startTime.Value = System.DateTime.Now;
-			EndDateBox.Value = System.DateTime.Today;
+			EndDateBox.Value = System.DateTime.Today.AddDays(1);
 		}
 
 		public void AddRem(reminder t) {
@@ -58,8 +58,11 @@ namespace Timer_Utils {
 
 		private void RepeatTypeBox_SelectedIndexChanged(object sender, EventArgs e) {
 			if (RepeatTypeBox.SelectedIndex == 2) {
+				item.DoRepeat = true;
 				Days.Enabled = true;
 				EndOn.Enabled = true;
+				RadioDay.Enabled = false;
+				RadioWeek.Enabled = false;
 
 				foreach (CheckBox c in repeatDays)
 					c.Enabled = true;
@@ -76,6 +79,13 @@ namespace Timer_Utils {
 					item.DoRepeat = true;
 					Days.Enabled = true;
 					EndOn.Enabled = true;
+					if (RepeatTypeBox.SelectedIndex == 3) {
+						RadioDay.Enabled = true;
+						RadioWeek.Enabled = true;
+					} else {
+						RadioDay.Enabled = false;
+						RadioWeek.Enabled = false;
+					}
 				}
 			}
 
@@ -113,6 +123,9 @@ namespace Timer_Utils {
 			foreach (CheckBox c in repeatDays) {
 				item.Repeat.WeekDays.Add(c.Checked);
 			}
+
+			if (!EndTimes.Checked)
+				item.Repeat.NumOfRepeats = -1;
 
 			if (OnClose != null)
 				OnClose(item);
@@ -177,6 +190,10 @@ namespace Timer_Utils {
 			item.Repeat.NumOfRepeats = (int)EndTimesBox.Value;
 		}
 		private void EndDateBox_ValueChanged(object sender, EventArgs e) {
+			if (EndDateBox.Value.CompareTo(item.StartDate) <= 0) {
+				MessageBox.Show("The end date can't be sooner or equal to the start date!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+				return;
+			}
 			item.Repeat.EndDate = EndDateBox.Value;
 		}
 
@@ -189,6 +206,14 @@ namespace Timer_Utils {
 
 		private void startTime_ValueChanged(object sender, EventArgs e) {
 			item.StartDate = StartDate.SelectionStart.Date.AddSeconds(startTime.Value.TimeOfDay.TotalSeconds);
+		}
+
+		private void radioDay_CheckedChanged(object sender, EventArgs e) {
+			item.Repeat.monthlyType = repeatData.monthRepType.DayBased;
+		}
+
+		private void RadioWeek_CheckedChanged(object sender, EventArgs e) {
+			item.Repeat.monthlyType = repeatData.monthRepType.WeekBased;
 		}
 	}
 }

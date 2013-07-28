@@ -88,10 +88,10 @@
 			this.button3 = new System.Windows.Forms.Button();
 			this.button2 = new System.Windows.Forms.Button();
 			this.button1 = new System.Windows.Forms.Button();
-			this.BeifEventView = new System.Windows.Forms.ListView();
+			this.BriefEventView = new System.Windows.Forms.ListView();
 			this.Title = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
 			this.Discription = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-			this.Calender1 = new System.Windows.Forms.MonthCalendar();
+			this.DaySelect = new System.Windows.Forms.MonthCalendar();
 			this.TimerStats = new System.Windows.Forms.NotifyIcon(this.components);
 			this.toolTips = new System.Windows.Forms.ToolTip(this.components);
 			this.MenuStrip = new System.Windows.Forms.MenuStrip();
@@ -614,8 +614,8 @@
 			// Calendar
 			// 
 			this.Calendar.Controls.Add(this.EventActions);
-			this.Calendar.Controls.Add(this.BeifEventView);
-			this.Calendar.Controls.Add(this.Calender1);
+			this.Calendar.Controls.Add(this.BriefEventView);
+			this.Calendar.Controls.Add(this.DaySelect);
 			this.Calendar.Location = new System.Drawing.Point(4, 22);
 			this.Calendar.Name = "Calendar";
 			this.Calendar.Padding = new System.Windows.Forms.Padding(3);
@@ -684,21 +684,22 @@
 			this.button1.UseVisualStyleBackColor = true;
 			this.button1.Click += new System.EventHandler(this.button1_Click);
 			// 
-			// BeifEventView
+			// BriefEventView
 			// 
-			this.BeifEventView.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+			this.BriefEventView.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
             this.Title,
             this.Discription});
-			this.BeifEventView.GridLines = true;
-			this.BeifEventView.Items.AddRange(new System.Windows.Forms.ListViewItem[] {
+			this.BriefEventView.FullRowSelect = true;
+			this.BriefEventView.GridLines = true;
+			this.BriefEventView.Items.AddRange(new System.Windows.Forms.ListViewItem[] {
             listViewItem1});
-			this.BeifEventView.Location = new System.Drawing.Point(2, 170);
-			this.BeifEventView.Name = "BeifEventView";
-			this.BeifEventView.RightToLeft = System.Windows.Forms.RightToLeft.No;
-			this.BeifEventView.Size = new System.Drawing.Size(342, 112);
-			this.BeifEventView.TabIndex = 1;
-			this.BeifEventView.UseCompatibleStateImageBehavior = false;
-			this.BeifEventView.View = System.Windows.Forms.View.Details;
+			this.BriefEventView.Location = new System.Drawing.Point(2, 170);
+			this.BriefEventView.Name = "BriefEventView";
+			this.BriefEventView.RightToLeft = System.Windows.Forms.RightToLeft.No;
+			this.BriefEventView.Size = new System.Drawing.Size(342, 112);
+			this.BriefEventView.TabIndex = 1;
+			this.BriefEventView.UseCompatibleStateImageBehavior = false;
+			this.BriefEventView.View = System.Windows.Forms.View.Details;
 			// 
 			// Title
 			// 
@@ -710,11 +711,14 @@
 			this.Discription.Text = "Discription";
 			this.Discription.Width = 259;
 			// 
-			// Calender1
+			// DaySelect
 			// 
-			this.Calender1.Location = new System.Drawing.Point(2, 3);
-			this.Calender1.Name = "Calender1";
-			this.Calender1.TabIndex = 0;
+			this.DaySelect.Location = new System.Drawing.Point(2, 3);
+			this.DaySelect.MaxDate = new System.DateTime(2099, 12, 31, 0, 0, 0, 0);
+			this.DaySelect.MaxSelectionCount = 1;
+			this.DaySelect.Name = "DaySelect";
+			this.DaySelect.TabIndex = 0;
+			this.DaySelect.DateChanged += new System.Windows.Forms.DateRangeEventHandler(this.DaySelect_DateChanged);
 			// 
 			// TimerStats
 			// 
@@ -869,12 +873,12 @@
 		private System.Windows.Forms.ToolStripMenuItem mediumToolStripMenuItem;
 		private System.Windows.Forms.ToolStripMenuItem highToolStripMenuItem;
 		private System.Windows.Forms.ToolStripMenuItem EditItem;
-		private System.Windows.Forms.MonthCalendar Calender1;
+		private System.Windows.Forms.MonthCalendar DaySelect;
 		private System.Windows.Forms.GroupBox EventActions;
 		private System.Windows.Forms.Button button3;
 		private System.Windows.Forms.Button button2;
 		private System.Windows.Forms.Button button1;
-		private System.Windows.Forms.ListView BeifEventView;
+		private System.Windows.Forms.ListView BriefEventView;
 		private System.Windows.Forms.ColumnHeader Title;
 		private System.Windows.Forms.ColumnHeader Discription;
 		private System.Windows.Forms.Button button4;
