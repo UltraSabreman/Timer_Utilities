@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
-using Newtonsoft.Json;
 
 namespace Timer_Utils {
 	class TodoItem {
@@ -30,36 +29,6 @@ namespace Timer_Utils {
 		public int Urgency {
 			set { urgency = (value >= 0 && value <= 3 ? value : urgency); }
 			get { return urgency; }
-		}
-
-		public TodoItem(string s = "") {
-			if (s != "")
-				FromString(s);
-		}
-
-		public string ToString() {
-			string temp = "";
-			if (done) temp += "1"; else temp += "0";
-
-			temp += ("," + urgency.ToString() + "," + Title);
-
-			return temp;
-		}
-
-		public void FromString(string str) {
-			string[] delim = { "," };
-			string[] data = str.Split(delim, 3, StringSplitOptions.None);
-
-			if (data[0] == "1")
-				Done = true;
-
-			urgency = int.Parse(data[1]);
-
-			title = data[2];
-		}
-
-		public string testjson() {
-			return JsonConvert.SerializeObject(this, Formatting.Indented);
 		}
 
 		public ListViewItem ToListItem() {

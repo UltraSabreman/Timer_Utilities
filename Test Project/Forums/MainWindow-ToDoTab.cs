@@ -14,11 +14,6 @@ namespace Timer_Utils {
 	public partial class MainWindow  {
 		private List<TodoItem> todoItems = new List<TodoItem>();
 
-		////////////////////////
-		// read in and out the todo data
-		
-		////////////////////////
-
 		//inti the tab
 		private void TDinitTab() {
 			TodoList.ItemChecked += new ItemCheckedEventHandler(TodoList_ItemChecked);
@@ -126,8 +121,7 @@ namespace Timer_Utils {
 		private void EditItem_Click(object sender, EventArgs e) {
 			if (TodoList.SelectedItems.Count <= 0) return;
 
-			//addItemBox(listItems[TodoList.SelectedIndices[0]].Title);
-			Debug.Write(todoItems[TodoList.SelectedIndices[0]].testjson());
+			addItemBox(todoItems[TodoList.SelectedIndices[0]].Title);
 		}
 
 		private void TodoList_MouseDoublClick(object sender, MouseEventArgs e) {
