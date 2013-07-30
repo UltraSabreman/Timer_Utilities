@@ -67,8 +67,10 @@ namespace Timer_Utils {
 			tempReader.todoItems = todoItems;
 
 			//we destroy the linked events here so that we can save it, it'll re-gen when loaded.
-			foreach (CalendarItem c in calendarItems)
+			foreach (CalendarItem c in calendarItems) {
 				c.nextCal = null;
+				c.prevCal = null;
+			}
 
 			tempReader.calendarItems = calendarItems;
 

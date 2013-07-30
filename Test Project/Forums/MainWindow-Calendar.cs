@@ -69,11 +69,11 @@ namespace Timer_Utils {
 						if (c.Repeat.NumOfRepeats != -1 && count >= c.Repeat.NumOfRepeats) break;
 						if (curDay >= c.StartDate.Date && c.Repeat.WeekDays[(int)curDay.DayOfWeek]) {
 							listOfeventDates.Add(curDay);
+							count++;
 						}
 
 						curDay = curDay.AddDays(1 + (testind == 6 ? 7 * (c.Repeat.Spacing - 1) : 0));
 						testind = (testind == 6 ? 0 : testind + 1);
-						count++;
 					}
 				} else if (c.Repeat.WhenToRepeat == repeatData.repeatType.Monthly) {
 					if (c.Repeat.MonthlyType == repeatData.monthRepType.DayBased) {
@@ -125,17 +125,18 @@ namespace Timer_Utils {
 		/// <param name="listOfeventDates">list of dates to use</param>
 		public void generateRepeatEvents(CalendarItem c, List<DateTime> listOfeventDates) {
 			CalendarItem current = c;
-			linkBoldDate(c, c, c.StartDate.Date);
+			linkBoldDate(c, c.StartDate.Date);
 			List<DateTime> test = listOfeventDates.GetRange(1,listOfeventDates.Count - 1); //make sure we dont include the first date twice.
 
 			foreach (DateTime d in test) {
 				if (c.isDateExcluded(d)) continue;
 
 				CalendarItem temp = new CalendarItem(c);
-				temp.StartDate = d;
+				temp.StartDate = d; 
 
-				linkBoldDate(temp, c, d);
+				linkBoldDate(temp, d);
 
+				temp.prevCal = current;
 				current.nextCal = temp;
 				current = current.nextCal;
 			}
@@ -189,15 +190,13 @@ namespace Timer_Utils {
 		/// </summary>
 		/// <param name="inCal">the event to link</param>
 		/// <param name="inDate">the date to link to</param>
-		/// <param name="head">the head of the ll, lets us save with json</param>
-		public void linkBoldDate(CalendarItem inCal, CalendarItem head, DateTime inDate) {
+		public void linkBoldDate(CalendarItem inCal, DateTime inDate) {
 			bool found = false;
 			foreach (boldDate b in eventDates) {
 				if (b.date.Equals(inDate)) {
 					found = true;
 					if (b.linkedEvents.IndexOf(inCal) == -1) {
 						b.linkedEvents.Add(inCal);
-						b.linkedHeads.Add(head);
 					}
 				}					
 			}
@@ -205,7 +204,6 @@ namespace Timer_Utils {
 				boldDate temp = new boldDate();
 				temp.date = inDate;
 				temp.linkedEvents.Add(inCal);
-				temp.linkedHeads.Add(head);
 				eventDates.Add(temp);
 			}
 		}
@@ -242,33 +240,35 @@ namespace Timer_Utils {
 			if (seperate) {
 				foreach (boldDate b in eventDates) {
 					if (b.date.Date.CompareTo(c.StartDate.Date) == 0) {
-						int i = b.linkedEvents.IndexOf(c);
-						CalendarItem head = b.linkedHeads[i];
-						CalendarItem current = head;
-						CalendarItem prev = head;
+						CalendarItem current = c;
 
 						//edge case, only one node in list
 						//if this happens, everything stays the same.
-						if (head.nextCal != null) { 
+						if (current.prevCal == null && current.nextCal != null) { 
 							while (current != null) {
 								if (current.StartDate.Date.CompareTo(b.date.Date) == 0) {
-									if (current == head) { //edge case, were editing the head
-										CalendarItem temp = head.nextCal;
-										head.nextCal = null;
+									if (current.prevCal == null) { //edge case, were editing the head
+										CalendarItem temp = current.nextCal;
+										current.prevCal = null;
+
 										calendarItems.Add(temp);
 									} else {
 										//remove the current event form the linked list.
 										CalendarItem temp = current;
-										prev.nextCal = temp.nextCal;
+										current.prevCal.nextCal = current.nextCal;
+										current.nextCal.prevCal = current.prevCal;
+										current.prevCal = null;
+										current.nextCal = null;
+	
+										CalendarItem t = current;
+										while (t.prevCal != null) t = t.prevCal;
+										t.excludeDates.Add(current.StartDate);
 
-										head.excludeDates.Add(current.StartDate);
-										b.linkedHeads[i] = temp;
 										calendarItems.Add(temp);
 									}
 									break;
 								}
 
-								prev = current;
 								current = current.nextCal;
 							}
 						}
@@ -279,8 +279,9 @@ namespace Timer_Utils {
 			} else {
 				foreach (boldDate b in eventDates) {
 					if (b.date.Date.CompareTo(c.StartDate.Date) == 0) {
-						int i = b.linkedEvents.IndexOf(c);
-						b.linkedHeads[i] = new CalendarItem(c);
+						CalendarItem t = c;
+						while (t.prevCal != null) t = t.prevCal;
+						t = new CalendarItem(c);
 						break;
 					}
 				}
@@ -310,5 +311,72 @@ namespace Timer_Utils {
 				}
 			}
 		}
+
+
+		private void BreifBriefEventView_MouseDown(object sender, MouseEventArgs e) {
+			if (e.Clicks == 2)
+				BriefEventView_MouseDoublClick(sender, e);
+		}
+
+
+		private void BriefEventView_MouseDoublClick(object sender, MouseEventArgs e) {
+			if (e.Button == MouseButtons.Left) {
+				if (BriefEventView.SelectedItems.Count == 0) {
+					AddEventDialouge t = new AddEventDialouge(DaySelect);
+					t.OnClose += new AddEventDialouge.addCal(addToCalList);
+					t.Show();
+				} else {
+					CalendarItem test = getSelectedCal();
+					AddEventDialouge t = new AddEventDialouge(ref test, DaySelect);
+					t.OnCloseEdit += new AddEventDialouge.editCal(editCalEvent);
+					t.Show();
+				}
+			}
+		}
+
+		private void CalOverviewMenu_Opening(object sender, EventArgs e) {
+			if (BriefEventView.SelectedItems.Count != 0) {
+				detailsToolStripMenuItem.Enabled = true;
+				editToolStripMenuItem.Enabled = true;
+				removeToolStripMenuItem.Enabled = true;
+			} else {
+				detailsToolStripMenuItem.Enabled = false;
+				editToolStripMenuItem.Enabled = false;
+				removeToolStripMenuItem.Enabled = false ;
+			}
+		}
+
+		private void detailsToolStripMenuItem_Click(object sender, EventArgs e) {
+
+		}
+
+		private void removeToolStripMenuItem_Click(object sender, EventArgs e) {
+			CalendarItem temp = getSelectedCal();
+
+			CalendarItem current = temp;
+			while (current.prevCal != null) current = current.prevCal;
+
+			current.excludeDates.Add(temp.StartDate);
+			temp.prevCal.nextCal = temp.nextCal;
+			temp.nextCal.prevCal = temp.prevCal;
+
+			calendarItems.Remove(temp);
+
+			hardUpdateCalTab(); //sad, but needed (since we must re-gen the bolddates list)*/
+		}
+
+		private void editToolStripMenuItem_Click(object sender, EventArgs e) {
+			CalendarItem test = getSelectedCal();
+			AddEventDialouge t = new AddEventDialouge(ref test, DaySelect);
+			t.OnCloseEdit += new AddEventDialouge.editCal(editCalEvent);
+			t.Show();
+		}
+
+		private void addToolStripMenuItem_Click(object sender, EventArgs e) {
+			AddEventDialouge t = new AddEventDialouge(DaySelect);
+			t.OnClose += new AddEventDialouge.addCal(addToCalList);
+			t.Show();
+		}
+
 	}
 }

@@ -19,7 +19,6 @@ namespace Timer_Utils {
 
 		private CalendarItem item  = new CalendarItem();
 		private bool editMode = false;
-		private DateTime skipDate = new DateTime();
 
 		public AddEventDialouge(MonthCalendar cal = null) {
 			InitializeComponent();
@@ -35,10 +34,10 @@ namespace Timer_Utils {
 			repeatDays.Add(CheckSun);
 
 			if (cal == null) {
-				StartDate.SelectionStart = System.DateTime.Today;
-				StartDate.SelectionEnd = System.DateTime.Today;
+				this.StartDateSel.SelectionStart = System.DateTime.Today;
+				this.StartDateSel.SelectionEnd = System.DateTime.Today;
 			} else {
-				StartDate.SelectionRange = cal.SelectionRange;
+				this.StartDateSel.SelectionRange = cal.SelectionRange;
 			}
 
 			startTime.Value = System.DateTime.Now;
@@ -49,7 +48,6 @@ namespace Timer_Utils {
 			InitializeComponent();
 
 			item = newCal; //?
-			skipDate = cal.SelectionStart;
 			editMode = true;
 
 			repeatDays.Add(CheckMon);
@@ -60,18 +58,16 @@ namespace Timer_Utils {
 			repeatDays.Add(CheckSat);
 			repeatDays.Add(CheckSun);
 
-			int i = 0;
-
-
+			DateTime fuck = item.StartDate;
 			if (cal == null) {
-				StartDate.SelectionStart = item.StartDate;
-				StartDate.SelectionEnd = item.StartDate;
+				this.StartDateSel.SelectionStart = item.StartDate;
+				this.StartDateSel.SelectionEnd = item.StartDate;
 			} else {
-				StartDate.SelectionRange = cal.SelectionRange;
+				this.StartDateSel.SelectionRange = cal.SelectionRange;
 			}
+			item.StartDate = fuck;
 
 			startTime.Value = item.StartDate;
-
 
 			AllDay.Checked = item.AllDay;
 			Title.Text = item.Title;
@@ -92,6 +88,7 @@ namespace Timer_Utils {
 
 				EndDateBox.Value = item.Repeat.EndDate;
 				if (item.Repeat.WeekDays.Count != 0) {
+					int i = 0;
 					foreach (CheckBox c in repeatDays)
 						c.Checked = item.Repeat.WeekDays[i++];
 				}
@@ -216,9 +213,9 @@ namespace Timer_Utils {
 			startTime.Enabled = !AllDay.Checked;
 			item.AllDay = AllDay.Checked;
 			if (!item.AllDay)
-				item.StartDate = StartDate.SelectionStart.Date;
+				item.StartDate = StartDateSel.SelectionStart.Date;
 			else
-				item.StartDate = StartDate.SelectionStart.Date.AddSeconds(startTime.Value.TimeOfDay.TotalSeconds);
+				item.StartDate = StartDateSel.SelectionStart.Date.AddSeconds(startTime.Value.TimeOfDay.TotalSeconds);
 		}
 
 
@@ -279,13 +276,13 @@ namespace Timer_Utils {
 
 		private void StartDate_DateChanged(object sender, DateRangeEventArgs e) {
 			if (!item.AllDay)
-				item.StartDate = StartDate.SelectionStart.Date;
+				item.StartDate = StartDateSel.SelectionStart.Date;
 			else
-				item.StartDate = StartDate.SelectionStart.Date.AddSeconds(startTime.Value.TimeOfDay.TotalSeconds);
+				item.StartDate = StartDateSel.SelectionStart.Date.AddSeconds(startTime.Value.TimeOfDay.TotalSeconds);
 		}
 
 		private void startTime_ValueChanged(object sender, EventArgs e) {
-			item.StartDate = StartDate.SelectionStart.Date.AddSeconds(startTime.Value.TimeOfDay.TotalSeconds);
+			item.StartDate = StartDateSel.SelectionStart.Date.AddSeconds(startTime.Value.TimeOfDay.TotalSeconds);
 		}
 
 		private void radioDay_CheckedChanged(object sender, EventArgs e) {
@@ -294,6 +291,26 @@ namespace Timer_Utils {
 
 		private void RadioWeek_CheckedChanged(object sender, EventArgs e) {
 			item.Repeat.MonthlyType = repeatData.monthRepType.WeekBased;
+		}
+
+		private void reminderList_MouseDown(object sender, MouseEventArgs e) {
+			if (e.Clicks == 2)
+				reminderList_MouseDoublClick(sender, e);
+		}
+
+
+		private void reminderList_MouseDoublClick(object sender, MouseEventArgs e) {
+			if (e.Button == MouseButtons.Left) {
+				if (reminderList.SelectedItems.Count == 0) {
+					AddReminder t = new AddReminder();
+					t.OnClose += new AddReminder.addRem(AddRem);
+					t.Show();
+				} else {
+					AddReminder t = new AddReminder(item.Reminders[reminderList.SelectedIndices[0]]);
+					t.OnClose += new AddReminder.addRem(EditRem);
+					t.Show();
+				}
+			}
 		}
 	}
 }

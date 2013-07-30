@@ -125,8 +125,11 @@ namespace Timer_Utils {
 		}
 
 		private void TodoList_MouseDoublClick(object sender, MouseEventArgs e) {
-			if (e.Button == MouseButtons.Left && TodoList.SelectedItems.Count == 0) {
-				addItemBox();
+			if (e.Button == MouseButtons.Left) {
+				if (TodoList.SelectedItems.Count == 0)
+					addItemBox(); 
+				else
+					addItemBox(todoItems[TodoList.SelectedIndices[0]].Title);
 			}
 		}
 

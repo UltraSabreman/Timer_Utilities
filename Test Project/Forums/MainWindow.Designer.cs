@@ -29,9 +29,6 @@
         private void InitializeComponent()
         {
 			this.components = new System.ComponentModel.Container();
-			System.Windows.Forms.ListViewItem listViewItem1 = new System.Windows.Forms.ListViewItem(new string[] {
-            "hhhhh",
-            "hhhnnnnn333"}, -1);
 			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainWindow));
 			this.Clocks = new System.Windows.Forms.TabControl();
 			this.Stopwatch = new System.Windows.Forms.TabPage();
@@ -89,8 +86,13 @@
 			this.EditCalEventButton = new System.Windows.Forms.Button();
 			this.AddCalEventButton = new System.Windows.Forms.Button();
 			this.BriefEventView = new System.Windows.Forms.ListView();
-			this.Title = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-			this.Discription = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+			this.When = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+			this.What = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+			this.CalOverviewMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
+			this.addToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.editToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.removeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.detailsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.DaySelect = new System.Windows.Forms.MonthCalendar();
 			this.TimerStats = new System.Windows.Forms.NotifyIcon(this.components);
 			this.toolTips = new System.Windows.Forms.ToolTip(this.components);
@@ -109,6 +111,7 @@
 			this.TodoMenu.SuspendLayout();
 			this.Calendar.SuspendLayout();
 			this.EventActions.SuspendLayout();
+			this.CalOverviewMenu.SuspendLayout();
 			this.MenuStrip.SuspendLayout();
 			this.SuspendLayout();
 			// 
@@ -688,12 +691,11 @@
 			// BriefEventView
 			// 
 			this.BriefEventView.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
-            this.Title,
-            this.Discription});
+            this.When,
+            this.What});
+			this.BriefEventView.ContextMenuStrip = this.CalOverviewMenu;
 			this.BriefEventView.FullRowSelect = true;
 			this.BriefEventView.GridLines = true;
-			this.BriefEventView.Items.AddRange(new System.Windows.Forms.ListViewItem[] {
-            listViewItem1});
 			this.BriefEventView.Location = new System.Drawing.Point(2, 170);
 			this.BriefEventView.Name = "BriefEventView";
 			this.BriefEventView.RightToLeft = System.Windows.Forms.RightToLeft.No;
@@ -701,16 +703,56 @@
 			this.BriefEventView.TabIndex = 1;
 			this.BriefEventView.UseCompatibleStateImageBehavior = false;
 			this.BriefEventView.View = System.Windows.Forms.View.Details;
+			this.BriefEventView.MouseDown += new System.Windows.Forms.MouseEventHandler(this.BreifBriefEventView_MouseDown);
 			// 
-			// Title
+			// When
 			// 
-			this.Title.Text = "Title";
-			this.Title.Width = 76;
+			this.When.Text = "When";
+			this.When.Width = 76;
 			// 
-			// Discription
+			// What
 			// 
-			this.Discription.Text = "Discription";
-			this.Discription.Width = 259;
+			this.What.Text = "What";
+			this.What.Width = 259;
+			// 
+			// CalOverviewMenu
+			// 
+			this.CalOverviewMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.addToolStripMenuItem,
+            this.editToolStripMenuItem,
+            this.removeToolStripMenuItem,
+            this.detailsToolStripMenuItem});
+			this.CalOverviewMenu.Name = "CalendarOverviewMenu";
+			this.CalOverviewMenu.Size = new System.Drawing.Size(150, 92);
+			this.CalOverviewMenu.Opening += new System.ComponentModel.CancelEventHandler(this.CalOverviewMenu_Opening);
+			// 
+			// addToolStripMenuItem
+			// 
+			this.addToolStripMenuItem.Name = "addToolStripMenuItem";
+			this.addToolStripMenuItem.Size = new System.Drawing.Size(149, 22);
+			this.addToolStripMenuItem.Text = "Add Event";
+			this.addToolStripMenuItem.Click += new System.EventHandler(this.addToolStripMenuItem_Click);
+			// 
+			// editToolStripMenuItem
+			// 
+			this.editToolStripMenuItem.Name = "editToolStripMenuItem";
+			this.editToolStripMenuItem.Size = new System.Drawing.Size(149, 22);
+			this.editToolStripMenuItem.Text = "Edit Event";
+			this.editToolStripMenuItem.Click += new System.EventHandler(this.editToolStripMenuItem_Click);
+			// 
+			// removeToolStripMenuItem
+			// 
+			this.removeToolStripMenuItem.Name = "removeToolStripMenuItem";
+			this.removeToolStripMenuItem.Size = new System.Drawing.Size(149, 22);
+			this.removeToolStripMenuItem.Text = "Remove Event";
+			this.removeToolStripMenuItem.Click += new System.EventHandler(this.removeToolStripMenuItem_Click);
+			// 
+			// detailsToolStripMenuItem
+			// 
+			this.detailsToolStripMenuItem.Name = "detailsToolStripMenuItem";
+			this.detailsToolStripMenuItem.Size = new System.Drawing.Size(149, 22);
+			this.detailsToolStripMenuItem.Text = "Details...";
+			this.detailsToolStripMenuItem.Click += new System.EventHandler(this.detailsToolStripMenuItem_Click);
 			// 
 			// DaySelect
 			// 
@@ -808,6 +850,7 @@
 			this.Calendar.ResumeLayout(false);
 			this.EventActions.ResumeLayout(false);
 			this.EventActions.PerformLayout();
+			this.CalOverviewMenu.ResumeLayout(false);
 			this.MenuStrip.ResumeLayout(false);
 			this.MenuStrip.PerformLayout();
 			this.ResumeLayout(false);
@@ -880,10 +923,15 @@
 		private System.Windows.Forms.Button EditCalEventButton;
 		private System.Windows.Forms.Button AddCalEventButton;
 		private System.Windows.Forms.ListView BriefEventView;
-		private System.Windows.Forms.ColumnHeader Title;
-		private System.Windows.Forms.ColumnHeader Discription;
+		private System.Windows.Forms.ColumnHeader When;
+		private System.Windows.Forms.ColumnHeader What;
 		private System.Windows.Forms.Button DeleteCalEventButton;
 		private System.Windows.Forms.TextBox textBox1;
+		private System.Windows.Forms.ContextMenuStrip CalOverviewMenu;
+		private System.Windows.Forms.ToolStripMenuItem addToolStripMenuItem;
+		private System.Windows.Forms.ToolStripMenuItem editToolStripMenuItem;
+		private System.Windows.Forms.ToolStripMenuItem removeToolStripMenuItem;
+		private System.Windows.Forms.ToolStripMenuItem detailsToolStripMenuItem;
 
     }
 }

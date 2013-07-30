@@ -59,7 +59,7 @@
 			this.EndDate = new System.Windows.Forms.RadioButton();
 			this.EndTimes = new System.Windows.Forms.RadioButton();
 			this.Discription = new System.Windows.Forms.RichTextBox();
-			this.StartDate = new System.Windows.Forms.MonthCalendar();
+			this.StartDateSel = new System.Windows.Forms.MonthCalendar();
 			this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
 			this.groupBox1.SuspendLayout();
 			this.ReminderOptions.SuspendLayout();
@@ -82,7 +82,7 @@
 			this.groupBox1.Controls.Add(this.Title);
 			this.groupBox1.Controls.Add(this.RepatOptions);
 			this.groupBox1.Controls.Add(this.Discription);
-			this.groupBox1.Controls.Add(this.StartDate);
+			this.groupBox1.Controls.Add(this.StartDateSel);
 			this.groupBox1.Location = new System.Drawing.Point(12, 12);
 			this.groupBox1.Name = "groupBox1";
 			this.groupBox1.Size = new System.Drawing.Size(474, 430);
@@ -138,6 +138,7 @@
 			this.reminderList.TabIndex = 6;
 			this.reminderList.UseCompatibleStateImageBehavior = false;
 			this.reminderList.View = System.Windows.Forms.View.Details;
+			this.reminderList.MouseDown += new System.Windows.Forms.MouseEventHandler(this.reminderList_MouseDown);
 			// 
 			// Type
 			// 
@@ -464,15 +465,15 @@
 			this.Discription.Text = "Discription";
 			this.Discription.TextChanged += new System.EventHandler(this.Discription_TextChanged);
 			// 
-			// StartDate
+			// StartDateSel
 			// 
-			this.StartDate.BackColor = System.Drawing.SystemColors.Window;
-			this.StartDate.Location = new System.Drawing.Point(6, 12);
-			this.StartDate.MaxDate = new System.DateTime(2099, 12, 31, 0, 0, 0, 0);
-			this.StartDate.MaxSelectionCount = 1;
-			this.StartDate.Name = "StartDate";
-			this.StartDate.TabIndex = 0;
-			this.StartDate.DateChanged += new System.Windows.Forms.DateRangeEventHandler(this.StartDate_DateChanged);
+			this.StartDateSel.BackColor = System.Drawing.SystemColors.Window;
+			this.StartDateSel.Location = new System.Drawing.Point(6, 12);
+			this.StartDateSel.MaxDate = new System.DateTime(2099, 12, 31, 0, 0, 0, 0);
+			this.StartDateSel.MaxSelectionCount = 1;
+			this.StartDateSel.Name = "StartDateSel";
+			this.StartDateSel.TabIndex = 0;
+			this.StartDateSel.DateChanged += new System.Windows.Forms.DateRangeEventHandler(this.StartDate_DateChanged);
 			// 
 			// AddEventDialouge
 			// 
@@ -507,7 +508,7 @@
 
 		private System.Windows.Forms.GroupBox groupBox1;
 		private System.Windows.Forms.RichTextBox Discription;
-		private System.Windows.Forms.MonthCalendar StartDate;
+		private System.Windows.Forms.MonthCalendar StartDateSel;
 		private System.Windows.Forms.GroupBox RepatOptions;
 		private System.Windows.Forms.TextBox Title;
 		private System.Windows.Forms.GroupBox EndOn;

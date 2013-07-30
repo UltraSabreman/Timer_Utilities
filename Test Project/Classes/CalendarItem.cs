@@ -56,7 +56,6 @@ namespace Timer_Utils {
 	public class boldDate {
 		public DateTime date = new DateTime();
 		public List<CalendarItem> linkedEvents = new List<CalendarItem>();
-		public List<CalendarItem> linkedHeads = new List<CalendarItem>();
 	}
 
 	public class CalendarItem {
@@ -73,6 +72,7 @@ namespace Timer_Utils {
 		public List<DateTime> excludeDates = new List<DateTime>();
 
 		public CalendarItem nextCal = null;
+		public CalendarItem prevCal = null;
 
 		public CalendarItem() {
 		}
@@ -99,8 +99,8 @@ namespace Timer_Utils {
 
 		public ListViewItem ToListItem() {
 			ListViewItem temp = new ListViewItem();
-			temp.Text = Title;
-			temp.SubItems.Add(Discritpion);
+			temp.Text = (AllDay ? "All Day" : StartDate.ToString("t"));
+			temp.SubItems.Add(Title);
 
 			return temp;
 		}
