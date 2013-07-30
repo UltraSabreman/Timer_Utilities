@@ -17,15 +17,33 @@ namespace Timer_Utils {
 			BriefEventView.SelectedItems.Clear();
 			BriefEventView.Items.Clear();
 
-			//DaySelect.RemoveAllBoldedDates();
+			DaySelect.RemoveAllBoldedDates();
+
+			foreach (boldDate b in eventDates) {
+				DaySelect.AddBoldedDate(b.date);
+			}
+
+			DaySelect.Update();
+			DaySelect.UpdateBoldedDates();
+		}
+
+		public void hardUpdateCalTab() {
+			eventDates.Clear();
 
 			foreach (CalendarItem c in calendarItems)
 				proccessCalEvent(c);
+
+			updateCalTab();
 		}
 
+		/// <summary>
+		/// This generates a list of dates for the repeated caledar event
+		/// This list can then be used by generateRepeatEvents to create the 
+		/// appropriate events later.
+		/// </summary>
+		/// <param name="c">The calendar we're on</param>
 		public void proccessCalEvent(CalendarItem c) {
-			DaySelect.AddBoldedDate(c.StartDate);
-			linkBoldDate(c, c.StartDate);
+			List<DateTime> listOfeventDates = new List<DateTime>();
 
 			if (c.DoRepeat) {
 				DateTime curDay = c.StartDate;
@@ -33,15 +51,14 @@ namespace Timer_Utils {
 
 				if (!c.Repeat.End || c.Repeat.NumOfRepeats != -1)  //never end
 					endDay = DaySelect.MaxDate;
-				 else 
+				else
 					endDay = c.Repeat.EndDate;
 
 				if (c.Repeat.WhenToRepeat == repeatData.repeatType.Daily) {
-					endDay = curDay.AddDays(c.Repeat.Spacing * c.Repeat.NumOfRepeats);
+					if (c.Repeat.NumOfRepeats != -1)
+						endDay = curDay.AddDays(c.Repeat.Spacing * c.Repeat.NumOfRepeats);
 					while (curDay.CompareTo(endDay) <= 0) {
-						DaySelect.AddBoldedDate(curDay);
-						linkBoldDate(c, curDay);
-
+						listOfeventDates.Add(curDay);
 						curDay = curDay.AddDays(c.Repeat.Spacing);
 					}
 				} else if (c.Repeat.WhenToRepeat == repeatData.repeatType.Weekly) {
@@ -51,8 +68,7 @@ namespace Timer_Utils {
 					while (curDay.CompareTo(endDay) <= 0) {
 						if (c.Repeat.NumOfRepeats != -1 && count >= c.Repeat.NumOfRepeats) break;
 						if (curDay >= c.StartDate.Date && c.Repeat.WeekDays[(int)curDay.DayOfWeek]) {
-							DaySelect.AddBoldedDate(curDay);
-							linkBoldDate(c, curDay);
+							listOfeventDates.Add(curDay);
 						}
 
 						curDay = curDay.AddDays(1 + (testind == 6 ? 7 * (c.Repeat.Spacing - 1) : 0));
@@ -60,12 +76,11 @@ namespace Timer_Utils {
 						count++;
 					}
 				} else if (c.Repeat.WhenToRepeat == repeatData.repeatType.Monthly) {
-					if (c.Repeat.monthlyType == repeatData.monthRepType.DayBased) {
+					if (c.Repeat.MonthlyType == repeatData.monthRepType.DayBased) {
 						int count = 0;
 						while (curDay.CompareTo(endDay) <= 0) {
 							if (c.Repeat.NumOfRepeats != -1 && count >= c.Repeat.NumOfRepeats) break;
-							DaySelect.AddBoldedDate(curDay);
-							linkBoldDate(c, curDay);
+							listOfeventDates.Add(curDay);
 
 							curDay = curDay.AddMonths(c.Repeat.Spacing);
 							count++;
@@ -83,37 +98,59 @@ namespace Timer_Utils {
 							iterator = iterator.AddDays(1);
 						}
 						posInMonth++; //because we end on the event day, it doesnt get counted.
-						List<DateTime> dates = getMonthlyDates(firstDay, curWeekDay, posInMonth, c.Repeat.EndDate, c.Repeat.NumOfRepeats);
-
-						if (!c.DoRepeat) {
-							foreach (DateTime d in dates) {
-								DaySelect.AddBoldedDate(d);
-								linkBoldDate(c, d);
-							}
-						} else {
-							if (c.Repeat.NumOfRepeats == -1) {
-								foreach (DateTime d in dates) {
-									if (d.CompareTo(c.Repeat.EndDate) >= 0) break;
-									DaySelect.AddBoldedDate(d);
-									linkBoldDate(c, d);
-								}
-							} else {
-								int numOfEvents = 0;
-								foreach (DateTime d in dates) {
-									if (numOfEvents >= c.Repeat.NumOfRepeats) break;
-									DaySelect.AddBoldedDate(d);
-									linkBoldDate(c, d);
-
-									numOfEvents++;
-								}
-							}
-						}
+						listOfeventDates = getMonthlyDates(firstDay, curWeekDay, posInMonth, c.Repeat.EndDate, c.Repeat.NumOfRepeats);
+					}
+				} else if (c.Repeat.WhenToRepeat == repeatData.repeatType.Yearly) {
+					if (c.Repeat.NumOfRepeats != -1)
+						endDay = curDay.AddYears(c.Repeat.Spacing * c.Repeat.NumOfRepeats);
+					while (curDay.CompareTo(endDay) <= 0) {
+						listOfeventDates.Add(curDay);
+						curDay = curDay.AddYears(c.Repeat.Spacing);
 					}
 				}
+			} else {
+				c.Repeat = new repeatData(); //make it perdy
+				listOfeventDates.Add(c.StartDate);
 			}
 
+			generateRepeatEvents(c, listOfeventDates);
 		}
 
+		/// <summary>
+		/// This creates a linked list of NON REPEATING cal events based on the pased in list
+		/// The head will keep it's repeat data (so you can re-generate the list) but the children
+		/// act like singular events
+		/// </summary>
+		/// <param name="c">The head of the list</param>
+		/// <param name="listOfeventDates">list of dates to use</param>
+		public void generateRepeatEvents(CalendarItem c, List<DateTime> listOfeventDates) {
+			CalendarItem current = c;
+			linkBoldDate(c, c, c.StartDate.Date);
+			List<DateTime> test = listOfeventDates.GetRange(1,listOfeventDates.Count - 1); //make sure we dont include the first date twice.
+
+			foreach (DateTime d in test) {
+				if (c.isDateExcluded(d)) continue;
+
+				CalendarItem temp = new CalendarItem(c);
+				temp.StartDate = d;
+
+				linkBoldDate(temp, c, d);
+
+				current.nextCal = temp;
+				current = current.nextCal;
+			}
+		}
+
+		/// <summary>
+		/// Generates a list of dates for a event that occures monthly. 
+		/// This was ratehr complicated so it's split off fromt he main generatiopn function
+		/// </summary>
+		/// <param name="start">The start date of the event</param>
+		/// <param name="day">The start dates day of the week</param>
+		/// <param name="posInMonth">The numerical position in teh month (ie 2nd sunday)</param>
+		/// <param name="end">the end date, if aplicable</param>
+		/// <param name="occurances">the number of times to repeat</param>
+		/// <returns>A list of dates when the event will occur</returns>
 		public List<DateTime> getMonthlyDates(DateTime start, DayOfWeek day, int posInMonth, DateTime end, int occurances = -1) {
 			List<DateTime> temp = new List<DateTime>();
 			int count = 0;
@@ -146,25 +183,37 @@ namespace Timer_Utils {
 
 		}
 
-		public void linkBoldDate(CalendarItem inCal, DateTime inDate) {
+		/// <summary>
+		/// Crteates a "link" between the bolded days on the calenda (and the listview members) and the actual
+		/// physical events
+		/// </summary>
+		/// <param name="inCal">the event to link</param>
+		/// <param name="inDate">the date to link to</param>
+		/// <param name="head">the head of the ll, lets us save with json</param>
+		public void linkBoldDate(CalendarItem inCal, CalendarItem head, DateTime inDate) {
 			bool found = false;
 			foreach (boldDate b in eventDates) {
 				if (b.date.Equals(inDate)) {
 					found = true;
-					if (b.linkedEvents.IndexOf(inCal) == -1)
+					if (b.linkedEvents.IndexOf(inCal) == -1) {
 						b.linkedEvents.Add(inCal);
+						b.linkedHeads.Add(head);
+					}
 				}					
 			}
 			if (!found) {
 				boldDate temp = new boldDate();
 				temp.date = inDate;
 				temp.linkedEvents.Add(inCal);
+				temp.linkedHeads.Add(head);
 				eventDates.Add(temp);
 			}
 		}
 
+
 		public void addToCalList(CalendarItem c) {
 			calendarItems.Add(c);
+			proccessCalEvent(c);
 			updateCalTab();
 		}
 
@@ -178,19 +227,66 @@ namespace Timer_Utils {
 
 		private void EditCalEventButton_Click(object sender, EventArgs e) {
 			if (BriefEventView.SelectedIndices.Count == 0) return;
-
-			AddEventDialouge t = new AddEventDialouge(getSelectedCal(), DaySelect);
+			CalendarItem test = getSelectedCal();
+			AddEventDialouge t = new AddEventDialouge(ref test, DaySelect);
 			t.OnCloseEdit += new AddEventDialouge.editCal(editCalEvent);
 			t.Show();
 		}
 
-		public void editCalEvent(CalendarItem c, DateTime d, bool all) {
-			if (all) {
+		/// <summary>
+		/// Executed by the addevent dialog when you edit an event.
+		/// </summary>
+		/// <param name="c">the returned caledar</param>
+		/// <param name="seperate">weather or not to apply tis change to the entire sirius or not</param>
+		public void editCalEvent(ref CalendarItem c, bool seperate) {
+			if (seperate) {
+				foreach (boldDate b in eventDates) {
+					if (b.date.Date.CompareTo(c.StartDate.Date) == 0) {
+						int i = b.linkedEvents.IndexOf(c);
+						CalendarItem head = b.linkedHeads[i];
+						CalendarItem current = head;
+						CalendarItem prev = head;
+
+						//edge case, only one node in list
+						//if this happens, everything stays the same.
+						if (head.nextCal != null) { 
+							while (current != null) {
+								if (current.StartDate.Date.CompareTo(b.date.Date) == 0) {
+									if (current == head) { //edge case, were editing the head
+										CalendarItem temp = head.nextCal;
+										head.nextCal = null;
+										calendarItems.Add(temp);
+									} else {
+										//remove the current event form the linked list.
+										CalendarItem temp = current;
+										prev.nextCal = temp.nextCal;
+
+										head.excludeDates.Add(current.StartDate);
+										b.linkedHeads[i] = temp;
+										calendarItems.Add(temp);
+									}
+									break;
+								}
+
+								prev = current;
+								current = current.nextCal;
+							}
+						}
+						break;
+					}
+				}
 
 			} else {
-				//calendarItems.
+				foreach (boldDate b in eventDates) {
+					if (b.date.Date.CompareTo(c.StartDate.Date) == 0) {
+						int i = b.linkedEvents.IndexOf(c);
+						b.linkedHeads[i] = new CalendarItem(c);
+						break;
+					}
+				}
 			}
-			updateCalTab();
+
+			hardUpdateCalTab();
 		}
 
 		public CalendarItem getSelectedCal() {

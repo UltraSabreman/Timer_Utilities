@@ -42,8 +42,9 @@ namespace Timer_Utils {
 			tempReader.deserialize();
 			todoItems = tempReader.todoItems;
 			calendarItems = tempReader.calendarItems;
+
 			updateTodoList();
-			updateCalTab();
+			hardUpdateCalTab();
 		}
 
 		private void Form1_SizeChanged(object sender, EventArgs e) {
@@ -64,6 +65,11 @@ namespace Timer_Utils {
 
 			dataReader tempReader = new dataReader();
 			tempReader.todoItems = todoItems;
+
+			//we destroy the linked events here so that we can save it, it'll re-gen when loaded.
+			foreach (CalendarItem c in calendarItems)
+				c.nextCal = null;
+
 			tempReader.calendarItems = calendarItems;
 
 			tempReader.serialize();

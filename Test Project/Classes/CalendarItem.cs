@@ -26,11 +26,11 @@ namespace Timer_Utils {
 	}
 
 	public class repeatData {
-		public enum repeatType {None, Daily, Weekly, Monthly};
+		public enum repeatType {None, Daily, Weekly, Monthly, Yearly};
 		public enum monthRepType {DayBased, WeekBased};
 
 		public repeatType WhenToRepeat = repeatType.None;
-		public monthRepType monthlyType = monthRepType.DayBased;
+		public monthRepType MonthlyType = monthRepType.DayBased;
 
 		public int Spacing = 1;
 		public int NumOfRepeats = 0;
@@ -38,15 +38,28 @@ namespace Timer_Utils {
 
 		public List<bool> WeekDays = new List<bool>();	
 		public DateTime EndDate = new DateTime();
+
+		public repeatData() { }
+		public repeatData(repeatData src) {
+			WhenToRepeat = src.WhenToRepeat;
+			MonthlyType = src.MonthlyType;
+			Spacing = src.Spacing;
+			NumOfRepeats = src.NumOfRepeats;
+			End = src.End;
+			EndDate = src.EndDate;
+
+			foreach (bool b in src.WeekDays) 
+				WeekDays.Add(b);
+		}
 	}
 
 	public class boldDate {
 		public DateTime date = new DateTime();
 		public List<CalendarItem> linkedEvents = new List<CalendarItem>();
+		public List<CalendarItem> linkedHeads = new List<CalendarItem>();
 	}
 
 	public class CalendarItem {
-		//this might be a bad desing desition, but fuck it
 		public string Title = "Title";
 		public string Discritpion = "Description";
 
@@ -57,8 +70,32 @@ namespace Timer_Utils {
 		public repeatData Repeat = new repeatData();
 
 		public List<reminder> Reminders = new List<reminder>();
-		public List<DateTime> skipedDays = new List<DateTime>();
+		public List<DateTime> excludeDates = new List<DateTime>();
 
+		public CalendarItem nextCal = null;
+
+		public CalendarItem() {
+		}
+
+		public CalendarItem(CalendarItem src) {
+			Title = src.Title;
+			Discritpion = src.Discritpion;
+			AllDay = src.AllDay;
+			DoRepeat = src.DoRepeat;
+
+			StartDate = src.StartDate;
+			Repeat = new repeatData(src.Repeat);
+
+			Reminders = src.Reminders;
+		}
+
+		public bool isDateExcluded(DateTime day) {
+			foreach (DateTime d in excludeDates)
+				if (d.Date.CompareTo(day.Date) == 0)
+					return true;
+			
+			return false;
+		}
 
 		public ListViewItem ToListItem() {
 			ListViewItem temp = new ListViewItem();

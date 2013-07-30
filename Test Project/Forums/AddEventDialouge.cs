@@ -10,7 +10,7 @@ using System.Windows.Forms;
 namespace Timer_Utils {
 	public partial class AddEventDialouge : Form {
 		public delegate void addCal(CalendarItem c);
-		public delegate void editCal(CalendarItem c, DateTime d, bool shoulSeperate);
+		public delegate void editCal(ref CalendarItem c, bool shoulSeperate);
 		public event addCal OnClose;
 		public event editCal OnCloseEdit;
 
@@ -38,17 +38,17 @@ namespace Timer_Utils {
 				StartDate.SelectionStart = System.DateTime.Today;
 				StartDate.SelectionEnd = System.DateTime.Today;
 			} else {
-				StartDate = cal;
+				StartDate.SelectionRange = cal.SelectionRange;
 			}
 
 			startTime.Value = System.DateTime.Now;
 			EndDateBox.Value = System.DateTime.Today.AddDays(1);
 		}
 
-		public AddEventDialouge(CalendarItem newCal, MonthCalendar cal = null) {
+		public AddEventDialouge(ref CalendarItem newCal, MonthCalendar cal = null) {
 			InitializeComponent();
 
-			item = newCal;
+			item = newCal; //?
 			skipDate = cal.SelectionStart;
 			editMode = true;
 
@@ -61,18 +61,17 @@ namespace Timer_Utils {
 			repeatDays.Add(CheckSun);
 
 			int i = 0;
-			foreach (CheckBox c in repeatDays)
-				c.Checked = item.Repeat.WeekDays[i++];
+
 
 			if (cal == null) {
 				StartDate.SelectionStart = item.StartDate;
 				StartDate.SelectionEnd = item.StartDate;
 			} else {
-				StartDate = cal;
+				StartDate.SelectionRange = cal.SelectionRange;
 			}
 
 			startTime.Value = item.StartDate;
-			EndDateBox.Value = item.Repeat.EndDate;
+
 
 			AllDay.Checked = item.AllDay;
 			Title.Text = item.Title;
@@ -80,22 +79,30 @@ namespace Timer_Utils {
 
 			if (!item.DoRepeat) {
 				EndNever.Checked = true;
+				EndDateBox.Value = item.StartDate.AddDays(1);
+				RepeatIntervalBox.Value = 1;
+				RepeatTypeBox.SelectedIndex = (int)repeatData.repeatType.None;
+				RadioDay.Checked = true;
 			} else {
 				if (item.Repeat.NumOfRepeats != -1) {
 					EndTimesBox.Value = item.Repeat.NumOfRepeats;
 					EndTimes.Checked = true;
 				} else
 					EndDate.Checked = true;
+
+				EndDateBox.Value = item.Repeat.EndDate;
+				if (item.Repeat.WeekDays.Count != 0) {
+					foreach (CheckBox c in repeatDays)
+						c.Checked = item.Repeat.WeekDays[i++];
+				}
+				RepeatIntervalBox.Value = item.Repeat.Spacing;
+				RepeatTypeBox.SelectedIndex = (int)item.Repeat.WhenToRepeat;
+				if (item.Repeat.MonthlyType == repeatData.monthRepType.DayBased)
+					RadioDay.Checked = true;
+				else
+					RadioWeek.Checked = false;
 			}
-
-			RepeatIntervalBox.Value = item.Repeat.Spacing;
-			RepeatTypeBox.SelectedIndex = (int)item.Repeat.WhenToRepeat;
-
-			if (item.Repeat.monthlyType == repeatData.monthRepType.DayBased)
-				RadioDay.Checked = true;
-			else
-				RadioWeek.Checked = false;
-
+			
 			updateReminderList();
 		}
 
@@ -181,6 +188,7 @@ namespace Timer_Utils {
 		}
 
 		private void Ok_Click(object sender, EventArgs e) {
+			item.Repeat.WeekDays.Clear();
 			foreach (CheckBox c in repeatDays) {
 				item.Repeat.WeekDays.Add(c.Checked);
 			}
@@ -191,17 +199,15 @@ namespace Timer_Utils {
 			if (!editMode && OnClose != null)
 				OnClose(item);
 			else if (editMode && OnCloseEdit != null) {
-				bool retType = false;
-				DialogResult test = new DialogResult();
-				if (item.DoRepeat) {
-					test = MessageBox.Show("Apply change to this event or all?", "lol", MessageBoxButtons.YesNo);
-				}
-				if (test == System.Windows.Forms.DialogResult.Yes) {
-					retType = true;
-				}
+				bool seperate = false;
 
+				System.Windows.Forms.DialogResult t = MessageBox.Show("Apply these changes to only this event?", "", MessageBoxButtons.YesNoCancel);
+				if (t == System.Windows.Forms.DialogResult.Yes)
+					seperate = true;
+				if (t == System.Windows.Forms.DialogResult.Cancel)
+					return;
 
-				OnCloseEdit(item, skipDate, retType);
+				OnCloseEdit(ref item, seperate);
 			}
 			Dispose();
 		}
@@ -283,11 +289,11 @@ namespace Timer_Utils {
 		}
 
 		private void radioDay_CheckedChanged(object sender, EventArgs e) {
-			item.Repeat.monthlyType = repeatData.monthRepType.DayBased;
+			item.Repeat.MonthlyType = repeatData.monthRepType.DayBased;
 		}
 
 		private void RadioWeek_CheckedChanged(object sender, EventArgs e) {
-			item.Repeat.monthlyType = repeatData.monthRepType.WeekBased;
+			item.Repeat.MonthlyType = repeatData.monthRepType.WeekBased;
 		}
 	}
 }

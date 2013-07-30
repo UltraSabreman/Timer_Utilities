@@ -24,6 +24,7 @@
 		/// </summary>
 		private void InitializeComponent() {
 			this.components = new System.ComponentModel.Container();
+			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(AddEventDialouge));
 			this.groupBox1 = new System.Windows.Forms.GroupBox();
 			this.AllDay = new System.Windows.Forms.CheckBox();
 			this.startTime = new System.Windows.Forms.DateTimePicker();
@@ -416,7 +417,7 @@
 			this.EndTimesBox.Enabled = false;
 			this.EndTimesBox.Location = new System.Drawing.Point(100, 39);
 			this.EndTimesBox.Minimum = new decimal(new int[] {
-            1,
+            2,
             0,
             0,
             0});
@@ -424,7 +425,7 @@
 			this.EndTimesBox.Size = new System.Drawing.Size(102, 20);
 			this.EndTimesBox.TabIndex = 2;
 			this.EndTimesBox.Value = new decimal(new int[] {
-            1,
+            2,
             0,
             0,
             0});
@@ -480,11 +481,10 @@
 			this.ClientSize = new System.Drawing.Size(498, 454);
 			this.Controls.Add(this.groupBox1);
 			this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
+			this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
 			this.MaximizeBox = false;
 			this.MinimizeBox = false;
 			this.Name = "AddEventDialouge";
-			this.ShowIcon = false;
-			this.ShowInTaskbar = false;
 			this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Hide;
 			this.Text = "Add a To-Do Item";
 			this.groupBox1.ResumeLayout(false);
