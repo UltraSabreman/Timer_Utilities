@@ -10,15 +10,17 @@ namespace Timer_Utils {
 		public enum delayIntervalType {Minutes, Hours, Days, Weeks};
 
 		public reminderType Type = reminderType.Popup;
-		public int Delay = 0;
 		public delayIntervalType DelayType = delayIntervalType.Minutes;
+		public int Delay = 0;
 
 		public ListViewItem ToListItem() {
 			ListViewItem temp = new ListViewItem();
 			string[] types = { "Popup", "Alarm", "Email" };
 			string[] delayTypes = { "Minutes", "Hours", "Days", "Weeks" };
+
 			temp.Text = types[(int)Type];
 			temp.SubItems.Add(Delay.ToString() + " " + delayTypes[(int)DelayType]);
+
 			return temp;
 		}
 	}
@@ -29,12 +31,13 @@ namespace Timer_Utils {
 
 		public repeatType WhenToRepeat = repeatType.None;
 		public monthRepType monthlyType = monthRepType.DayBased;
-		public List<bool> WeekDays = new List<bool>();
-		public int Spacing = 1;
 
-		public bool End = false;
-		public DateTime EndDate = new DateTime();
+		public int Spacing = 1;
 		public int NumOfRepeats = 0;
+		public bool End = false;
+
+		public List<bool> WeekDays = new List<bool>();	
+		public DateTime EndDate = new DateTime();
 	}
 
 	public class boldDate {
@@ -46,11 +49,15 @@ namespace Timer_Utils {
 		//this might be a bad desing desition, but fuck it
 		public string Title = "Title";
 		public string Discritpion = "Description";
+
 		public bool AllDay = true;
-		public DateTime StartDate = new DateTime();
 		public bool DoRepeat = false;
+
+		public DateTime StartDate = new DateTime();
 		public repeatData Repeat = new repeatData();
+
 		public List<reminder> Reminders = new List<reminder>();
+		public List<DateTime> skipedDays = new List<DateTime>();
 
 
 		public ListViewItem ToListItem() {
@@ -60,6 +67,5 @@ namespace Timer_Utils {
 
 			return temp;
 		}
-
 	}
 }

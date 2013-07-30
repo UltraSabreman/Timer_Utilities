@@ -10,18 +10,21 @@ using System.Windows.Forms;
 namespace Timer_Utils {
 	public partial class AddEventDialouge : Form {
 		public delegate void addCal(CalendarItem c);
+		public delegate void editCal(CalendarItem c, DateTime d, bool shoulSeperate);
 		public event addCal OnClose;
+		public event editCal OnCloseEdit;
 
 		private List<reminder> reminders = new List<reminder>();
 		private List<CheckBox> repeatDays = new List<CheckBox>();
 
 		private CalendarItem item  = new CalendarItem();
+		private bool editMode = false;
+		private DateTime skipDate = new DateTime();
 
-		public AddEventDialouge() {
+		public AddEventDialouge(MonthCalendar cal = null) {
 			InitializeComponent();
 
 			RepeatTypeBox.SelectedIndex = 0;
-
 
 			repeatDays.Add(CheckMon);
 			repeatDays.Add(CheckTue);
@@ -31,11 +34,69 @@ namespace Timer_Utils {
 			repeatDays.Add(CheckSat);
 			repeatDays.Add(CheckSun);
 
-			StartDate.SelectionStart = System.DateTime.Today;
-			StartDate.SelectionEnd = System.DateTime.Today;
+			if (cal == null) {
+				StartDate.SelectionStart = System.DateTime.Today;
+				StartDate.SelectionEnd = System.DateTime.Today;
+			} else {
+				StartDate = cal;
+			}
 
 			startTime.Value = System.DateTime.Now;
 			EndDateBox.Value = System.DateTime.Today.AddDays(1);
+		}
+
+		public AddEventDialouge(CalendarItem newCal, MonthCalendar cal = null) {
+			InitializeComponent();
+
+			item = newCal;
+			skipDate = cal.SelectionStart;
+			editMode = true;
+
+			repeatDays.Add(CheckMon);
+			repeatDays.Add(CheckTue);
+			repeatDays.Add(CheckWed);
+			repeatDays.Add(CheckThu);
+			repeatDays.Add(CheckFri);
+			repeatDays.Add(CheckSat);
+			repeatDays.Add(CheckSun);
+
+			int i = 0;
+			foreach (CheckBox c in repeatDays)
+				c.Checked = item.Repeat.WeekDays[i++];
+
+			if (cal == null) {
+				StartDate.SelectionStart = item.StartDate;
+				StartDate.SelectionEnd = item.StartDate;
+			} else {
+				StartDate = cal;
+			}
+
+			startTime.Value = item.StartDate;
+			EndDateBox.Value = item.Repeat.EndDate;
+
+			AllDay.Checked = item.AllDay;
+			Title.Text = item.Title;
+			Discription.Text = item.Discritpion;
+
+			if (!item.DoRepeat) {
+				EndNever.Checked = true;
+			} else {
+				if (item.Repeat.NumOfRepeats != -1) {
+					EndTimesBox.Value = item.Repeat.NumOfRepeats;
+					EndTimes.Checked = true;
+				} else
+					EndDate.Checked = true;
+			}
+
+			RepeatIntervalBox.Value = item.Repeat.Spacing;
+			RepeatTypeBox.SelectedIndex = (int)item.Repeat.WhenToRepeat;
+
+			if (item.Repeat.monthlyType == repeatData.monthRepType.DayBased)
+				RadioDay.Checked = true;
+			else
+				RadioWeek.Checked = false;
+
+			updateReminderList();
 		}
 
 		public void AddRem(reminder t) {
@@ -127,8 +188,21 @@ namespace Timer_Utils {
 			if (!EndTimes.Checked)
 				item.Repeat.NumOfRepeats = -1;
 
-			if (OnClose != null)
+			if (!editMode && OnClose != null)
 				OnClose(item);
+			else if (editMode && OnCloseEdit != null) {
+				bool retType = false;
+				DialogResult test = new DialogResult();
+				if (item.DoRepeat) {
+					test = MessageBox.Show("Apply change to this event or all?", "lol", MessageBoxButtons.YesNo);
+				}
+				if (test == System.Windows.Forms.DialogResult.Yes) {
+					retType = true;
+				}
+
+
+				OnCloseEdit(item, skipDate, retType);
+			}
 			Dispose();
 		}
 
