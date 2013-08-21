@@ -14,18 +14,40 @@ namespace Timer_Utils {
 		////////////////////////////////////
 		// Private Members
 		private StopWatch stopw = new StopWatch();
+		private StopWatchOverlay SWoverlay = null;
+
 
 		////////////////////////////////////
 		// Private Methods
 		private void SWinitTab() {
 			stopw.Tick += new StopWatch.onTick(SWtick);
-		}
 
+			// register the event that is fired after the key press.
+			hook.KeyPressed +=	new EventHandler<KeyPressedEventArgs>(hook_KeyPressed);
+			
+			// register the control + alt + F12 combination as hot key.
+			hook.RegisterHotKey(0, Keys.F8);
+			hook.RegisterHotKey(0, Keys.F9);
+		}
+		void hook_KeyPressed(object sender, KeyPressedEventArgs e)
+		{
+			if (e.Key == Keys.F8)
+				start();
+			if (e.Key == Keys.F9)
+				reset();
+		}
 		private void SWtick(TimeSpan span) {
 			SWdisplay.Text = stopw.TimeString;
+			if (SWoverlay != null) {
+				SWoverlay.tick(stopw.TimeString);
+			}
 		}
 
 		private void SWstart_Click(object sender, EventArgs e) {
+			start();
+		}
+
+		public void start() {
 			if (stopw.Running) {
 				stopw.Stop();
 				SWstart.Text = "Start";
@@ -38,8 +60,7 @@ namespace Timer_Utils {
 			SWstart.Update();
 			SWreset.Update();
 		}
-
-		private void SWreset_Click(object sender, EventArgs e) {
+		public void reset() {
 			if (stopw.Running) {
 				stopw.Lap();
 
@@ -48,10 +69,20 @@ namespace Timer_Utils {
 
 				LapTimes.Items.Add(item);
 
+				if (SWoverlay != null) {
+					SWoverlay.lap();
+				}
+
 			} else {
 				stopw.reset();
 				LapTimes.Items.Clear();
+				if (SWoverlay != null)
+					SWoverlay.reset();
 			}
+		}
+
+		private void SWreset_Click(object sender, EventArgs e) {
+			reset();
 		}
 
 		private void SWdisplay_TextChanged(object sender, EventArgs e) {
@@ -72,6 +103,11 @@ namespace Timer_Utils {
 			} catch (System.ArgumentOutOfRangeException) {
 				Debug.Write("Out Of Bounds");
 			}
+		}
+
+		private void SWDisplay_doubleClick(object sender, EventArgs e) {
+			SWoverlay = new StopWatchOverlay(options);
+			SWoverlay.Show();
 		}
 	}
 }

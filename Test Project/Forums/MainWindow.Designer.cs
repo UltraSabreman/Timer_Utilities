@@ -78,30 +78,24 @@
 			this.highToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
 			this.removeAllCompleatedItemsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-			this.Calendar = new System.Windows.Forms.TabPage();
-			this.EventActions = new System.Windows.Forms.GroupBox();
-			this.textBox1 = new System.Windows.Forms.TextBox();
-			this.DeleteCalEventButton = new System.Windows.Forms.Button();
-			this.DetailsCalButton = new System.Windows.Forms.Button();
-			this.EditCalEventButton = new System.Windows.Forms.Button();
-			this.AddCalEventButton = new System.Windows.Forms.Button();
-			this.BriefEventView = new System.Windows.Forms.ListView();
-			this.When = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-			this.What = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-			this.CalOverviewMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
-			this.addToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-			this.editToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-			this.removeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-			this.detailsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-			this.DaySelect = new System.Windows.Forms.MonthCalendar();
 			this.TimerStats = new System.Windows.Forms.NotifyIcon(this.components);
+			this.TrayIconContextMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
+			this.TrayCntOpenTimer = new System.Windows.Forms.ToolStripMenuItem();
+			this.TrayCntQuickView = new System.Windows.Forms.ToolStripMenuItem();
+			this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
+			this.TrayCntOptions = new System.Windows.Forms.ToolStripMenuItem();
+			this.TrayCntExit = new System.Windows.Forms.ToolStripMenuItem();
 			this.toolTips = new System.Windows.Forms.ToolTip(this.components);
 			this.MenuStrip = new System.Windows.Forms.MenuStrip();
-			this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-			this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
-			this.optionsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.FileStripMenu = new System.Windows.Forms.ToolStripMenuItem();
+			this.OpenDataFile = new System.Windows.Forms.ToolStripMenuItem();
+			this.OptionsDiag = new System.Windows.Forms.ToolStripMenuItem();
+			this.ReloadData = new System.Windows.Forms.ToolStripMenuItem();
 			this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
-			this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.ExitApp = new System.Windows.Forms.ToolStripMenuItem();
+			this.HelpStripMenu = new System.Windows.Forms.ToolStripMenuItem();
+			this.HelpButton = new System.Windows.Forms.ToolStripMenuItem();
+			this.AboutDiag = new System.Windows.Forms.ToolStripMenuItem();
 			this.Clocks.SuspendLayout();
 			this.Stopwatch.SuspendLayout();
 			this.Countdown.SuspendLayout();
@@ -109,9 +103,7 @@
 			this.KeyPad.SuspendLayout();
 			this.todo.SuspendLayout();
 			this.TodoMenu.SuspendLayout();
-			this.Calendar.SuspendLayout();
-			this.EventActions.SuspendLayout();
-			this.CalOverviewMenu.SuspendLayout();
+			this.TrayIconContextMenu.SuspendLayout();
 			this.MenuStrip.SuspendLayout();
 			this.SuspendLayout();
 			// 
@@ -120,7 +112,6 @@
 			this.Clocks.Controls.Add(this.Stopwatch);
 			this.Clocks.Controls.Add(this.Countdown);
 			this.Clocks.Controls.Add(this.todo);
-			this.Clocks.Controls.Add(this.Calendar);
 			this.Clocks.Location = new System.Drawing.Point(12, 27);
 			this.Clocks.Name = "Clocks";
 			this.Clocks.SelectedIndex = 0;
@@ -182,6 +173,7 @@
 			this.SWdisplay.Text = "00 : 00 : 00";
 			this.SWdisplay.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
 			this.SWdisplay.TextChanged += new System.EventHandler(this.SWdisplay_TextChanged);
+			this.SWdisplay.DoubleClick += new System.EventHandler(this.SWDisplay_doubleClick);
 			// 
 			// SWreset
 			// 
@@ -614,211 +606,141 @@
 			this.removeAllCompleatedItemsToolStripMenuItem.Text = "Remove All Marked";
 			this.removeAllCompleatedItemsToolStripMenuItem.Click += new System.EventHandler(this.removeAllCompleatedItemsToolStripMenuItem_Click);
 			// 
-			// Calendar
-			// 
-			this.Calendar.Controls.Add(this.EventActions);
-			this.Calendar.Controls.Add(this.BriefEventView);
-			this.Calendar.Controls.Add(this.DaySelect);
-			this.Calendar.Location = new System.Drawing.Point(4, 22);
-			this.Calendar.Name = "Calendar";
-			this.Calendar.Padding = new System.Windows.Forms.Padding(3);
-			this.Calendar.Size = new System.Drawing.Size(350, 285);
-			this.Calendar.TabIndex = 3;
-			this.Calendar.Text = "Calendar";
-			this.Calendar.UseVisualStyleBackColor = true;
-			// 
-			// EventActions
-			// 
-			this.EventActions.Controls.Add(this.textBox1);
-			this.EventActions.Controls.Add(this.DeleteCalEventButton);
-			this.EventActions.Controls.Add(this.DetailsCalButton);
-			this.EventActions.Controls.Add(this.EditCalEventButton);
-			this.EventActions.Controls.Add(this.AddCalEventButton);
-			this.EventActions.Location = new System.Drawing.Point(235, 6);
-			this.EventActions.Name = "EventActions";
-			this.EventActions.Size = new System.Drawing.Size(112, 158);
-			this.EventActions.TabIndex = 2;
-			this.EventActions.TabStop = false;
-			this.EventActions.Text = "Event";
-			// 
-			// textBox1
-			// 
-			this.textBox1.Location = new System.Drawing.Point(7, 19);
-			this.textBox1.Multiline = true;
-			this.textBox1.Name = "textBox1";
-			this.textBox1.ReadOnly = true;
-			this.textBox1.Size = new System.Drawing.Size(100, 75);
-			this.textBox1.TabIndex = 6;
-			// 
-			// DeleteCalEventButton
-			// 
-			this.DeleteCalEventButton.Location = new System.Drawing.Point(58, 100);
-			this.DeleteCalEventButton.Name = "DeleteCalEventButton";
-			this.DeleteCalEventButton.Size = new System.Drawing.Size(48, 23);
-			this.DeleteCalEventButton.TabIndex = 5;
-			this.DeleteCalEventButton.Text = "Delete";
-			this.DeleteCalEventButton.UseVisualStyleBackColor = true;
-			// 
-			// DetailsCalButton
-			// 
-			this.DetailsCalButton.Location = new System.Drawing.Point(6, 129);
-			this.DetailsCalButton.Name = "DetailsCalButton";
-			this.DetailsCalButton.Size = new System.Drawing.Size(48, 23);
-			this.DetailsCalButton.TabIndex = 4;
-			this.DetailsCalButton.Text = "Details";
-			this.DetailsCalButton.UseVisualStyleBackColor = true;
-			// 
-			// EditCalEventButton
-			// 
-			this.EditCalEventButton.Location = new System.Drawing.Point(58, 129);
-			this.EditCalEventButton.Name = "EditCalEventButton";
-			this.EditCalEventButton.Size = new System.Drawing.Size(48, 23);
-			this.EditCalEventButton.TabIndex = 3;
-			this.EditCalEventButton.Text = "Edit";
-			this.EditCalEventButton.UseVisualStyleBackColor = true;
-			this.EditCalEventButton.Click += new System.EventHandler(this.EditCalEventButton_Click);
-			// 
-			// AddCalEventButton
-			// 
-			this.AddCalEventButton.Location = new System.Drawing.Point(6, 100);
-			this.AddCalEventButton.Name = "AddCalEventButton";
-			this.AddCalEventButton.Size = new System.Drawing.Size(48, 23);
-			this.AddCalEventButton.TabIndex = 2;
-			this.AddCalEventButton.Text = "Add";
-			this.AddCalEventButton.UseVisualStyleBackColor = true;
-			this.AddCalEventButton.Click += new System.EventHandler(this.button1_Click);
-			// 
-			// BriefEventView
-			// 
-			this.BriefEventView.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
-            this.When,
-            this.What});
-			this.BriefEventView.ContextMenuStrip = this.CalOverviewMenu;
-			this.BriefEventView.FullRowSelect = true;
-			this.BriefEventView.GridLines = true;
-			this.BriefEventView.Location = new System.Drawing.Point(2, 170);
-			this.BriefEventView.Name = "BriefEventView";
-			this.BriefEventView.RightToLeft = System.Windows.Forms.RightToLeft.No;
-			this.BriefEventView.Size = new System.Drawing.Size(342, 112);
-			this.BriefEventView.TabIndex = 1;
-			this.BriefEventView.UseCompatibleStateImageBehavior = false;
-			this.BriefEventView.View = System.Windows.Forms.View.Details;
-			this.BriefEventView.MouseDown += new System.Windows.Forms.MouseEventHandler(this.BreifBriefEventView_MouseDown);
-			// 
-			// When
-			// 
-			this.When.Text = "When";
-			this.When.Width = 76;
-			// 
-			// What
-			// 
-			this.What.Text = "What";
-			this.What.Width = 259;
-			// 
-			// CalOverviewMenu
-			// 
-			this.CalOverviewMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.addToolStripMenuItem,
-            this.editToolStripMenuItem,
-            this.removeToolStripMenuItem,
-            this.detailsToolStripMenuItem});
-			this.CalOverviewMenu.Name = "CalendarOverviewMenu";
-			this.CalOverviewMenu.Size = new System.Drawing.Size(150, 92);
-			this.CalOverviewMenu.Opening += new System.ComponentModel.CancelEventHandler(this.CalOverviewMenu_Opening);
-			// 
-			// addToolStripMenuItem
-			// 
-			this.addToolStripMenuItem.Name = "addToolStripMenuItem";
-			this.addToolStripMenuItem.Size = new System.Drawing.Size(149, 22);
-			this.addToolStripMenuItem.Text = "Add Event";
-			this.addToolStripMenuItem.Click += new System.EventHandler(this.addToolStripMenuItem_Click);
-			// 
-			// editToolStripMenuItem
-			// 
-			this.editToolStripMenuItem.Name = "editToolStripMenuItem";
-			this.editToolStripMenuItem.Size = new System.Drawing.Size(149, 22);
-			this.editToolStripMenuItem.Text = "Edit Event";
-			this.editToolStripMenuItem.Click += new System.EventHandler(this.editToolStripMenuItem_Click);
-			// 
-			// removeToolStripMenuItem
-			// 
-			this.removeToolStripMenuItem.Name = "removeToolStripMenuItem";
-			this.removeToolStripMenuItem.Size = new System.Drawing.Size(149, 22);
-			this.removeToolStripMenuItem.Text = "Remove Event";
-			this.removeToolStripMenuItem.Click += new System.EventHandler(this.removeToolStripMenuItem_Click);
-			// 
-			// detailsToolStripMenuItem
-			// 
-			this.detailsToolStripMenuItem.Name = "detailsToolStripMenuItem";
-			this.detailsToolStripMenuItem.Size = new System.Drawing.Size(149, 22);
-			this.detailsToolStripMenuItem.Text = "Details...";
-			this.detailsToolStripMenuItem.Click += new System.EventHandler(this.detailsToolStripMenuItem_Click);
-			// 
-			// DaySelect
-			// 
-			this.DaySelect.Location = new System.Drawing.Point(2, 3);
-			this.DaySelect.MaxDate = new System.DateTime(2099, 12, 31, 0, 0, 0, 0);
-			this.DaySelect.MaxSelectionCount = 1;
-			this.DaySelect.Name = "DaySelect";
-			this.DaySelect.TabIndex = 0;
-			this.DaySelect.DateChanged += new System.Windows.Forms.DateRangeEventHandler(this.DaySelect_DateChanged);
-			// 
 			// TimerStats
 			// 
+			this.TimerStats.ContextMenuStrip = this.TrayIconContextMenu;
 			this.TimerStats.Icon = ((System.Drawing.Icon)(resources.GetObject("TimerStats.Icon")));
 			this.TimerStats.Text = "TimerStats";
 			this.TimerStats.Visible = true;
 			this.TimerStats.MouseClick += new System.Windows.Forms.MouseEventHandler(this.TimerStats_MouseClick);
 			this.TimerStats.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.TimerStats_MouseDoubleClick);
 			// 
+			// TrayIconContextMenu
+			// 
+			this.TrayIconContextMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.TrayCntOpenTimer,
+            this.TrayCntQuickView,
+            this.toolStripSeparator3,
+            this.TrayCntOptions,
+            this.TrayCntExit});
+			this.TrayIconContextMenu.Name = "TrayIconContextMenu";
+			this.TrayIconContextMenu.Size = new System.Drawing.Size(180, 98);
+			// 
+			// TrayCntOpenTimer
+			// 
+			this.TrayCntOpenTimer.Name = "TrayCntOpenTimer";
+			this.TrayCntOpenTimer.Size = new System.Drawing.Size(179, 22);
+			this.TrayCntOpenTimer.Text = "Open Timer Utilities";
+			this.TrayCntOpenTimer.Click += new System.EventHandler(this.TrayCntOpenTimer_Click);
+			// 
+			// TrayCntQuickView
+			// 
+			this.TrayCntQuickView.Name = "TrayCntQuickView";
+			this.TrayCntQuickView.Size = new System.Drawing.Size(179, 22);
+			this.TrayCntQuickView.Text = "Quick View";
+			this.TrayCntQuickView.Click += new System.EventHandler(this.TrayCntQuickView_Click);
+			// 
+			// toolStripSeparator3
+			// 
+			this.toolStripSeparator3.Name = "toolStripSeparator3";
+			this.toolStripSeparator3.Size = new System.Drawing.Size(176, 6);
+			// 
+			// TrayCntOptions
+			// 
+			this.TrayCntOptions.Name = "TrayCntOptions";
+			this.TrayCntOptions.Size = new System.Drawing.Size(179, 22);
+			this.TrayCntOptions.Text = "Options";
+			this.TrayCntOptions.Click += new System.EventHandler(this.TrayCntOptions_Click);
+			// 
+			// TrayCntExit
+			// 
+			this.TrayCntExit.Name = "TrayCntExit";
+			this.TrayCntExit.Size = new System.Drawing.Size(179, 22);
+			this.TrayCntExit.Text = "Exit";
+			this.TrayCntExit.Click += new System.EventHandler(this.TrayCntExit_Click);
+			// 
 			// MenuStrip
 			// 
 			this.MenuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.fileToolStripMenuItem});
+            this.FileStripMenu,
+            this.HelpStripMenu});
 			this.MenuStrip.Location = new System.Drawing.Point(0, 0);
 			this.MenuStrip.Name = "MenuStrip";
 			this.MenuStrip.Size = new System.Drawing.Size(379, 24);
 			this.MenuStrip.TabIndex = 1;
 			this.MenuStrip.Text = "menuStrip1";
 			// 
-			// fileToolStripMenuItem
+			// FileStripMenu
 			// 
-			this.fileToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.toolStripMenuItem1,
-            this.optionsToolStripMenuItem,
+			this.FileStripMenu.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.OpenDataFile,
+            this.OptionsDiag,
+            this.ReloadData,
             this.toolStripSeparator1,
-            this.exitToolStripMenuItem});
-			this.fileToolStripMenuItem.Name = "fileToolStripMenuItem";
-			this.fileToolStripMenuItem.Size = new System.Drawing.Size(37, 20);
-			this.fileToolStripMenuItem.Text = "File";
+            this.ExitApp});
+			this.FileStripMenu.Name = "FileStripMenu";
+			this.FileStripMenu.Size = new System.Drawing.Size(37, 20);
+			this.FileStripMenu.Text = "File";
 			// 
-			// toolStripMenuItem1
+			// OpenDataFile
 			// 
-			this.toolStripMenuItem1.Name = "toolStripMenuItem1";
-			this.toolStripMenuItem1.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.O)));
-			this.toolStripMenuItem1.Size = new System.Drawing.Size(194, 22);
-			this.toolStripMenuItem1.Text = "Open Data File";
+			this.OpenDataFile.Name = "OpenDataFile";
+			this.OpenDataFile.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.O)));
+			this.OpenDataFile.Size = new System.Drawing.Size(194, 22);
+			this.OpenDataFile.Text = "Open Data File";
+			this.OpenDataFile.Click += new System.EventHandler(this.OpenDataFile_Click);
 			// 
-			// optionsToolStripMenuItem
+			// OptionsDiag
 			// 
-			this.optionsToolStripMenuItem.Name = "optionsToolStripMenuItem";
-			this.optionsToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.P)));
-			this.optionsToolStripMenuItem.Size = new System.Drawing.Size(194, 22);
-			this.optionsToolStripMenuItem.Text = "Options";
-			this.optionsToolStripMenuItem.Click += new System.EventHandler(this.optionsToolStripMenuItem_Click);
+			this.OptionsDiag.Name = "OptionsDiag";
+			this.OptionsDiag.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.P)));
+			this.OptionsDiag.Size = new System.Drawing.Size(194, 22);
+			this.OptionsDiag.Text = "Options";
+			this.OptionsDiag.Click += new System.EventHandler(this.OptionsDiag_Click);
+			// 
+			// ReloadData
+			// 
+			this.ReloadData.Name = "ReloadData";
+			this.ReloadData.Size = new System.Drawing.Size(194, 22);
+			this.ReloadData.Text = "Reload Data File";
+			this.ReloadData.Click += new System.EventHandler(this.ReloadData_Click);
 			// 
 			// toolStripSeparator1
 			// 
 			this.toolStripSeparator1.Name = "toolStripSeparator1";
 			this.toolStripSeparator1.Size = new System.Drawing.Size(191, 6);
 			// 
-			// exitToolStripMenuItem
+			// ExitApp
 			// 
-			this.exitToolStripMenuItem.Name = "exitToolStripMenuItem";
-			this.exitToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.X)));
-			this.exitToolStripMenuItem.Size = new System.Drawing.Size(194, 22);
-			this.exitToolStripMenuItem.Text = "Exit";
-			this.exitToolStripMenuItem.Click += new System.EventHandler(this.exitToolStripMenuItem_Click);
+			this.ExitApp.Name = "ExitApp";
+			this.ExitApp.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.X)));
+			this.ExitApp.Size = new System.Drawing.Size(194, 22);
+			this.ExitApp.Text = "Exit";
+			this.ExitApp.Click += new System.EventHandler(this.exitToolStripMenuItem_Click);
+			// 
+			// HelpStripMenu
+			// 
+			this.HelpStripMenu.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.HelpButton,
+            this.AboutDiag});
+			this.HelpStripMenu.Name = "HelpStripMenu";
+			this.HelpStripMenu.Size = new System.Drawing.Size(44, 20);
+			this.HelpStripMenu.Text = "Help";
+			// 
+			// HelpButton
+			// 
+			this.HelpButton.Name = "HelpButton";
+			this.HelpButton.ShortcutKeys = System.Windows.Forms.Keys.F1;
+			this.HelpButton.Size = new System.Drawing.Size(118, 22);
+			this.HelpButton.Text = "Help";
+			this.HelpButton.Click += new System.EventHandler(this.HelpButton_Click);
+			// 
+			// AboutDiag
+			// 
+			this.AboutDiag.Name = "AboutDiag";
+			this.AboutDiag.Size = new System.Drawing.Size(118, 22);
+			this.AboutDiag.Text = "About";
+			this.AboutDiag.Click += new System.EventHandler(this.AboutDiag_Click);
 			// 
 			// MainWindow
 			// 
@@ -847,10 +769,7 @@
 			this.KeyPad.ResumeLayout(false);
 			this.todo.ResumeLayout(false);
 			this.TodoMenu.ResumeLayout(false);
-			this.Calendar.ResumeLayout(false);
-			this.EventActions.ResumeLayout(false);
-			this.EventActions.PerformLayout();
-			this.CalOverviewMenu.ResumeLayout(false);
+			this.TrayIconContextMenu.ResumeLayout(false);
 			this.MenuStrip.ResumeLayout(false);
 			this.MenuStrip.PerformLayout();
 			this.ResumeLayout(false);
@@ -899,13 +818,12 @@
 		private System.Windows.Forms.ListView TodoList;
 		private System.Windows.Forms.ColumnHeader X;
 		private System.Windows.Forms.ColumnHeader ItemName;
-		private System.Windows.Forms.TabPage Calendar;
 		private System.Windows.Forms.MenuStrip MenuStrip;
-		private System.Windows.Forms.ToolStripMenuItem fileToolStripMenuItem;
-		private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem1;
-		private System.Windows.Forms.ToolStripMenuItem optionsToolStripMenuItem;
+		private System.Windows.Forms.ToolStripMenuItem FileStripMenu;
+		private System.Windows.Forms.ToolStripMenuItem OpenDataFile;
+		private System.Windows.Forms.ToolStripMenuItem OptionsDiag;
 		private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
-		private System.Windows.Forms.ToolStripMenuItem exitToolStripMenuItem;
+		private System.Windows.Forms.ToolStripMenuItem ExitApp;
 		private System.Windows.Forms.ContextMenuStrip TodoMenu;
 		private System.Windows.Forms.ToolStripMenuItem addItemToolStripMenuItem;
 		private System.Windows.Forms.ToolStripMenuItem removeItemToolStripMenuItem;
@@ -917,21 +835,16 @@
 		private System.Windows.Forms.ToolStripMenuItem mediumToolStripMenuItem;
 		private System.Windows.Forms.ToolStripMenuItem highToolStripMenuItem;
 		private System.Windows.Forms.ToolStripMenuItem EditItem;
-		private System.Windows.Forms.MonthCalendar DaySelect;
-		private System.Windows.Forms.GroupBox EventActions;
-		private System.Windows.Forms.Button DetailsCalButton;
-		private System.Windows.Forms.Button EditCalEventButton;
-		private System.Windows.Forms.Button AddCalEventButton;
-		private System.Windows.Forms.ListView BriefEventView;
-		private System.Windows.Forms.ColumnHeader When;
-		private System.Windows.Forms.ColumnHeader What;
-		private System.Windows.Forms.Button DeleteCalEventButton;
-		private System.Windows.Forms.TextBox textBox1;
-		private System.Windows.Forms.ContextMenuStrip CalOverviewMenu;
-		private System.Windows.Forms.ToolStripMenuItem addToolStripMenuItem;
-		private System.Windows.Forms.ToolStripMenuItem editToolStripMenuItem;
-		private System.Windows.Forms.ToolStripMenuItem removeToolStripMenuItem;
-		private System.Windows.Forms.ToolStripMenuItem detailsToolStripMenuItem;
+		private System.Windows.Forms.ToolStripMenuItem HelpStripMenu;
+		private System.Windows.Forms.ToolStripMenuItem HelpButton;
+		private System.Windows.Forms.ToolStripMenuItem AboutDiag;
+		private System.Windows.Forms.ToolStripMenuItem ReloadData;
+		private System.Windows.Forms.ContextMenuStrip TrayIconContextMenu;
+		private System.Windows.Forms.ToolStripMenuItem TrayCntOpenTimer;
+		private System.Windows.Forms.ToolStripMenuItem TrayCntQuickView;
+		private System.Windows.Forms.ToolStripSeparator toolStripSeparator3;
+		private System.Windows.Forms.ToolStripMenuItem TrayCntOptions;
+		private System.Windows.Forms.ToolStripMenuItem TrayCntExit;
 
     }
 }

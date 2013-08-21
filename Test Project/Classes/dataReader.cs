@@ -9,7 +9,7 @@ using Newtonsoft.Json;
 namespace Timer_Utils {
 	class dataReader {
 		public List<TodoItem> todoItems = new List<TodoItem>();
-		public List<CalendarItem> calendarItems = new List<CalendarItem>();
+		public PermOptions options = new PermOptions();
 
 		private string filePath = "data.json";
 

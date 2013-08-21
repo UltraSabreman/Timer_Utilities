@@ -68,19 +68,17 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Classes\CalendarItem.cs" />
-    <Compile Include="Classes\dataReader.cs" />
-    <Compile Include="Forums\AddReminder.cs">
+    <Compile Include="Classes\GlobalHotkeys.cs" />
+    <Compile Include="Classes\PermOptions.cs" />
+    <Compile Include="Forums\AboutDiag.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Forums\AddReminder.Designer.cs">
-      <DependentUpon>AddReminder.cs</DependentUpon>
+    <Compile Include="Forums\AboutDiag.Designer.cs">
+      <DependentUpon>AboutDiag.cs</DependentUpon>
     </Compile>
+    <Compile Include="Classes\dataReader.cs" />
     <Compile Include="Classes\CD_StartTime_Maker.cs" />
     <Compile Include="Classes\CountDown.cs" />
-    <Compile Include="Forums\MainWindow-Calendar.cs">
-      <SubType>Form</SubType>
-    </Compile>
     <Compile Include="Classes\TodoItem.cs" />
     <Compile Include="Forums\MainWindow-CountdownTab.cs">
       <SubType>Form</SubType>
@@ -110,6 +108,24 @@
     <Compile Include="Forums\TodolistAddDiag.Designer.cs">
       <DependentUpon>TodolistAddDiag.cs</DependentUpon>
     </Compile>
+    <Compile Include="Forums\HelpDiag.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forums\HelpDiag.Designer.cs">
+      <DependentUpon>HelpDiag.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forums\OptionsDiag.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forums\OptionsDiag.Designer.cs">
+      <DependentUpon>OptionsDiag.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forums\StopWatchOverlay.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forums\StopWatchOverlay.Designer.cs">
+      <DependentUpon>StopWatchOverlay.cs</DependentUpon>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Classes\StopWatch.cs" />
     <Compile Include="Forums\FileDialog.cs">
@@ -118,20 +134,23 @@
     <Compile Include="Forums\FileDialog.Designer.cs">
       <DependentUpon>FileDialog.cs</DependentUpon>
     </Compile>
-    <Compile Include="Forums\AddEventDialouge.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Forums\AddEventDialouge.Designer.cs">
-      <DependentUpon>AddEventDialouge.cs</DependentUpon>
-    </Compile>
-    <EmbeddedResource Include="Forums\AddReminder.resx">
-      <DependentUpon>AddReminder.cs</DependentUpon>
+    <EmbeddedResource Include="Forums\AboutDiag.resx">
+      <DependentUpon>AboutDiag.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forums\MainWindow.resx">
       <DependentUpon>MainWindow.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forums\TodolistAddDiag.resx">
       <DependentUpon>TodolistAddDiag.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forums\HelpDiag.resx">
+      <DependentUpon>HelpDiag.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forums\OptionsDiag.resx">
+      <DependentUpon>OptionsDiag.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forums\StopWatchOverlay.resx">
+      <DependentUpon>StopWatchOverlay.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
@@ -149,9 +168,6 @@
     <EmbeddedResource Include="Forums\superPopup.resx">
       <DependentUpon>superPopup.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Forums\AddEventDialouge.resx">
-      <DependentUpon>AddEventDialouge.cs</DependentUpon>
-    </EmbeddedResource>
     <None Include="Misc\app.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -162,6 +178,7 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+    <None Include="Misc\README.md" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.5">
