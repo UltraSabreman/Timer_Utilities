@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Runtime.InteropServices;
 
-namespace Timer_Utils {
+namespace Time_Utils {
 	public partial class superPopup : Form {
 		public delegate void stopDelegate();
 		public event stopDelegate stop;

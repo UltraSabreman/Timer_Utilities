@@ -10,7 +10,7 @@ using System.Windows.Forms;
 using System.Diagnostics;
 
 
-namespace Timer_Utils {
+namespace Time_Utils {
 	public partial class MainWindow  {
 		private List<TodoItem> todoItems = new List<TodoItem>();
 

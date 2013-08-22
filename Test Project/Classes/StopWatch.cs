@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using System.Diagnostics;
 using System.Windows.Forms;
 
-namespace Timer_Utils {
+namespace Time_Utils {
 	public class StopWatch {
 		////////////////////////////////////
 		// Public Members

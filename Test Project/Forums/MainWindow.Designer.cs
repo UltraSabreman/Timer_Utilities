@@ -1,4 +1,4 @@
-﻿namespace Timer_Utils
+﻿namespace Time_Utils
 {
     partial class MainWindow
     {
@@ -480,6 +480,7 @@
 			this.CDdisplay.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
 			this.CDdisplay.BackColorChanged += new System.EventHandler(this.CDdisplay_BackColorChanged);
 			this.CDdisplay.BindingContextChanged += new System.EventHandler(this.CDdisplay_BackColorChanged);
+			this.CDdisplay.DoubleClick += new System.EventHandler(this.CDdisplay_DoubleClick);
 			// 
 			// todo
 			// 
@@ -756,7 +757,7 @@
 			this.MaximizeBox = false;
 			this.Name = "MainWindow";
 			this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Hide;
-			this.Text = "Timer Stuff";
+			this.Text = "Time Utilities";
 			this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Form1_FormClosing);
 			this.SizeChanged += new System.EventHandler(this.Form1_SizeChanged);
 			this.Clocks.ResumeLayout(false);

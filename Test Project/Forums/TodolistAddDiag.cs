@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 
-namespace Timer_Utils {
+namespace Time_Utils {
 	public partial class TodolistAddDiag : Form {
 		public delegate void onClose(string s);
 		public event onClose OnClose;

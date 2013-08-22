@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 
-namespace Timer_Utils {
+namespace Time_Utils {
 	class CD_StartTime_Maker {
 		////////////////////////////////////
 		// Public Members

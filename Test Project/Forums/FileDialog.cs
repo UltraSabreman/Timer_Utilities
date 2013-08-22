@@ -8,7 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace Timer_Utils {
+namespace Time_Utils {
 	public partial class FileDialog : Form {
 		////////////////////////////////////
 		// Private Members

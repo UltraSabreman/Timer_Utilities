@@ -10,7 +10,7 @@ using System.Windows.Forms;
 using System.Diagnostics;
 using System.Media;
 
-namespace Timer_Utils {
+namespace Time_Utils {
 	public partial class MainWindow {
 		////////////////////////////////////
 		// Public Members
@@ -21,13 +21,16 @@ namespace Timer_Utils {
 		private superPopup popup = new superPopup();
 		private SoundPlayer speaker = new SoundPlayer();
 		private CD_StartTime_Maker timeThing = new CD_StartTime_Maker();
-		
+		private CountDownOverlay CDOverlay;
+
+		private bool CD_EnterMode = false;
 		private bool doNotification = true;
 		private bool doPopup = false;
 		private bool doForeground = false;
 		private bool doSound = true;
 		private bool doRun = false;
 		private string runPath = "";
+
 
 		////////////////////////////////////
 		// Properties
@@ -64,10 +67,76 @@ namespace Timer_Utils {
 			countd.TriggerOnce += new CountDown.onTriggerOnce(CDonAlarm);
 
 			popup.stop += new superPopup.stopDelegate(CDtoggle);
+
+
+			globalKeyboardHook.KeyPressed += new EventHandler<KeyPressedEventArgs>(CD_KeyPressed);
+		}
+
+		private void CD_KeyPressed(object sender, KeyPressedEventArgs e) {
+			//All hardocded keays in this function are used for numerical entery,
+			// therefore they cannot be changed
+
+			if (e.Key == options.EnterModeCD.KeyCode && e.Modifier == options.EnterModeCD.Modifier) {
+				CD_EnterMode = !CD_EnterMode;
+				if (CD_EnterMode) {
+					if (CDOverlay != null) CDOverlay.updateColors(true);
+
+					for (uint i = (uint)Keys.NumPad0, l = (uint)Keys.D0; i <= (uint)Keys.NumPad9; i++, l++) {
+						globalKeyboardHook.RegisterHotKey(ModKeys.None, (Keys)i);
+						globalKeyboardHook.RegisterHotKey(ModKeys.None, (Keys)l);
+					}
+				
+					globalKeyboardHook.RegisterHotKey(ModKeys.None, Keys.Enter);
+					globalKeyboardHook.RegisterHotKey(ModKeys.None, Keys.Back);
+					//I would register the delete key aswell, but that would lock you out
+					//of ctrl+alt+del if something screwes up.
+				} else {
+					if (CDOverlay != null) CDOverlay.updateColors(false);
+
+					unregNumberKeys();
+				}
+			} else if (e.Key == options.StartCD.KeyCode && e.Modifier == options.StartCD.Modifier) {
+				CDtoggle();
+			} else if (e.Key == options.ResetCD.KeyCode && e.Modifier == options.ResetCD.Modifier) {
+				if (!countd.Running) CDreset(true);
+			} else if (e.Key == Keys.Enter) {
+				unregNumberKeys();
+
+				CD_EnterMode = false;
+				CDtoggle();
+			} else {
+				switch (e.Key) {
+					case Keys.D0: case Keys.NumPad0: timeThing.pushNumber(0); break;
+					case Keys.D1: case Keys.NumPad1: timeThing.pushNumber(1); break;
+					case Keys.D2: case Keys.NumPad2: timeThing.pushNumber(2); break;
+					case Keys.D3: case Keys.NumPad3: timeThing.pushNumber(3); break;
+					case Keys.D4: case Keys.NumPad4: timeThing.pushNumber(4); break;
+					case Keys.D5: case Keys.NumPad5: timeThing.pushNumber(5); break;
+					case Keys.D6: case Keys.NumPad6: timeThing.pushNumber(6); break;
+					case Keys.D7: case Keys.NumPad7: timeThing.pushNumber(7); break;
+					case Keys.D8: case Keys.NumPad8: timeThing.pushNumber(8); break;
+					case Keys.D9: case Keys.NumPad9: timeThing.pushNumber(9); break;
+					case Keys.Back: timeThing.popNumber(); break;
+				}
+				countd.StartTime = timeThing.getTime();
+			}
+			
+		}
+
+		private void unregNumberKeys() {
+			for (uint i = (uint)Keys.NumPad0, l = (uint)Keys.D0; i <= (uint)Keys.NumPad9; i++, l++) {
+				globalKeyboardHook.UnregisterHotKey(ModKeys.None, (Keys)i);
+				globalKeyboardHook.UnregisterHotKey(ModKeys.None, (Keys)l);
+			}
+
+			globalKeyboardHook.UnregisterHotKey(ModKeys.None, Keys.Enter);
+			globalKeyboardHook.UnregisterHotKey(ModKeys.None, Keys.Back);
 		}
 
 		private void CDtick(TimeSpan span) {
 			CDdisplay.Text = countd.TimeString;
+			if (CDOverlay != null)
+				CDOverlay.setTime(countd.TimeString);
 
 			try {
 				CDprogress.Value = countd.Progress;
@@ -77,6 +146,8 @@ namespace Timer_Utils {
 		}
 
 		private void CDonAlarm() {
+			CDOverlay.alarm();
+
 			if (countd.ContinueAfterTrigger)
 				CDdisplay.ForeColor = System.Drawing.Color.Red;
 
@@ -115,6 +186,9 @@ namespace Timer_Utils {
 		}
 
 		private void CDtoggle() {
+
+			if (CDOverlay != null) CDOverlay.updateColors(false); //resets colors to normal
+
 			if (countd.Running) {
 				countd.Stop();
 				speaker.Stop();
@@ -141,7 +215,7 @@ namespace Timer_Utils {
 		}
 
 
-		private void CDreset() {
+		private void CDreset(bool hard = false) {
 			countd.Reset();
 
 			KeyPad.Enabled = true;
@@ -152,11 +226,18 @@ namespace Timer_Utils {
 			CDdisplay.ForeColor = System.Drawing.Color.Black;
 			CDdisplay.Update();
 			CDstart.Text = "Start";
-			timeThing.reset();
+			if (!hard)
+				countd.StartTime = timeThing.getTime();
+			else 
+				timeThing.reset();
+
+			if (CDOverlay != null) {
+				CDOverlay.reset();
+			}
 		}
 
 		private void CDresetB_Click(object sender, EventArgs e) {
-			if (!countd.Running) CDreset();
+			if (!countd.Running) CDreset(true);
 		}
 
 		private void CDstart_Click(object sender, EventArgs e) {
@@ -259,5 +340,11 @@ namespace Timer_Utils {
 				doRun = false;
 		}
 
+
+
+		private void CDdisplay_DoubleClick(object sender, EventArgs e) {
+			CDOverlay = new CountDownOverlay(options);
+			CDOverlay.Show();
+		}
 	}
 }

@@ -1,4 +1,4 @@
-﻿namespace Timer_Utils {
+﻿namespace Time_Utils {
 	partial class HelpDiag {
 		/// <summary>
 		/// Required designer variable.

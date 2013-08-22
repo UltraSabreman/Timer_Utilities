@@ -7,12 +7,14 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 
-namespace Timer_Utils {
+namespace Time_Utils {
 	public partial class OptionsDiag : Form {
 		public delegate void onApply(PermOptions op);
 		public event onApply Apply;
 
 		private PermOptions options = new PermOptions();
+
+		private bool set = true;
 
 		public OptionsDiag(PermOptions op = null) {
 			InitializeComponent();
@@ -81,6 +83,32 @@ namespace Timer_Utils {
 		private void trackBar1_Scroll(object sender, EventArgs e) {
 			OptacyLabl.Text = string.Format("Optacy: {0}%", OptacySlider.Value);
 			options.OverlayOptacy = ((double)OptacySlider.Value)/100;
+		}
+
+		private void SetKey_KeyUp(object sender, KeyEventArgs e) {
+			set = true;
+			StartSW.Focus();
+			SetKey.Enabled = false;
+			
+		}
+
+
+		private void SetKey_KeyDown(object sender, KeyEventArgs e) {
+
+			if (set) return;
+			if (e.KeyCode == Keys.Escape) {
+				SetKey.Text = "None";
+				set = true;
+				StartSW.Focus();
+				SetKey.Enabled = false;
+			} else
+				SetKey.Text = e.Modifiers.ToString() + ", " + e.KeyCode.ToString();
+		}
+
+		private void StartSW_Click(object sender, EventArgs e) {
+			set = false;
+			SetKey.Enabled = true;
+			SetKey.Focus();
 		}
 	}
 }

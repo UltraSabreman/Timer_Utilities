@@ -9,7 +9,7 @@ using System.Windows.Forms;
 using System.Runtime.InteropServices;
 using System.Text.RegularExpressions;
 
-namespace Timer_Utils {
+namespace Time_Utils {
 	public partial class StopWatchOverlay : Form {
 		private int laps = 0;
 
@@ -18,6 +18,7 @@ namespace Timer_Utils {
 			InitializeComponent();
 
 			updateOptions(op != null ? op : new PermOptions());
+
 		}
 
 		public void updateOptions(PermOptions op) {
@@ -32,8 +33,8 @@ namespace Timer_Utils {
 			Lap2.ForeColor = op.OverlayForeColor;
 			Lap2.BackColor = op.OverlayBackColor;
 
-			Laps.ForeColor = op.OverlayForeColor;
-			Laps.BackColor = op.OverlayBackColor;
+			Lapz.ForeColor = op.OverlayForeColor;
+			Lapz.BackColor = op.OverlayBackColor;
 
 			lineShape1.BorderColor = op.OverlayForeColor;
 
@@ -65,20 +66,20 @@ namespace Timer_Utils {
 		}
 
 		public void tick(string time) {
-			TimeDisp.Text = " " + Regex.Replace(time, "\\s*", String.Empty);
+			TimeDisp.Text = Regex.Replace(time, "\\s*", String.Empty);
 		}
 
 		public void lap() {
 			Lap2.Text = "Lap 2:" + Regex.Replace(Lap1.Text, "Lap 1:", String.Empty);
 			Lap1.Text = "Lap 1:" + TimeDisp.Text;
-			Laps.Text = (++laps).ToString();
+			Lapz.Text = (++laps).ToString();
 		}
 
 		public void reset() {
 			TimeDisp.Text = " 00:00:00.000 ";
 			Lap1.Text = "Lap 1: 00:00:00.000";
 			Lap2.Text = "Lap 2: 00:00:00.000";
-			Laps.Text = "0";
+			Lapz.Text = "0";
 		}
 	}
 }

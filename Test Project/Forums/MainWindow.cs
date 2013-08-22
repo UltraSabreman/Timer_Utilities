@@ -10,7 +10,7 @@ using System.Windows.Forms;
 using System.Diagnostics;
 using Microsoft.Win32;
 
-namespace Timer_Utils {
+namespace Time_Utils {
 	public partial class MainWindow : Form {
 		////////////////////////////////////
 		// Private Members
@@ -29,7 +29,8 @@ namespace Timer_Utils {
 		private bool warned = false;
 		private string optionsPath = "";
 		private PermOptions options = new PermOptions();
-		KeyboardHook hook = new KeyboardHook();
+		private KeyboardHook globalKeyboardHook = new KeyboardHook();
+		private bool keysEnabled = false;
 		
 		public MainWindow(string path = "settings.txt") {
 			optionsPath = path;
@@ -41,6 +42,9 @@ namespace Timer_Utils {
 			todoItems = tempReader.todoItems;
 			options = tempReader.options;
 
+			globalKeyboardHook.RegisterHotKey(options.EnableKeys);
+			globalKeyboardHook.KeyPressed += new EventHandler<KeyPressedEventArgs>(GB_KeyPressed);
+
 			SWinitTab();
 			CDinitTab();
 			TDinitTab();
@@ -51,19 +55,51 @@ namespace Timer_Utils {
 			ShowInTaskbar = !options.hideTaskbarIcon;
 		}
 
+		private void GB_KeyPressed(object sender, KeyPressedEventArgs e) {
+			if (e.Key == options.EnableKeys.KeyCode && e.Modifier == options.EnableKeys.Modifier) {
+				keysEnabled = !keysEnabled;
+				if (keysEnabled) {
+					//Stopwatch Stuff
+					globalKeyboardHook.RegisterHotKey(options.StartSW);
+					globalKeyboardHook.RegisterHotKey(options.ResetSW);
+
+					//countDown Stuff
+					globalKeyboardHook.RegisterHotKey(options.StartCD);
+					globalKeyboardHook.RegisterHotKey(options.ResetCD);
+					globalKeyboardHook.RegisterHotKey(options.EnterModeCD);
+				} else {
+					//Stopwatch Stuff
+					globalKeyboardHook.UnregisterHotKey(options.StartSW);
+					globalKeyboardHook.UnregisterHotKey(options.ResetSW);
+
+					//countDown Stuff
+					globalKeyboardHook.UnregisterHotKey(options.StartCD);
+					globalKeyboardHook.UnregisterHotKey(options.ResetCD);
+					globalKeyboardHook.UnregisterHotKey(options.EnterModeCD);
+
+					if (CD_EnterMode) {
+						unregNumberKeys();
+						if (CDOverlay != null)
+							CDOverlay.updateColors(false);
+					}
+				}
+			}
+		}
+
 		public void applyOptions(PermOptions po) {
 			options = po;
 
 			//run on startup or not.
 			RegistryKey registryKey = Registry.CurrentUser.OpenSubKey("SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run", true);
 			if (options.startOnStartup)
-				registryKey.SetValue("TimerUtilities", Application.ExecutablePath);
-			else
-				registryKey.SetValue("TimerUtilities", false);
+				registryKey.SetValue("TimeUtilities", Application.ExecutablePath);
+			else if (!options.startOnStartup && registryKey.GetValue("TimeUtilities") != null)
+				registryKey.DeleteValue("TimeUtilities");
 
 			ShowInTaskbar = !options.hideTaskbarIcon;
 
 			this.Show();
+			
 			//TODO doMore stuff Here
 		}
 
@@ -73,7 +109,7 @@ namespace Timer_Utils {
 			if (WindowState == FormWindowState.Minimized) {
 				// Do some stuff
 				if (!warned) {
-					TimerStats.ShowBalloonTip(1000, "Timer Stuff", "Timer Stuff has been minimzed to the tray. \n Double-Click icon to open", ToolTipIcon.Info);
+					TimerStats.ShowBalloonTip(1000, "Time Utilities", "Time Utilities has been minimzed to the tray. \n Double-Click icon to open", ToolTipIcon.Info);
 					warned = true;
 				}
 			}

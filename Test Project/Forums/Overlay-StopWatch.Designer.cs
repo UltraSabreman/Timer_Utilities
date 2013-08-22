@@ -1,4 +1,4 @@
-﻿namespace Timer_Utils {
+﻿namespace Time_Utils {
 	partial class StopWatchOverlay {
 		/// <summary>
 		/// Required designer variable.
@@ -31,7 +31,7 @@
 			this.TimeDisp = new System.Windows.Forms.Label();
 			this.Lap2 = new System.Windows.Forms.Label();
 			this.Lap1 = new System.Windows.Forms.Label();
-			this.Laps = new System.Windows.Forms.TextBox();
+			this.Lapz = new System.Windows.Forms.Label();
 			this.SuspendLayout();
 			// 
 			// shapeContainer1
@@ -86,20 +86,18 @@
 			// 
 			// TimeDisp
 			// 
-			this.TimeDisp.AutoSize = true;
 			this.TimeDisp.BackColor = System.Drawing.Color.White;
 			this.TimeDisp.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.TimeDisp.Location = new System.Drawing.Point(1, 1);
 			this.TimeDisp.Name = "TimeDisp";
 			this.TimeDisp.Size = new System.Drawing.Size(164, 25);
 			this.TimeDisp.TabIndex = 6;
-			this.TimeDisp.Text = " 00:00:00.000 ";
+			this.TimeDisp.Text = "00:00:00.000";
 			this.TimeDisp.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
 			this.TimeDisp.MouseDown += new System.Windows.Forms.MouseEventHandler(this.Overlay_MouseDown);
 			// 
 			// Lap2
 			// 
-			this.Lap2.AutoSize = true;
 			this.Lap2.BackColor = System.Drawing.Color.White;
 			this.Lap2.Location = new System.Drawing.Point(1, 40);
 			this.Lap2.Name = "Lap2";
@@ -110,7 +108,6 @@
 			// 
 			// Lap1
 			// 
-			this.Lap1.AutoSize = true;
 			this.Lap1.BackColor = System.Drawing.Color.White;
 			this.Lap1.Location = new System.Drawing.Point(1, 27);
 			this.Lap1.Name = "Lap1";
@@ -119,28 +116,24 @@
 			this.Lap1.Text = "Lap 1: 00:00:00.000";
 			this.Lap1.MouseDown += new System.Windows.Forms.MouseEventHandler(this.Overlay_MouseDown);
 			// 
-			// Laps
+			// Lapz
 			// 
-			this.Laps.BackColor = System.Drawing.Color.White;
-			this.Laps.BorderStyle = System.Windows.Forms.BorderStyle.None;
-			this.Laps.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.Laps.Location = new System.Drawing.Point(108, 30);
-			this.Laps.Multiline = true;
-			this.Laps.Name = "Laps";
-			this.Laps.ReadOnly = true;
-			this.Laps.ShortcutsEnabled = false;
-			this.Laps.Size = new System.Drawing.Size(55, 18);
-			this.Laps.TabIndex = 9;
-			this.Laps.Text = "0";
-			this.Laps.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-			this.Laps.MouseDown += new System.Windows.Forms.MouseEventHandler(this.Overlay_MouseDown);
+			this.Lapz.BackColor = System.Drawing.Color.White;
+			this.Lapz.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.Lapz.ForeColor = System.Drawing.Color.Black;
+			this.Lapz.Location = new System.Drawing.Point(108, 30);
+			this.Lapz.Name = "Lapz";
+			this.Lapz.Size = new System.Drawing.Size(55, 18);
+			this.Lapz.TabIndex = 9;
+			this.Lapz.Text = "0";
+			this.Lapz.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
 			// 
 			// StopWatchOverlay
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.ClientSize = new System.Drawing.Size(166, 56);
-			this.Controls.Add(this.Laps);
+			this.Controls.Add(this.Lapz);
 			this.Controls.Add(this.TimeDisp);
 			this.Controls.Add(this.Lap2);
 			this.Controls.Add(this.Lap1);
@@ -154,7 +147,6 @@
 			this.TopMost = true;
 			this.MouseDown += new System.Windows.Forms.MouseEventHandler(this.Overlay_MouseDown);
 			this.ResumeLayout(false);
-			this.PerformLayout();
 
 		}
 
@@ -168,6 +160,6 @@
 		private System.Windows.Forms.Label Lap2;
 		private System.Windows.Forms.Label Lap1;
 		private Microsoft.VisualBasic.PowerPacks.LineShape lineShape3;
-		private System.Windows.Forms.TextBox Laps;
+		private System.Windows.Forms.Label Lapz;
 	}
 }

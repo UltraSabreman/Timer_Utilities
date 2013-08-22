@@ -1,4 +1,4 @@
-﻿namespace Timer_Utils {
+﻿namespace Time_Utils {
 	partial class OptionsDiag {
 		/// <summary>
 		/// Required designer variable.
@@ -39,6 +39,8 @@
 			this.OverlayBackCol = new System.Windows.Forms.Button();
 			this.OptacySlider = new System.Windows.Forms.TrackBar();
 			this.OptacyLabl = new System.Windows.Forms.Label();
+			this.SetKey = new System.Windows.Forms.TextBox();
+			this.StartSW = new System.Windows.Forms.Button();
 			this.groupBox1.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.OptacySlider)).BeginInit();
 			this.SuspendLayout();
@@ -87,8 +89,6 @@
 			// chkHideTaskbarIcon
 			// 
 			this.chkHideTaskbarIcon.AutoSize = true;
-			this.chkHideTaskbarIcon.Checked = true;
-			this.chkHideTaskbarIcon.CheckState = System.Windows.Forms.CheckState.Checked;
 			this.chkHideTaskbarIcon.Location = new System.Drawing.Point(6, 42);
 			this.chkHideTaskbarIcon.Name = "chkHideTaskbarIcon";
 			this.chkHideTaskbarIcon.Size = new System.Drawing.Size(114, 17);
@@ -195,11 +195,34 @@
 			this.OptacyLabl.Text = "Optacy: 100%";
 			this.OptacyLabl.TextAlign = System.Drawing.ContentAlignment.TopCenter;
 			// 
+			// SetKey
+			// 
+			this.SetKey.Enabled = false;
+			this.SetKey.Location = new System.Drawing.Point(335, 104);
+			this.SetKey.Name = "SetKey";
+			this.SetKey.ReadOnly = true;
+			this.SetKey.Size = new System.Drawing.Size(100, 20);
+			this.SetKey.TabIndex = 15;
+			this.SetKey.KeyDown += new System.Windows.Forms.KeyEventHandler(this.SetKey_KeyDown);
+			this.SetKey.KeyUp += new System.Windows.Forms.KeyEventHandler(this.SetKey_KeyUp);
+			// 
+			// StartSW
+			// 
+			this.StartSW.Location = new System.Drawing.Point(441, 104);
+			this.StartSW.Name = "StartSW";
+			this.StartSW.Size = new System.Drawing.Size(75, 23);
+			this.StartSW.TabIndex = 16;
+			this.StartSW.Text = "Start SW";
+			this.StartSW.UseVisualStyleBackColor = true;
+			this.StartSW.Click += new System.EventHandler(this.StartSW_Click);
+			// 
 			// OptionsDiag
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.ClientSize = new System.Drawing.Size(541, 343);
+			this.Controls.Add(this.StartSW);
+			this.Controls.Add(this.SetKey);
 			this.Controls.Add(this.OptacyLabl);
 			this.Controls.Add(this.OptacySlider);
 			this.Controls.Add(this.OverlayBackCol);
@@ -242,5 +265,7 @@
 		private System.Windows.Forms.Button OverlayBackCol;
 		private System.Windows.Forms.TrackBar OptacySlider;
 		private System.Windows.Forms.Label OptacyLabl;
+		private System.Windows.Forms.TextBox SetKey;
+		private System.Windows.Forms.Button StartSW;
 	}
 }

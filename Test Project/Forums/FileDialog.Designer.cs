@@ -1,4 +1,4 @@
-﻿namespace Timer_Utils {
+﻿namespace Time_Utils {
 	partial class FileDialog {
 		/// <summary>
 		/// Required designer variable.

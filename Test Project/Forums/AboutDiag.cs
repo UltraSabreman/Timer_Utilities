@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 
-namespace Timer_Utils {
+namespace Time_Utils {
 	public partial class AboutDiag : Form {
 		public AboutDiag() {
 			InitializeComponent();

@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 using System.Diagnostics;
 using System.Windows.Forms;
 
-namespace Timer_Utils {
+namespace Time_Utils {
 	class CountDown {
 		////////////////////////////////////
 		// Public Members

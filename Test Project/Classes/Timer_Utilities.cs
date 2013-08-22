@@ -4,7 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace Timer_Utils
+namespace Time_Utils
 {
 	static class Timer_Utilities
     {

@@ -6,7 +6,7 @@ using System.IO;
 using Newtonsoft.Json;
 
 
-namespace Timer_Utils {
+namespace Time_Utils {
 	class dataReader {
 		public List<TodoItem> todoItems = new List<TodoItem>();
 		public PermOptions options = new PermOptions();

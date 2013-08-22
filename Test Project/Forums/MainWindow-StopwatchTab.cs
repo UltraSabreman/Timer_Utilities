@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Diagnostics;
 
-namespace Timer_Utils {
+namespace Time_Utils {
 	public partial class MainWindow {		
 		////////////////////////////////////
 		// Private Members
@@ -23,17 +23,13 @@ namespace Timer_Utils {
 			stopw.Tick += new StopWatch.onTick(SWtick);
 
 			// register the event that is fired after the key press.
-			hook.KeyPressed +=	new EventHandler<KeyPressedEventArgs>(hook_KeyPressed);
-			
-			// register the control + alt + F12 combination as hot key.
-			hook.RegisterHotKey(0, Keys.F8);
-			hook.RegisterHotKey(0, Keys.F9);
+			globalKeyboardHook.KeyPressed += new EventHandler<KeyPressedEventArgs>(SW_KeyPressed);
 		}
-		void hook_KeyPressed(object sender, KeyPressedEventArgs e)
+		private void SW_KeyPressed(object sender, KeyPressedEventArgs e)
 		{
-			if (e.Key == Keys.F8)
+			if (e.Key == options.StartSW.KeyCode && e.Modifier == options.StartSW.Modifier)
 				start();
-			if (e.Key == Keys.F9)
+			else if (e.Key == options.ResetSW.KeyCode && e.Modifier == options.ResetSW.Modifier)
 				reset();
 		}
 		private void SWtick(TimeSpan span) {
