@@ -18,11 +18,9 @@ namespace Time_Utils {
 		public System.Drawing.Color OverlayBackColor = System.Drawing.Color.White;
 		public double OverlayOptacy = 0.5;
 
-		public HotKey EnableKeys = new HotKey(ModKeys.Control, Keys.F12);
-		public HotKey StartSW = new HotKey(ModKeys.Control, Keys.F5);
-		public HotKey ResetSW = new HotKey(ModKeys.Control, Keys.F6);
-		public HotKey StartCD = new HotKey(ModKeys.Control, Keys.F7);
-		public HotKey ResetCD = new HotKey(ModKeys.Control, Keys.F8);
-		public HotKey EnterModeCD = new HotKey(ModKeys.Control, Keys.F9);
+		public HotKey CycleOverlayTabs = new HotKey(ModKeys.Control, Keys.F12);
+		public HotKey OverlayKey1 = new HotKey(ModKeys.Control, Keys.F9);
+		public HotKey OverlayKey2 = new HotKey(ModKeys.Control, Keys.F10);
+		public HotKey OverlayKey3 = new HotKey(ModKeys.Control, Keys.F11);
 	}
 }

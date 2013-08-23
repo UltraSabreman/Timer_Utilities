@@ -49,7 +49,6 @@ namespace Time_Utils {
 		private void Apply_Click(object sender, EventArgs e) {
 			if (Apply != null)
 				Apply(options);
-			OverlayForeColor.BackColor = colorDialog1.Color;
 		}
 
 		private void chkStartup_CheckedChanged(object sender, EventArgs e) {

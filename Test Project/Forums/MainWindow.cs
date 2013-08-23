@@ -30,7 +30,9 @@ namespace Time_Utils {
 		private string optionsPath = "";
 		private PermOptions options = new PermOptions();
 		private KeyboardHook globalKeyboardHook = new KeyboardHook();
-		private bool keysEnabled = false;
+		private bool keysEnabled = true;
+		private Overlay overlay;
+		private Timer overlayUpdate = new Timer();
 		
 		public MainWindow(string path = "settings.txt") {
 			optionsPath = path;
@@ -41,47 +43,89 @@ namespace Time_Utils {
 			tempReader.deserialize();
 			todoItems = tempReader.todoItems;
 			options = tempReader.options;
+			
 
-			globalKeyboardHook.RegisterHotKey(options.EnableKeys);
+			globalKeyboardHook.RegisterHotKey(options.CycleOverlayTabs);
+			globalKeyboardHook.RegisterHotKey(options.OverlayKey1);
+			globalKeyboardHook.RegisterHotKey(options.OverlayKey2);
+			globalKeyboardHook.RegisterHotKey(options.OverlayKey3);
 			globalKeyboardHook.KeyPressed += new EventHandler<KeyPressedEventArgs>(GB_KeyPressed);
 
 			SWinitTab();
 			CDinitTab();
 			TDinitTab();
 
-			updateTodoList();
+			TDupdate();
 
 			Clocks.SelectedIndex = (int)options.defaultTab;
 			ShowInTaskbar = !options.hideTaskbarIcon;
+
+			overlay = new Overlay(options);
+
+			overlayUpdate.Tick += new EventHandler(renderOverlay);
+			overlayUpdate.Interval = 40;
+			overlayUpdate.Start();
 		}
 
 		private void GB_KeyPressed(object sender, KeyPressedEventArgs e) {
-			if (e.Key == options.EnableKeys.KeyCode && e.Modifier == options.EnableKeys.Modifier) {
-				keysEnabled = !keysEnabled;
-				if (keysEnabled) {
-					//Stopwatch Stuff
-					globalKeyboardHook.RegisterHotKey(options.StartSW);
-					globalKeyboardHook.RegisterHotKey(options.ResetSW);
+			if (!keysEnabled) return;
 
-					//countDown Stuff
-					globalKeyboardHook.RegisterHotKey(options.StartCD);
-					globalKeyboardHook.RegisterHotKey(options.ResetCD);
-					globalKeyboardHook.RegisterHotKey(options.EnterModeCD);
-				} else {
-					//Stopwatch Stuff
-					globalKeyboardHook.UnregisterHotKey(options.StartSW);
-					globalKeyboardHook.UnregisterHotKey(options.ResetSW);
+			if (e.Key == options.CycleOverlayTabs.KeyCode && e.Modifier == options.CycleOverlayTabs.Modifier) {
+				overlay.CurTab = (Overlay.Tabs)(((uint)overlay.CurTab + 1) % 3); //lul
+			}
 
-					//countDown Stuff
-					globalKeyboardHook.UnregisterHotKey(options.StartCD);
-					globalKeyboardHook.UnregisterHotKey(options.ResetCD);
-					globalKeyboardHook.UnregisterHotKey(options.EnterModeCD);
+			if (overlay.Visible && overlay.CurTab == Overlay.Tabs.Clock) {
 
+			} else if ((overlay.Visible && overlay.CurTab == Overlay.Tabs.Stopwatch) || (!overlay.Visible && Clocks.SelectedIndex == 0)) {
+
+				if (e.Key == options.OverlayKey1.KeyCode && e.Modifier == options.OverlayKey1.Modifier)
+					SWstart();
+				else if (e.Key == options.OverlayKey2.KeyCode && e.Modifier == options.OverlayKey2.Modifier)
+					SWreset();
+
+			} else if ((overlay.Visible && overlay.CurTab == Overlay.Tabs.Countdown) || (!overlay.Visible && Clocks.SelectedIndex == 1)) {
+				//All hardocded keays in this function are used for numerical entery,
+				// therefore they cannot be changed
+
+				if (e.Key == options.OverlayKey3.KeyCode && e.Modifier == options.OverlayKey3.Modifier) {
+					CD_EnterMode = !CD_EnterMode;
 					if (CD_EnterMode) {
-						unregNumberKeys();
-						if (CDOverlay != null)
-							CDOverlay.updateColors(false);
+						for (uint i = (uint)Keys.NumPad0, l = (uint)Keys.D0; i <= (uint)Keys.NumPad9; i++, l++) {
+							globalKeyboardHook.RegisterHotKey(ModKeys.None, (Keys)i);
+							globalKeyboardHook.RegisterHotKey(ModKeys.None, (Keys)l);
+						}
+
+						globalKeyboardHook.RegisterHotKey(ModKeys.None, Keys.Enter);
+						globalKeyboardHook.RegisterHotKey(ModKeys.None, Keys.Back);
+						//I would register the delete key aswell, but that would lock you out
+						//of ctrl+alt+del if something screwes up.
+					} else {
+						CDunregNumberKeys();
 					}
+				} else if (e.Key == options.OverlayKey1.KeyCode && e.Modifier == options.OverlayKey1.Modifier) {
+					CDtoggle();
+				} else if (e.Key == options.OverlayKey2.KeyCode && e.Modifier == options.OverlayKey2.Modifier) {
+					if (!CDclock.Running) CDreset(true);
+				} else if (e.Key == Keys.Enter) {
+					CDunregNumberKeys();
+
+					CD_EnterMode = false;
+					CDtoggle();
+				} else {
+					switch (e.Key) {
+						case Keys.D0: case Keys.NumPad0: timeThing.pushNumber(0); break;
+						case Keys.D1: case Keys.NumPad1: timeThing.pushNumber(1); break;
+						case Keys.D2: case Keys.NumPad2: timeThing.pushNumber(2); break;
+						case Keys.D3: case Keys.NumPad3: timeThing.pushNumber(3); break;
+						case Keys.D4: case Keys.NumPad4: timeThing.pushNumber(4); break;
+						case Keys.D5: case Keys.NumPad5: timeThing.pushNumber(5); break;
+						case Keys.D6: case Keys.NumPad6: timeThing.pushNumber(6); break;
+						case Keys.D7: case Keys.NumPad7: timeThing.pushNumber(7); break;
+						case Keys.D8: case Keys.NumPad8: timeThing.pushNumber(8); break;
+						case Keys.D9: case Keys.NumPad9: timeThing.pushNumber(9); break;
+						case Keys.Back: timeThing.popNumber(); break;
+					}
+					CDdisplay.Text = timeThing.getUnproccesdString();
 				}
 			}
 		}
@@ -97,7 +141,7 @@ namespace Time_Utils {
 				registryKey.DeleteValue("TimeUtilities");
 
 			ShowInTaskbar = !options.hideTaskbarIcon;
-
+			overlay.UpdateSettings(options);
 			this.Show();
 			
 			//TODO doMore stuff Here
@@ -170,7 +214,7 @@ namespace Time_Utils {
 			CDinitTab();
 			TDinitTab();
 
-			updateTodoList();
+			TDupdate();
 
 			ShowInTaskbar = !options.hideTaskbarIcon;
 		}
@@ -194,15 +238,15 @@ namespace Time_Utils {
 			string title = "Timer Stuff";
 			string tip = "";
 
-			if (!stopw.Running && !countd.Running) {
+			if (!SWclock.Running && !CDclock.Running) {
 				tip = "Nothing is running.";
 			}
 
-			if (stopw.Running)
-				tip += "SW: " + stopw.TimeString + "\n";
+			if (SWclock.Running)
+				tip += "SW: " + SWclock.TimeString + "\n";
 
-			if (countd.Running)
-				tip += "CD: " + countd.TimeString + "\n";
+			if (CDclock.Running)
+				tip += "CD: " + CDclock.TimeString + "\n";
 
 
 			TimerStats.ShowBalloonTip(1000, title, tip, ToolTipIcon.None);
@@ -219,6 +263,11 @@ namespace Time_Utils {
 			this.Dispose();
 		}
 
+
+
+		private void renderOverlay(object source, EventArgs e) {
+			overlay.Render();
+		}
 	}
 
 }

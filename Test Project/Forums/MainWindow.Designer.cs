@@ -32,12 +32,12 @@
 			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainWindow));
 			this.Clocks = new System.Windows.Forms.TabControl();
 			this.Stopwatch = new System.Windows.Forms.TabPage();
-			this.LapTimes = new System.Windows.Forms.ListView();
+			this.SWdisplay = new System.Windows.Forms.Label();
+			this.SWLapTimes = new System.Windows.Forms.ListView();
 			this.lap = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
 			this.times = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-			this.SWdisplay = new System.Windows.Forms.TextBox();
-			this.SWreset = new System.Windows.Forms.Button();
-			this.SWstart = new System.Windows.Forms.Button();
+			this.SWresetButton = new System.Windows.Forms.Button();
+			this.SWstartButton = new System.Windows.Forms.Button();
 			this.Countdown = new System.Windows.Forms.TabPage();
 			this.alarmOptions = new System.Windows.Forms.GroupBox();
 			this.chkForeg = new System.Windows.Forms.CheckBox();
@@ -62,9 +62,8 @@
 			this.KeyPad9 = new System.Windows.Forms.Button();
 			this.KeyPad8 = new System.Windows.Forms.Button();
 			this.KeyPad7 = new System.Windows.Forms.Button();
-			this.CDdisplay = new System.Windows.Forms.TextBox();
 			this.todo = new System.Windows.Forms.TabPage();
-			this.TodoList = new System.Windows.Forms.ListView();
+			this.TDtodoList = new System.Windows.Forms.ListView();
 			this.X = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
 			this.ItemName = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
 			this.TodoMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
@@ -96,6 +95,7 @@
 			this.HelpStripMenu = new System.Windows.Forms.ToolStripMenuItem();
 			this.HelpButton = new System.Windows.Forms.ToolStripMenuItem();
 			this.AboutDiag = new System.Windows.Forms.ToolStripMenuItem();
+			this.CDdisplay = new System.Windows.Forms.Label();
 			this.Clocks.SuspendLayout();
 			this.Stopwatch.SuspendLayout();
 			this.Countdown.SuspendLayout();
@@ -120,10 +120,10 @@
 			// 
 			// Stopwatch
 			// 
-			this.Stopwatch.Controls.Add(this.LapTimes);
 			this.Stopwatch.Controls.Add(this.SWdisplay);
-			this.Stopwatch.Controls.Add(this.SWreset);
-			this.Stopwatch.Controls.Add(this.SWstart);
+			this.Stopwatch.Controls.Add(this.SWLapTimes);
+			this.Stopwatch.Controls.Add(this.SWresetButton);
+			this.Stopwatch.Controls.Add(this.SWstartButton);
 			this.Stopwatch.Location = new System.Drawing.Point(4, 22);
 			this.Stopwatch.Name = "Stopwatch";
 			this.Stopwatch.Padding = new System.Windows.Forms.Padding(3);
@@ -132,24 +132,37 @@
 			this.Stopwatch.Text = "Stop Watch";
 			this.Stopwatch.UseVisualStyleBackColor = true;
 			// 
-			// LapTimes
+			// SWdisplay
 			// 
-			this.LapTimes.Activation = System.Windows.Forms.ItemActivation.TwoClick;
-			this.LapTimes.AutoArrange = false;
-			this.LapTimes.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+			this.SWdisplay.BackColor = System.Drawing.SystemColors.Control;
+			this.SWdisplay.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+			this.SWdisplay.Font = new System.Drawing.Font("Microsoft Sans Serif", 20.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.SWdisplay.Location = new System.Drawing.Point(3, 6);
+			this.SWdisplay.Name = "SWdisplay";
+			this.SWdisplay.Size = new System.Drawing.Size(344, 38);
+			this.SWdisplay.TabIndex = 4;
+			this.SWdisplay.Text = "00 : 00 : 00.000";
+			this.SWdisplay.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+			this.SWdisplay.DoubleClick += new System.EventHandler(this.SWdisplay_DoubleClick);
+			// 
+			// SWLapTimes
+			// 
+			this.SWLapTimes.Activation = System.Windows.Forms.ItemActivation.TwoClick;
+			this.SWLapTimes.AutoArrange = false;
+			this.SWLapTimes.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
             this.lap,
             this.times});
-			this.LapTimes.FullRowSelect = true;
-			this.LapTimes.GridLines = true;
-			this.LapTimes.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.Nonclickable;
-			this.LapTimes.Location = new System.Drawing.Point(3, 50);
-			this.LapTimes.Name = "LapTimes";
-			this.LapTimes.ShowGroups = false;
-			this.LapTimes.Size = new System.Drawing.Size(344, 189);
-			this.LapTimes.TabIndex = 3;
-			this.LapTimes.UseCompatibleStateImageBehavior = false;
-			this.LapTimes.View = System.Windows.Forms.View.Details;
-			this.LapTimes.SelectedIndexChanged += new System.EventHandler(this.LapTimes_SelectedIndexChanged);
+			this.SWLapTimes.FullRowSelect = true;
+			this.SWLapTimes.GridLines = true;
+			this.SWLapTimes.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.Nonclickable;
+			this.SWLapTimes.Location = new System.Drawing.Point(3, 50);
+			this.SWLapTimes.Name = "SWLapTimes";
+			this.SWLapTimes.ShowGroups = false;
+			this.SWLapTimes.Size = new System.Drawing.Size(344, 189);
+			this.SWLapTimes.TabIndex = 3;
+			this.SWLapTimes.UseCompatibleStateImageBehavior = false;
+			this.SWLapTimes.View = System.Windows.Forms.View.Details;
+			this.SWLapTimes.DoubleClick += new System.EventHandler(this.SWlapTimes_DoubleClick);
 			// 
 			// lap
 			// 
@@ -161,50 +174,34 @@
 			this.times.Text = "Time";
 			this.times.Width = 250;
 			// 
-			// SWdisplay
+			// SWresetButton
 			// 
-			this.SWdisplay.BackColor = System.Drawing.SystemColors.Control;
-			this.SWdisplay.Font = new System.Drawing.Font("Microsoft Sans Serif", 20.25F);
-			this.SWdisplay.Location = new System.Drawing.Point(3, 6);
-			this.SWdisplay.Name = "SWdisplay";
-			this.SWdisplay.ReadOnly = true;
-			this.SWdisplay.Size = new System.Drawing.Size(344, 38);
-			this.SWdisplay.TabIndex = 2;
-			this.SWdisplay.Text = "00 : 00 : 00";
-			this.SWdisplay.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-			this.SWdisplay.TextChanged += new System.EventHandler(this.SWdisplay_TextChanged);
-			this.SWdisplay.DoubleClick += new System.EventHandler(this.SWDisplay_doubleClick);
+			this.SWresetButton.Location = new System.Drawing.Point(182, 245);
+			this.SWresetButton.Name = "SWresetButton";
+			this.SWresetButton.Size = new System.Drawing.Size(165, 34);
+			this.SWresetButton.TabIndex = 1;
+			this.SWresetButton.Text = "Reset";
+			this.SWresetButton.UseVisualStyleBackColor = true;
+			this.SWresetButton.Click += new System.EventHandler(this.SWresetButton_Click);
 			// 
-			// SWreset
+			// SWstartButton
 			// 
-			this.SWreset.Location = new System.Drawing.Point(182, 245);
-			this.SWreset.Name = "SWreset";
-			this.SWreset.Size = new System.Drawing.Size(165, 34);
-			this.SWreset.TabIndex = 1;
-			this.SWreset.Text = "Reset";
-			this.SWreset.UseVisualStyleBackColor = true;
-			this.SWreset.TextChanged += new System.EventHandler(this.SWreset_TextChanged);
-			this.SWreset.Click += new System.EventHandler(this.SWreset_Click);
-			// 
-			// SWstart
-			// 
-			this.SWstart.Location = new System.Drawing.Point(3, 245);
-			this.SWstart.Name = "SWstart";
-			this.SWstart.Size = new System.Drawing.Size(165, 34);
-			this.SWstart.TabIndex = 0;
-			this.SWstart.Text = "Start";
-			this.SWstart.UseVisualStyleBackColor = true;
-			this.SWstart.TextChanged += new System.EventHandler(this.SWstart_TextChanged);
-			this.SWstart.Click += new System.EventHandler(this.SWstart_Click);
+			this.SWstartButton.Location = new System.Drawing.Point(3, 245);
+			this.SWstartButton.Name = "SWstartButton";
+			this.SWstartButton.Size = new System.Drawing.Size(165, 34);
+			this.SWstartButton.TabIndex = 0;
+			this.SWstartButton.Text = "Start";
+			this.SWstartButton.UseVisualStyleBackColor = true;
+			this.SWstartButton.Click += new System.EventHandler(this.SWstartButton_Click);
 			// 
 			// Countdown
 			// 
+			this.Countdown.Controls.Add(this.CDdisplay);
 			this.Countdown.Controls.Add(this.alarmOptions);
 			this.Countdown.Controls.Add(this.CDresetB);
 			this.Countdown.Controls.Add(this.CDprogress);
 			this.Countdown.Controls.Add(this.CDstart);
 			this.Countdown.Controls.Add(this.KeyPad);
-			this.Countdown.Controls.Add(this.CDdisplay);
 			this.Countdown.Location = new System.Drawing.Point(4, 22);
 			this.Countdown.Name = "Countdown";
 			this.Countdown.Padding = new System.Windows.Forms.Padding(3);
@@ -466,25 +463,9 @@
 			this.KeyPad7.UseVisualStyleBackColor = true;
 			this.KeyPad7.Click += new System.EventHandler(this.KeyPad7_Click);
 			// 
-			// CDdisplay
-			// 
-			this.CDdisplay.BackColor = System.Drawing.SystemColors.ControlLight;
-			this.CDdisplay.Font = new System.Drawing.Font("Microsoft Sans Serif", 20.25F);
-			this.CDdisplay.ForeColor = System.Drawing.Color.Black;
-			this.CDdisplay.Location = new System.Drawing.Point(3, 6);
-			this.CDdisplay.Name = "CDdisplay";
-			this.CDdisplay.ReadOnly = true;
-			this.CDdisplay.Size = new System.Drawing.Size(344, 38);
-			this.CDdisplay.TabIndex = 3;
-			this.CDdisplay.Text = "00 : 00 : 00";
-			this.CDdisplay.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-			this.CDdisplay.BackColorChanged += new System.EventHandler(this.CDdisplay_BackColorChanged);
-			this.CDdisplay.BindingContextChanged += new System.EventHandler(this.CDdisplay_BackColorChanged);
-			this.CDdisplay.DoubleClick += new System.EventHandler(this.CDdisplay_DoubleClick);
-			// 
 			// todo
 			// 
-			this.todo.Controls.Add(this.TodoList);
+			this.todo.Controls.Add(this.TDtodoList);
 			this.todo.Location = new System.Drawing.Point(4, 22);
 			this.todo.Name = "todo";
 			this.todo.Padding = new System.Windows.Forms.Padding(3);
@@ -493,24 +474,24 @@
 			this.todo.Text = "To-Do";
 			this.todo.UseVisualStyleBackColor = true;
 			// 
-			// TodoList
+			// TDtodoList
 			// 
-			this.TodoList.AutoArrange = false;
-			this.TodoList.CheckBoxes = true;
-			this.TodoList.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+			this.TDtodoList.AutoArrange = false;
+			this.TDtodoList.CheckBoxes = true;
+			this.TDtodoList.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
             this.X,
             this.ItemName});
-			this.TodoList.ContextMenuStrip = this.TodoMenu;
-			this.TodoList.FullRowSelect = true;
-			this.TodoList.GridLines = true;
-			this.TodoList.Location = new System.Drawing.Point(3, 6);
-			this.TodoList.Name = "TodoList";
-			this.TodoList.RightToLeftLayout = true;
-			this.TodoList.Size = new System.Drawing.Size(341, 276);
-			this.TodoList.TabIndex = 2;
-			this.TodoList.UseCompatibleStateImageBehavior = false;
-			this.TodoList.View = System.Windows.Forms.View.Details;
-			this.TodoList.MouseDown += new System.Windows.Forms.MouseEventHandler(this.TodoList_MouseDown);
+			this.TDtodoList.ContextMenuStrip = this.TodoMenu;
+			this.TDtodoList.FullRowSelect = true;
+			this.TDtodoList.GridLines = true;
+			this.TDtodoList.Location = new System.Drawing.Point(3, 6);
+			this.TDtodoList.Name = "TDtodoList";
+			this.TDtodoList.RightToLeftLayout = true;
+			this.TDtodoList.Size = new System.Drawing.Size(341, 276);
+			this.TDtodoList.TabIndex = 2;
+			this.TDtodoList.UseCompatibleStateImageBehavior = false;
+			this.TDtodoList.View = System.Windows.Forms.View.Details;
+			this.TDtodoList.MouseDown += new System.Windows.Forms.MouseEventHandler(this.TDtodoList_MouseDown);
 			// 
 			// X
 			// 
@@ -533,28 +514,28 @@
             this.removeAllCompleatedItemsToolStripMenuItem});
 			this.TodoMenu.Name = "TodoMenu";
 			this.TodoMenu.Size = new System.Drawing.Size(178, 120);
-			this.TodoMenu.Opening += new System.ComponentModel.CancelEventHandler(this.TodoMenu_Opening);
+			this.TodoMenu.Opening += new System.ComponentModel.CancelEventHandler(this.TDtodoMenu_Opening);
 			// 
 			// addItemToolStripMenuItem
 			// 
 			this.addItemToolStripMenuItem.Name = "addItemToolStripMenuItem";
 			this.addItemToolStripMenuItem.Size = new System.Drawing.Size(177, 22);
 			this.addItemToolStripMenuItem.Text = "Add Item";
-			this.addItemToolStripMenuItem.Click += new System.EventHandler(this.addItemToolStripMenuItem_Click);
+			this.addItemToolStripMenuItem.Click += new System.EventHandler(this.TDaddItemToolStripMenuItem_Click);
 			// 
 			// EditItem
 			// 
 			this.EditItem.Name = "EditItem";
 			this.EditItem.Size = new System.Drawing.Size(177, 22);
 			this.EditItem.Text = "Edit Item";
-			this.EditItem.Click += new System.EventHandler(this.EditItem_Click);
+			this.EditItem.Click += new System.EventHandler(this.TDeditItem_Click);
 			// 
 			// removeItemToolStripMenuItem
 			// 
 			this.removeItemToolStripMenuItem.Name = "removeItemToolStripMenuItem";
 			this.removeItemToolStripMenuItem.Size = new System.Drawing.Size(177, 22);
 			this.removeItemToolStripMenuItem.Text = "Remove Item";
-			this.removeItemToolStripMenuItem.Click += new System.EventHandler(this.removeItemToolStripMenuItem_Click);
+			this.removeItemToolStripMenuItem.Click += new System.EventHandler(this.TDremoveItemToolStripMenuItem_Click);
 			// 
 			// priority
 			// 
@@ -572,28 +553,28 @@
 			this.noneToolStripMenuItem.Name = "noneToolStripMenuItem";
 			this.noneToolStripMenuItem.Size = new System.Drawing.Size(119, 22);
 			this.noneToolStripMenuItem.Text = "None";
-			this.noneToolStripMenuItem.Click += new System.EventHandler(this.noneToolStripMenuItem_Click);
+			this.noneToolStripMenuItem.Click += new System.EventHandler(this.TDnoneToolStripMenuItem_Click);
 			// 
 			// lowToolStripMenuItem
 			// 
 			this.lowToolStripMenuItem.Name = "lowToolStripMenuItem";
 			this.lowToolStripMenuItem.Size = new System.Drawing.Size(119, 22);
 			this.lowToolStripMenuItem.Text = "Low";
-			this.lowToolStripMenuItem.Click += new System.EventHandler(this.lowToolStripMenuItem_Click);
+			this.lowToolStripMenuItem.Click += new System.EventHandler(this.TDlowToolStripMenuItem_Click);
 			// 
 			// mediumToolStripMenuItem
 			// 
 			this.mediumToolStripMenuItem.Name = "mediumToolStripMenuItem";
 			this.mediumToolStripMenuItem.Size = new System.Drawing.Size(119, 22);
 			this.mediumToolStripMenuItem.Text = "Medium";
-			this.mediumToolStripMenuItem.Click += new System.EventHandler(this.mediumToolStripMenuItem_Click);
+			this.mediumToolStripMenuItem.Click += new System.EventHandler(this.TDmediumToolStripMenuItem_Click);
 			// 
 			// highToolStripMenuItem
 			// 
 			this.highToolStripMenuItem.Name = "highToolStripMenuItem";
 			this.highToolStripMenuItem.Size = new System.Drawing.Size(119, 22);
 			this.highToolStripMenuItem.Text = "High";
-			this.highToolStripMenuItem.Click += new System.EventHandler(this.highToolStripMenuItem_Click);
+			this.highToolStripMenuItem.Click += new System.EventHandler(this.TDhighToolStripMenuItem_Click);
 			// 
 			// toolStripSeparator2
 			// 
@@ -605,7 +586,7 @@
 			this.removeAllCompleatedItemsToolStripMenuItem.Name = "removeAllCompleatedItemsToolStripMenuItem";
 			this.removeAllCompleatedItemsToolStripMenuItem.Size = new System.Drawing.Size(177, 22);
 			this.removeAllCompleatedItemsToolStripMenuItem.Text = "Remove All Marked";
-			this.removeAllCompleatedItemsToolStripMenuItem.Click += new System.EventHandler(this.removeAllCompleatedItemsToolStripMenuItem_Click);
+			this.removeAllCompleatedItemsToolStripMenuItem.Click += new System.EventHandler(this.TDremoveAllCompleatedItemsToolStripMenuItem_Click);
 			// 
 			// TimerStats
 			// 
@@ -743,6 +724,19 @@
 			this.AboutDiag.Text = "About";
 			this.AboutDiag.Click += new System.EventHandler(this.AboutDiag_Click);
 			// 
+			// CDdisplay
+			// 
+			this.CDdisplay.BackColor = System.Drawing.SystemColors.Control;
+			this.CDdisplay.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+			this.CDdisplay.Font = new System.Drawing.Font("Microsoft Sans Serif", 20.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.CDdisplay.Location = new System.Drawing.Point(3, 6);
+			this.CDdisplay.Name = "CDdisplay";
+			this.CDdisplay.Size = new System.Drawing.Size(344, 38);
+			this.CDdisplay.TabIndex = 11;
+			this.CDdisplay.Text = "00 : 00 : 00";
+			this.CDdisplay.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+			this.CDdisplay.DoubleClick += new System.EventHandler(this.CDdisplay_DoubleClick);
+			// 
 			// MainWindow
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -762,9 +756,7 @@
 			this.SizeChanged += new System.EventHandler(this.Form1_SizeChanged);
 			this.Clocks.ResumeLayout(false);
 			this.Stopwatch.ResumeLayout(false);
-			this.Stopwatch.PerformLayout();
 			this.Countdown.ResumeLayout(false);
-			this.Countdown.PerformLayout();
 			this.alarmOptions.ResumeLayout(false);
 			this.alarmOptions.PerformLayout();
 			this.KeyPad.ResumeLayout(false);
@@ -783,13 +775,11 @@
         private System.Windows.Forms.TabControl Clocks;
         private System.Windows.Forms.TabPage Stopwatch;
         private System.Windows.Forms.TabPage Countdown;
-        private System.Windows.Forms.Button SWreset;
-        private System.Windows.Forms.Button SWstart;
-		private System.Windows.Forms.TextBox SWdisplay;
-        private System.Windows.Forms.ListView LapTimes;
+        private System.Windows.Forms.Button SWresetButton;
+		private System.Windows.Forms.Button SWstartButton;
+        private System.Windows.Forms.ListView SWLapTimes;
         private System.Windows.Forms.ColumnHeader lap;
-        private System.Windows.Forms.ColumnHeader times;
-        private System.Windows.Forms.TextBox CDdisplay;
+		private System.Windows.Forms.ColumnHeader times;
         private System.Windows.Forms.Button CDstart;
         private System.Windows.Forms.Panel KeyPad;
         private System.Windows.Forms.Button KeyPadDel;
@@ -816,7 +806,7 @@
 		private Microsoft.VisualBasic.PowerPacks.LineShape lineShape1;
 		private System.Windows.Forms.TabPage todo;
 		private System.Windows.Forms.ToolTip toolTips;
-		private System.Windows.Forms.ListView TodoList;
+		private System.Windows.Forms.ListView TDtodoList;
 		private System.Windows.Forms.ColumnHeader X;
 		private System.Windows.Forms.ColumnHeader ItemName;
 		private System.Windows.Forms.MenuStrip MenuStrip;
@@ -846,6 +836,8 @@
 		private System.Windows.Forms.ToolStripSeparator toolStripSeparator3;
 		private System.Windows.Forms.ToolStripMenuItem TrayCntOptions;
 		private System.Windows.Forms.ToolStripMenuItem TrayCntExit;
+		private System.Windows.Forms.Label SWdisplay;
+		private System.Windows.Forms.Label CDdisplay;
 
     }
 }

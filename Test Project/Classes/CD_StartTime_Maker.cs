@@ -76,6 +76,21 @@ namespace Time_Utils {
 			startTime = TimeSpan.FromSeconds(totalSeconds);
 			return startTime;
 		}
+
+		public string getUnproccesdString() {
+			string temp = "";
+			int index = 0;
+			foreach (int i in rawTime) {
+				if (index == 4 || index  == 2)
+					temp = " : " + temp;
+				temp = i.ToString() + temp;
+				index++;
+			}
+
+			return temp;
+		}
+
+		
 		////////////////////////////////////
 		// Private Methods
 	}

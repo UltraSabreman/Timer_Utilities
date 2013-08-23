@@ -12,92 +12,95 @@ using System.Diagnostics;
 
 namespace Time_Utils {
 	public partial class MainWindow  {
+		////////////////////////////////////
+		// Private Members
 		private List<TodoItem> todoItems = new List<TodoItem>();
 
-		//inti the tab
+		////////////////////////////////////
+		// Private Methods
 		private void TDinitTab() {
-			TodoList.ItemChecked += new ItemCheckedEventHandler(TodoList_ItemChecked);
+			TDtodoList.ItemChecked += new ItemCheckedEventHandler(TDtodoList_ItemChecked);
 		}
 
-		private void updateTodoList() {
-			TodoList.Items.Clear();
-			TodoList.SelectedItems.Clear();
+		private void TDupdate() {
+			TDtodoList.Items.Clear();
+			TDtodoList.SelectedItems.Clear();
 			
 
 			foreach (TodoItem i in todoItems)
-				TodoList.Items.Add(i.ToListItem());
+				TDtodoList.Items.Add(i.ToListItem());
 		}
-		private void TodoList_ItemChecked(object sender, ItemCheckedEventArgs e) {
+		private void TDtodoList_ItemChecked(object sender, ItemCheckedEventArgs e) {
 			if (e.Item != null && todoItems.Count != 0) {
 				ListViewItem t = e.Item;
-				int i = TodoList.Items.IndexOf(t);
+				int i = TDtodoList.Items.IndexOf(t);
 
 				todoItems[i].Done = t.Checked;
 			}
 		}
 
-		private void addItem(string text) {
+		private void TDaddItem(string text) {
 			TodoItem temp = new TodoItem();
 			temp.Title = text;
 
 			todoItems.Add(temp);
-			updateTodoList();
+			TDupdate();
 		}
 
-		private void editItem(string text) {
-			todoItems[TodoList.SelectedIndices[0]].Title = text;
+		private void TDeditItem(string text) {
+			todoItems[TDtodoList.SelectedIndices[0]].Title = text;
 
-			updateTodoList();
+			TDupdate();
 		}
 
-		private void addItemToolStripMenuItem_Click(object sender, EventArgs e) {
-			addItemBox();
+		private void TDaddItemToolStripMenuItem_Click(object sender, EventArgs e) {
+			TDaddItemBox();
 		}
 
-		private void removeItemToolStripMenuItem_Click(object sender, EventArgs e) {
-			if (TodoList.SelectedIndices.Count == 0) return;
+		private void TDremoveItemToolStripMenuItem_Click(object sender, EventArgs e) {
+			if (TDtodoList.SelectedIndices.Count == 0) return;
 
-			todoItems.RemoveAt(TodoList.SelectedIndices[0]);
-			TodoList.SelectedIndices.Remove(0); //wtf consistency
-			TodoList.SelectedItems[0].Remove();
+			todoItems.RemoveAt(TDtodoList.SelectedIndices[0]);
+			TDtodoList.SelectedIndices.Remove(0); //wtf consistency
+			TDtodoList.SelectedItems[0].Remove();
 
-			updateTodoList();
+			TDupdate();
 		}
-		private void removeAllCompleatedItemsToolStripMenuItem_Click(object sender, EventArgs e) {
+		private void TDremoveAllCompleatedItemsToolStripMenuItem_Click(object sender, EventArgs e) {
 			todoItems.RemoveAll(item => item.Done);
-			updateTodoList();
+			TDupdate();
 		}
 
-		private void noneToolStripMenuItem_Click(object sender, EventArgs e) {
-			if (TodoList.SelectedIndices.Count == 0) return;
-			todoItems[TodoList.SelectedIndices[0]].Urgency = 0;
+		private void TDnoneToolStripMenuItem_Click(object sender, EventArgs e) {
+			if (TDtodoList.SelectedIndices.Count == 0) return;
+			todoItems[TDtodoList.SelectedIndices[0]].Urgency = 0;
 
-			updateTodoList();
+			TDupdate();
 		}
 
-		private void lowToolStripMenuItem_Click(object sender, EventArgs e) {
-			if (TodoList.SelectedIndices.Count == 0) return;
-			todoItems[TodoList.SelectedIndices[0]].Urgency = 1;
+		private void TDlowToolStripMenuItem_Click(object sender, EventArgs e) {
+			if (TDtodoList.SelectedIndices.Count == 0) return;
+			todoItems[TDtodoList.SelectedIndices[0]].Urgency = 1;
 
-			updateTodoList();
+			TDupdate();
 		}
 
-		private void mediumToolStripMenuItem_Click(object sender, EventArgs e) {
-			if (TodoList.SelectedIndices.Count == 0) return;
-			todoItems[TodoList.SelectedIndices[0]].Urgency = 2;
+		private void TDmediumToolStripMenuItem_Click(object sender, EventArgs e) {
+			if (TDtodoList.SelectedIndices.Count == 0) return;
+			todoItems[TDtodoList.SelectedIndices[0]].Urgency = 2;
 
-			updateTodoList();
+			TDupdate();
 		}
 
-		private void highToolStripMenuItem_Click(object sender, EventArgs e) {
-			if (TodoList.SelectedIndices.Count == 0) return;
-			todoItems[TodoList.SelectedIndices[0]].Urgency = 3;
+		private void TDhighToolStripMenuItem_Click(object sender, EventArgs e) {
+			if (TDtodoList.SelectedIndices.Count == 0) return;
+			todoItems[TDtodoList.SelectedIndices[0]].Urgency = 3;
 
-			updateTodoList();
+			TDupdate();
 		}
 
-		private void TodoMenu_Opening(object sender, EventArgs e) {
-			bool flag = (TodoList.SelectedItems.Count != 0);
+		private void TDtodoMenu_Opening(object sender, EventArgs e) {
+			bool flag = (TDtodoList.SelectedItems.Count != 0);
 			priority.Enabled = flag;
 			EditItem.Enabled = flag;
 			removeItemToolStripMenuItem.Enabled = flag;
@@ -112,35 +115,34 @@ namespace Time_Utils {
 			removeAllCompleatedItemsToolStripMenuItem.Enabled = someDone;
 		}
 
-		private void TodoList_MouseDown(object sender, MouseEventArgs e) {
+		private void TDtodoList_MouseDown(object sender, MouseEventArgs e) {
 			if (e.Clicks == 2)
-				TodoList_MouseDoublClick(sender, e);
+				TDtodoList_MouseDoublClick(sender, e);
 		}
 
 
-		private void EditItem_Click(object sender, EventArgs e) {
-			if (TodoList.SelectedItems.Count <= 0) return;
+		private void TDeditItem_Click(object sender, EventArgs e) {
+			if (TDtodoList.SelectedItems.Count <= 0) return;
 
-			addItemBox(todoItems[TodoList.SelectedIndices[0]].Title);
+			TDaddItemBox(todoItems[TDtodoList.SelectedIndices[0]].Title);
 		}
 
-		private void TodoList_MouseDoublClick(object sender, MouseEventArgs e) {
+		private void TDtodoList_MouseDoublClick(object sender, MouseEventArgs e) {
 			if (e.Button == MouseButtons.Left) {
-				if (TodoList.SelectedItems.Count == 0)
-					addItemBox(); 
+				if (TDtodoList.SelectedItems.Count == 0)
+					TDaddItemBox(); 
 				else
-					addItemBox(todoItems[TodoList.SelectedIndices[0]].Title);
+					TDaddItemBox(todoItems[TDtodoList.SelectedIndices[0]].Title);
 			}
 		}
 
-
-		private void addItemBox(string s = "") {
+		private void TDaddItemBox(string s = "") {
 			TodolistAddDiag temp = new TodolistAddDiag(s);
 			
 			if (s == "")
-				temp.OnClose += new TodolistAddDiag.onClose(addItem);
+				temp.OnClose += new TodolistAddDiag.onClose(TDaddItem);
 			else
-				temp.OnClose += new TodolistAddDiag.onClose(editItem);
+				temp.OnClose += new TodolistAddDiag.onClose(TDeditItem);
 			temp.Show();
 
 			temp.Location = new Point(MousePosition.X - temp.Size.Width / 2, MousePosition.Y - temp.Size.Height / 2);

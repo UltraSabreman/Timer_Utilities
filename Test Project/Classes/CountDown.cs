@@ -17,6 +17,7 @@ namespace Time_Utils {
 		public event onTick Tick;
 		public event onTrigger Trigger;
 		public event onTriggerOnce TriggerOnce;
+		public bool Ready = true;
 
 		////////////////////////////////////
 		// Private Members
@@ -67,6 +68,7 @@ namespace Time_Utils {
 
 		public bool Start() {
 			if (!running && startTime.Duration().TotalSeconds != 0) {
+				Ready = false;
 				clock.Start();
 				running = true;
 				return true;
@@ -85,6 +87,7 @@ namespace Time_Utils {
 
 		public bool Reset() {
 			if (!running) {
+				Ready = true;
 				clock.Reset();
 				startTime = new TimeSpan();
 				triggered = false;

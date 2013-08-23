@@ -29,7 +29,12 @@ namespace Time_Utils {
 		}
 
 		public string TopLap {
-			get { return lapList.Last(); }
+			get {
+				if (lapList.Count == 0)
+					return "00 : 00 : 00.000";
+				else
+					return lapList.Last(); 
+			}
 		}
 
 		public bool Running {
