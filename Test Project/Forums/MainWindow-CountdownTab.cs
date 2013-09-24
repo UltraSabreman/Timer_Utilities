@@ -69,16 +69,6 @@ namespace Time_Utils {
 			popup.stop += new superPopup.stopDelegate(CDtoggle);
 		}
 
-		private void CDunregNumberKeys() {
-			for (uint i = (uint)Keys.NumPad0, l = (uint)Keys.D0; i <= (uint)Keys.NumPad9; i++, l++) {
-				globalKeyboardHook.UnregisterHotKey(ModKeys.None, (Keys)i);
-				globalKeyboardHook.UnregisterHotKey(ModKeys.None, (Keys)l);
-			}
-
-			globalKeyboardHook.UnregisterHotKey(ModKeys.None, Keys.Enter);
-			globalKeyboardHook.UnregisterHotKey(ModKeys.None, Keys.Back);
-		}
-
 		private void CDtick(TimeSpan span) {
 			if (!CDclock.Ready)
 				CDdisplay.Text = CDclock.TimeString;

@@ -105,7 +105,14 @@ namespace Time_Utils {
 
 			//Right border/Progress indicator
 			g.DrawRectangle(MainPen, DispW - 6, 0, 5, DispH);			
-			g.FillRectangle(MainBrush, DispW - 4, 2, 2, (DispH - 4) * ((float)CDprogress / 100));
+
+			if (CDprogress != 0)
+				g.FillRectangle(MainBrush, DispW - 4, 2, 2, (DispH - 4) * ((float)CDprogress / 100));
+			else {
+				float secRatio = (float)DateTime.Now.Second / 60;
+				float size = (DispH - 4) * secRatio;
+				g.FillRectangle(MainBrush, DispW - 4, (DispH / 2) - (size / 2), 2, size);
+			}
 
 			if (CurTab == Tabs.Clock) {		
 				g.TextRenderingHint = System.Drawing.Text.TextRenderingHint.SingleBitPerPixelGridFit;
@@ -115,8 +122,8 @@ namespace Time_Utils {
 				SizeF TimeSize = TextRenderer.MeasureText(time, HugeFont);
 				SizeF DateSize = TextRenderer.MeasureText(date, TinyFont);
 
-				g.DrawString(time, HugeFont, MainBrush, DispW / 2 - TimeSize.Width / 2, 0);
-				g.DrawString(date, TinyFont, MainBrush, DispW / 2 - DateSize.Width / 2, TimeSize.Height);
+				g.DrawString(time, HugeFont, MainBrush, ((DispW-5) / 2 - TimeSize.Width / 2)+5, 0);
+				g.DrawString(date, TinyFont, MainBrush, ((DispW-5) / 2 - DateSize.Width / 2)+5, TimeSize.Height);
 			} else if (CurTab == Tabs.Stopwatch) {
 				SizeF TimeSize = TextRenderer.MeasureText(SWtime, MediumFont);
 				SizeF Lap1Size = TextRenderer.MeasureText(SWlap1, TinyFont);

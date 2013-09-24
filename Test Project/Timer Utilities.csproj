@@ -68,7 +68,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Classes\GlobalHotkeys.cs" />
+    <Compile Include="Classes\AsyncGlobalShortcuts.cs" />
     <Compile Include="Classes\PermOptions.cs" />
     <Compile Include="Forums\AboutDiag.cs">
       <SubType>Form</SubType>
@@ -80,6 +80,9 @@
     <Compile Include="Classes\CD_StartTime_Maker.cs" />
     <Compile Include="Classes\CountDown.cs" />
     <Compile Include="Classes\TodoItem.cs" />
+    <Compile Include="Forums\bindButton.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Forums\MainWindow-CountdownTab.cs">
       <SubType>Form</SubType>
     </Compile>

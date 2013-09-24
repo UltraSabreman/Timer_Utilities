@@ -29,10 +29,12 @@ namespace Time_Utils {
 		private bool warned = false;
 		private string optionsPath = "";
 		private PermOptions options = new PermOptions();
-		private KeyboardHook globalKeyboardHook = new KeyboardHook();
+		private AsyncGlobalShortcuts KeyHook = new AsyncGlobalShortcuts();
 		private bool keysEnabled = true;
 		private Overlay overlay;
 		private Timer overlayUpdate = new Timer();
+
+		private List<HotKey> numpadKeys = new List<HotKey>();
 		
 		public MainWindow(string path = "settings.txt") {
 			optionsPath = path;
@@ -43,13 +45,15 @@ namespace Time_Utils {
 			tempReader.deserialize();
 			todoItems = tempReader.todoItems;
 			options = tempReader.options;
-			
 
-			globalKeyboardHook.RegisterHotKey(options.CycleOverlayTabs);
-			globalKeyboardHook.RegisterHotKey(options.OverlayKey1);
-			globalKeyboardHook.RegisterHotKey(options.OverlayKey2);
-			globalKeyboardHook.RegisterHotKey(options.OverlayKey3);
-			globalKeyboardHook.KeyPressed += new EventHandler<KeyPressedEventArgs>(GB_KeyPressed);
+
+			KeyHook.RegisterHotKey(options.ActivateOverlay);
+			KeyHook.RegisterHotKey(options.CycleOverlayTabs);
+			KeyHook.RegisterHotKey(options.OverlayKey1);
+			KeyHook.RegisterHotKey(options.OverlayKey2);
+			KeyHook.RegisterHotKey(options.OverlayKey3);
+
+			KeyHook.KeyPressed += new EventHandler<KeyPressedEventArgs>(GB_KeyPressed);
 
 			SWinitTab();
 			CDinitTab();
@@ -70,49 +74,48 @@ namespace Time_Utils {
 		private void GB_KeyPressed(object sender, KeyPressedEventArgs e) {
 			if (!keysEnabled) return;
 
-			if (e.Key == options.CycleOverlayTabs.KeyCode && e.Modifier == options.CycleOverlayTabs.Modifier) {
+			if (e.Key == options.CycleOverlayTabs) {
 				overlay.CurTab = (Overlay.Tabs)(((uint)overlay.CurTab + 1) % 3); //lul
 			}
 
 			if (overlay.Visible && overlay.CurTab == Overlay.Tabs.Clock) {
 
-			} else if ((overlay.Visible && overlay.CurTab == Overlay.Tabs.Stopwatch) || (!overlay.Visible && Clocks.SelectedIndex == 0)) {
-
-				if (e.Key == options.OverlayKey1.KeyCode && e.Modifier == options.OverlayKey1.Modifier)
+			} else if (overlay.Visible && overlay.CurTab == Overlay.Tabs.Stopwatch) {
+				if (e.Key == options.OverlayKey1)
 					SWstart();
-				else if (e.Key == options.OverlayKey2.KeyCode && e.Modifier == options.OverlayKey2.Modifier)
+				else if (e.Key == options.OverlayKey2)
 					SWreset();
 
-			} else if ((overlay.Visible && overlay.CurTab == Overlay.Tabs.Countdown) || (!overlay.Visible && Clocks.SelectedIndex == 1)) {
+			} else if (overlay.Visible && overlay.CurTab == Overlay.Tabs.Countdown) {
 				//All hardocded keays in this function are used for numerical entery,
 				// therefore they cannot be changed
 
-				if (e.Key == options.OverlayKey3.KeyCode && e.Modifier == options.OverlayKey3.Modifier) {
+				if (e.Key == options.OverlayKey3) {
 					CD_EnterMode = !CD_EnterMode;
 					if (CD_EnterMode) {
 						for (uint i = (uint)Keys.NumPad0, l = (uint)Keys.D0; i <= (uint)Keys.NumPad9; i++, l++) {
-							globalKeyboardHook.RegisterHotKey(ModKeys.None, (Keys)i);
-							globalKeyboardHook.RegisterHotKey(ModKeys.None, (Keys)l);
+							numpadKeys.Add(KeyHook.RegisterHotKey((Keys)i));
+							numpadKeys.Add(KeyHook.RegisterHotKey((Keys)l));
 						}
 
-						globalKeyboardHook.RegisterHotKey(ModKeys.None, Keys.Enter);
-						globalKeyboardHook.RegisterHotKey(ModKeys.None, Keys.Back);
+						numpadKeys.Add(KeyHook.RegisterHotKey(Keys.Enter));
+						numpadKeys.Add(KeyHook.RegisterHotKey(Keys.Back));
 						//I would register the delete key aswell, but that would lock you out
-						//of ctrl+alt+del if something screwes up.
+						//of ctrl+alt+del if something screws up.
 					} else {
-						CDunregNumberKeys();
+						UnregNumberKeys();
 					}
-				} else if (e.Key == options.OverlayKey1.KeyCode && e.Modifier == options.OverlayKey1.Modifier) {
+				} else if (e.Key == options.OverlayKey1) {
 					CDtoggle();
-				} else if (e.Key == options.OverlayKey2.KeyCode && e.Modifier == options.OverlayKey2.Modifier) {
+				} else if (e.Key == options.OverlayKey2) {
 					if (!CDclock.Running) CDreset(true);
-				} else if (e.Key == Keys.Enter) {
-					CDunregNumberKeys();
+				} else if (e.Key.First() == Keys.Enter) {
+					UnregNumberKeys();
 
 					CD_EnterMode = false;
 					CDtoggle();
 				} else {
-					switch (e.Key) {
+					switch (e.Key.First()) {
 						case Keys.D0: case Keys.NumPad0: timeThing.pushNumber(0); break;
 						case Keys.D1: case Keys.NumPad1: timeThing.pushNumber(1); break;
 						case Keys.D2: case Keys.NumPad2: timeThing.pushNumber(2); break;
@@ -130,6 +133,14 @@ namespace Time_Utils {
 			}
 		}
 
+		private void UnregNumberKeys() {
+			foreach (HotKey k in numpadKeys) {
+				KeyHook.UnregisterHotKey(k);
+			}
+
+			numpadKeys.Clear();
+		}
+
 		public void applyOptions(PermOptions po) {
 			options = po;
 
@@ -143,6 +154,8 @@ namespace Time_Utils {
 			ShowInTaskbar = !options.hideTaskbarIcon;
 			overlay.UpdateSettings(options);
 			this.Show();
+
+			dumpOptions();
 			
 			//TODO doMore stuff Here
 		}
@@ -222,6 +235,11 @@ namespace Time_Utils {
 		void onClose() {
 			TimerStats.Visible = false;
 
+			KeyHook.Dispose();
+			dumpOptions();
+		}
+
+		void dumpOptions() {
 			dataReader tempReader = new dataReader();
 			tempReader.todoItems = todoItems;
 			tempReader.options = options;
